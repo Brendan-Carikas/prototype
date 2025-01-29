@@ -18,7 +18,7 @@ export function useAuthBackground() {
 export function AuthBackgroundProvider({ children }) {
   const [showBackground, setShowBackground] = useState(() => {
     const saved = localStorage.getItem(AUTH_BG_KEY);
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [alignLeft, setAlignLeft] = useState(() => {
@@ -38,7 +38,7 @@ export function AuthBackgroundProvider({ children }) {
 
   const [isTwoColumn, setIsTwoColumn] = useState(() => {
     const saved = localStorage.getItem(AUTH_TWO_COLUMN_KEY);
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
   
   const [unsavedChanges, setUnsavedChanges] = useState(false);
