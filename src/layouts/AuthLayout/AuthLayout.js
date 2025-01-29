@@ -21,11 +21,26 @@ const AuthLayout = () => {
         display: 'flex',
         minHeight: '100vh',
         backgroundColor: showBackground ? "background.default" : "transparent",
-        backgroundImage: showBackground && customImage ? `url(${customImage})` : `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: showBackground && customImage ? `url(${customImage})` : `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          opacity: 0.35,
+          zIndex: 0,
+        }}
+      />
       <Box
         sx={{
           width: '100%',
@@ -33,7 +48,9 @@ const AuthLayout = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          pb: '76px' // Add padding to account for fixed footer
+          pb: '76px',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         <Box sx={{ width: '100%', maxWidth: '600px', p: 3 }}>
