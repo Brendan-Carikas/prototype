@@ -11,5 +11,5 @@ A modern React-based dashboard application built with Material-UI and Supabase i
 
 ## 🚀 Live Demo
 
-Check out the live demo: [Arto App Demo](https://brendan-carikas.github.io/designapps)
+Check out the live demo: [Arto App Demo](https://brendan-carikas.github.io/artoproto)
 
