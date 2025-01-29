@@ -1,5 +1,5 @@
 const typography = {
-  fontFamily: '"Montserrat", sans-serif',
+  fontFamily: "'Libre Franklin', sans-serif",
   h1: {
     fontWeight: 700,
     fontSize: "2.25rem",

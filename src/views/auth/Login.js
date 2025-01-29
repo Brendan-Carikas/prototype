@@ -11,7 +11,8 @@ import {
   Alert,
   InputAdornment,
   IconButton,
-  Link as MuiLink,
+  Divider,
+  Link,
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
 import { useAuthBackground } from "../../contexts/AuthBackgroundContext";
@@ -36,24 +37,26 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
   };
 
   const formContent = (
-    <Box sx={{ 
-      width: '100%',
-      maxWidth: '400px',
-      p: 3,
-      mx: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      bgcolor: '#ffffff',
-      borderRadius: 2,
-      boxShadow: 1
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: '600px',
+        width: '100%',
+        mx: 'auto',
+        p: 3,
+        bgcolor: '#ffffff',
+        borderRadius: 2,
+        boxShadow: 1
+      }}
+    >
       <Box display="flex" justifyContent="center" mb={4}>
         <LogoIcon />
       </Box>
       
       <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
-        Sign In
+        Sign in
       </Typography>
 
       {error && (
@@ -62,84 +65,133 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
         </Alert>
       )}
 
-      <Box component="form" onSubmit={onSubmit} sx={{ width: '100%' }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          autoComplete="email"
-          autoFocus
-          sx={{ mb: 3 }}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          id="password"
-          value={formData.password}
-          onChange={handleChange}
-          autoComplete="current-password"
-          sx={{ mb: 4 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+      <form onSubmit={onSubmit} style={{ width: '100%' }}>
+        <Stack spacing={3}>
+          <TextField
+            label="Username"
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            required
+            size="small"
+            placeholder="Enter your username"
+            inputProps={{
+              style: { fontSize: '16px' }
+            }}
+            InputLabelProps={{
+              style: { fontSize: '16px' }
+            }}
+          />
 
-        <Stack spacing={2}>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember this device"
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <TextField
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              required
+              size="small"
+              placeholder="Enter your password"
+              inputProps={{
+                style: { fontSize: '16px' }
+              }}
+              InputLabelProps={{
+                style: { fontSize: '16px' }
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-          </FormGroup>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <RouterLink to="/forgot-password" style={{ textDecoration: 'none' }}>
+                <Link
+                  component="span"
+                  variant="body2"
+                  sx={{
+                    color: 'primary.main',
+                    textDecoration: 'none',
+                    fontWeight: 'bold',
+                    '&:hover': {
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  Forgot password?
+                </Link>
+              </RouterLink>
+            </Box>
+          </Box>
 
           <Button
             type="submit"
-            fullWidth
             variant="contained"
             color="primary"
             size="large"
+            fullWidth
           >
             Sign In
           </Button>
 
-          <Box sx={{ textAlign: "center" }}>
+          <Divider sx={{ my: 2 }}>
             <Typography variant="body2" color="textSecondary">
-              Don't have an account? {" "}
+              or
+            </Typography>
+          </Divider>
+
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="body2" >
+              No account?{' '}
               {onSignupClick ? (
                 <Button
                   color="primary"
                   onClick={onSignupClick}
-                  sx={{ textTransform: 'none', p: 0, minWidth: 'auto' }}
+                  sx={{ 
+                    textTransform: 'none',
+                    p: 0,
+                    minWidth: 'auto',
+                    fontWeight: 'bold',
+                    color: 'primary.main'
+                  }}
                 >
-                  Sign up
+                  Create account
                 </Button>
               ) : (
-                <RouterLink to="/signup" style={{ color: 'inherit', textDecoration: 'none' }}>
-                  Sign up
+                <RouterLink to="/signup">
+                  <a
+                    href="/signup"
+                    style={{ 
+                      color: '#1C1362',
+                      fontWeight: 'bold',
+                      textDecoration: 'none',
+                      '&:hover': {
+                        textDecoration: 'underline'
+                      }
+                    }}
+                  >
+                    Create account
+                  </a>
                 </RouterLink>
               )}
             </Typography>
           </Box>
         </Stack>
-      </Box>
+      </form>
     </Box>
   );
 
@@ -187,13 +239,14 @@ const LoginNew = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    rememberme: false,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
+  const handleChange = (event) => {
+    const { name, value, checked } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: name === "rememberme" ? checked : value,
     }));
   };
 
@@ -202,7 +255,7 @@ const LoginNew = () => {
     try {
       await login(formData.email, formData.password);
     } catch (error) {
-      setError("Failed to log in");
+      setError("Incorrect username or password");
     }
   };
 

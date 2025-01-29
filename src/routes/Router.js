@@ -12,6 +12,7 @@ import SingleConversation from "../views/Settings/SingleConversation.js";
 import LoginSelector from "../views/auth/LoginSelector.js";
 import ModernLogin from "../views/auth/ModernLogin.js";
 import Signup from "../views/auth/Signup.js";
+import ForgotPassword from "../views/auth/ForgotPassword.js";
 import InvotraAdmin from "../views/admin/InvotraAdmin";
 
 const ThemeRoutes = [
@@ -22,6 +23,7 @@ const ThemeRoutes = [
       { path: "login", element: <LoginSelector /> },
       { path: "modern-login", element: <ModernLogin /> },
       { path: "signup", element: <Signup /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
       { path: "", element: <Navigate to="/login" /> },
     ],
   },

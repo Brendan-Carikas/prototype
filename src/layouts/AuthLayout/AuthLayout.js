@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import Footer from '../../components/Footer/Footer';
 import { Outlet, useLocation } from 'react-router-dom';
 import authBg from '../../assets/images/auth-bg.png';
 import { useAuthBackground } from '../../contexts/AuthBackgroundContext';
@@ -17,24 +18,29 @@ const AuthLayout = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        ...(showBackground && {
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }),
-        ...(!showBackground && {
-          backgroundColor: '#f5f5f5',
-        }),
+        minHeight: '100vh',
+        backgroundColor: showBackground ? "background.default" : "transparent",
+        backgroundImage: showBackground && customImage ? `url(${customImage})` : `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Box sx={{ width: '100%', maxWidth: '400px', p: 3 }}>
-        <Outlet />
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pb: '76px' // Add padding to account for fixed footer
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: '600px', p: 3 }}>
+          <Outlet />
+        </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };

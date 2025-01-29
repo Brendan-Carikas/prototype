@@ -3,6 +3,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { baseTheme } from '../assets/global/Theme-variable';
 import modernTheme from '../assets/global/Theme-modern';
 import darkTheme from '../assets/global/Theme-dark';
+import artoTheme from '../assets/global/ArtoTheme';
 
 const THEME_KEY = 'app_theme';
 const ThemeContext = createContext();
@@ -14,18 +15,20 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState(() => {
     const savedTheme = localStorage.getItem(THEME_KEY);
-    return savedTheme || 'modern';
+    return savedTheme || 'arto';
   });
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   const getTheme = (themeName) => {
     switch (themeName) {
+      case 'arto':
+        return artoTheme;
       case 'modern':
         return modernTheme;
       case 'dark':
         return darkTheme;
       default:
-        return baseTheme;
+        return artoTheme;
     }
   };
 
