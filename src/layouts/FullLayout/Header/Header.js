@@ -46,7 +46,11 @@ const Header = ({ sx }) => {
             startIcon={<LogoutIcon />}
             sx={{ 
               textTransform: 'none',
-              fontSize: '1rem'
+              fontSize: '0.9rem',
+              fontWeight: 500,
+              px: 2,
+              py: 0.75,
+              borderRadius: 2
             }}
           >
             Logout
