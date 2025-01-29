@@ -1,41 +1,23 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import { experimentalStyled, Box, Container } from "@mui/material";
-import { TopbarHeight } from "../../assets/global/Theme-variable";
-import Footer from "../../components/Footer/Footer";
-
-const MainWrapper = experimentalStyled("div")(({ theme }) => ({
-  display: "flex",
-  minHeight: "100vh",
-  overflow: "hidden",
-  width: "100%",
-}));
-
-const PageWrapper = experimentalStyled("div")(({ theme }) => ({
-  display: "flex",
-  flex: "1 1 auto",
-  overflow: "hidden",
-  backgroundColor: theme.palette.background.default,
-  paddingTop: TopbarHeight,
-}));
+import React, { useState } from 'react';
+import { Box } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
 const ConversationLayout = () => {
   return (
-    <MainWrapper>
-      <PageWrapper>
-        <Container
-          maxWidth={false}
-          sx={{
-            paddingTop: "20px",
-          }}
-        >
-          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
-            <Outlet />
-          </Box>
-        </Container>
-      </PageWrapper>
-      <Footer />
-    </MainWrapper>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - 240px)` },
+          ml: { sm: `240px` },
+          backgroundColor: 'background.default',
+        }}
+      >
+        <Outlet />
+      </Box>
+    </Box>
   );
 };
 
