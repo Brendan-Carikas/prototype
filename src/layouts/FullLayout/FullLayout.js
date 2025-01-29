@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { experimentalStyled, Box, Container } from "@mui/material";
 import Header from "./Header/Header";
+import Footer from "../../components/Footer/Footer";
 import { TopbarHeight } from "../../assets/global/Theme-variable";
 
 const MainWrapper = experimentalStyled("div")(() => ({
@@ -37,6 +38,7 @@ const FullLayout = () => {
           </Box>
         </Container>
       </PageWrapper>
+      <Footer />
     </MainWrapper>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { experimentalStyled, Box, Container } from "@mui/material";
 import { TopbarHeight } from "../../assets/global/Theme-variable";
+import Footer from "../../components/Footer/Footer";
 
 const MainWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
@@ -33,6 +34,7 @@ const ConversationLayout = () => {
           </Box>
         </Container>
       </PageWrapper>
+      <Footer />
     </MainWrapper>
   );
 };
