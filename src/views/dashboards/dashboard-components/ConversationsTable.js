@@ -598,13 +598,13 @@ const ConversationsTable = ({ sx }) => {
                     }}
                     onClick={handleSortRequest}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
                       Timeframe
                       {order === 'asc' ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
-                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
+                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
+                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User query</TableCell>
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>Assistant response</TableCell>
                 </TableRow>
