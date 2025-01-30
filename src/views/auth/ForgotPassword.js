@@ -32,7 +32,7 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
           <LogoIcon />
         </Box>
 
-        <Typography variant="h4" textAlign="center" sx={{ mb: 1 }}>
+        <Typography variant="h3" textAlign="center" sx={{ mb: 1 }}>
           Forgot Password
         </Typography>
 
