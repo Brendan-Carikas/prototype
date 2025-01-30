@@ -68,15 +68,15 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <Stack spacing={3}>
           <TextField
-            label="Username"
-            type="text"
+            label="Email"
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             fullWidth
             required
             size="small"
-            placeholder="Enter your username"
+            placeholder="Enter your email"
             inputProps={{
               style: { fontSize: '16px' }
             }}
@@ -155,7 +155,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
           </Divider>
 
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2" >
+            <Typography variant="body2" color="textSecondary">
               No account?{' '}
               {onSignupClick ? (
                 <Button
