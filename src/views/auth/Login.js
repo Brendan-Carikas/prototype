@@ -155,7 +155,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
           </Divider>
 
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2" >
+            <Typography variant="body2" color="textSecondary">
               No account?{' '}
               {onSignupClick ? (
                 <Button
