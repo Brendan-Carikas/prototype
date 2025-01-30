@@ -24,7 +24,7 @@ const Dashboard1 = () => {
         <Typography variant="h2">
           Conversations
         </Typography>
-        <Tooltip title="Each row in the table represents a single query and response. Conversations may be split across multiple rows. To view a complete conversation with the AI Assistant, use the search feature and enter the user's identifier. This will display all related queries and responses in chronological order." placement="right">
+        <Tooltip title="Each row in the table represents a single query and response. Conversations may be split across multiple rows." placement="right">
           <IconButton size="small" sx={{ ml: 1 }}>
             <InfoOutlined fontSize="small" />
           </IconButton>
