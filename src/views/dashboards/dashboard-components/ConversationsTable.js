@@ -488,18 +488,6 @@ const ConversationsTable = ({ sx }) => {
   return (
     <Card sx={sx}>
       <CardContent>
-        <Box display="flex" alignItems="center" mb={4}>
-          <ChatIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h4">Conversations</Typography>
-            <Tooltip title="Each row in the table represents a single query and response. Conversations may be split across multiple rows. To view a complete conversation with the AI assistant, use the search feature and enter the user's identifier. This will display all related queries and responses in chronological order." placement="right">
-              <IconButton size="small" sx={{ ml: 1 }}>
-                <InfoOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
-
         <Box sx={{ mt: 2 }}>
           <Box sx={{ mb: 2 }}>
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
@@ -674,7 +662,7 @@ const ConversationsTable = ({ sx }) => {
                   onClick={() => handleFilterSelect(filter.value)}
                   selected={selectedFilter === filter.value}
                   dense
-                  sx={{ minHeight: '32px', py: 0.5 }}
+                  sx={{ minHeight: '32px', py: 0.5, '&.Mui-selected': { backgroundColor: 'transparent' }, '&.Mui-selected:hover': { backgroundColor: 'action.hover' } }}
                 >
                   <Radio 
                     checked={selectedFilter === filter.value}
@@ -696,7 +684,7 @@ const ConversationsTable = ({ sx }) => {
                   onClick={() => handleSourceSelect(source)}
                   selected={selectedSources.includes(source)}
                   dense
-                  sx={{ minHeight: '32px', py: 0.5 }}
+                  sx={{ minHeight: '32px', py: 0.5, '&.Mui-selected': { backgroundColor: 'transparent' }, '&.Mui-selected:hover': { backgroundColor: 'action.hover' } }}
                 >
                   <Checkbox 
                     checked={selectedSources.includes(source)}

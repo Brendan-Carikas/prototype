@@ -1,6 +1,7 @@
 import React from "react";
-import { Grid, Box, Typography } from "@mui/material";
-
+import { Grid, Box, Typography, Tooltip, IconButton } from "@mui/material";
+import ChatIcon from '@mui/icons-material/Chat';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
 
 import ConversationsTable from "./dashboard-components/ConversationsTable";
 
@@ -18,9 +19,17 @@ const Dashboard1 = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h2" sx={{ mb: 3, marginLeft:1.2 }}>
-        Overview
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
+        <ChatIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
+        <Typography variant="h2">
+          Conversations
+        </Typography>
+        <Tooltip title="Each row in the table represents a single query and response. Conversations may be split across multiple rows. To view a complete conversation with the AI Assistant, use the search feature and enter the user's identifier. This will display all related queries and responses in chronological order." placement="right">
+          <IconButton size="small" sx={{ ml: 1 }}>
+            <InfoOutlined fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
 
       
@@ -29,7 +38,7 @@ const Dashboard1 = () => {
         
         
         {/* Row 2 - Conversations List */}
-        <Grid item xs={12} sx={{ p: 1, mt: 8 }}>
+        <Grid item xs={12} sx={{ p: 1, mt: 2 }}>
           <ConversationsTable sx={cardStyle} />
         </Grid>
       </Grid>
