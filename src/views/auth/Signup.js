@@ -42,11 +42,9 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
   useEffect(() => {
     // Check if all required fields are filled
     const isValid = 
-      formData.username?.trim() &&
       formData.email?.trim() &&
       formData.password?.trim() &&
       formData.confirmPassword?.trim() &&
-      formData.phone?.trim() &&
       termsAccepted &&
       recaptchaChecked;
     
@@ -93,24 +91,6 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         }
       }} style={{ width: '100%' }}>
         <Stack spacing={3}>
-          <TextField
-            label="Username"
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            fullWidth
-            required
-            size="small"
-            placeholder="Enter your username"
-            inputProps={{
-              style: { fontSize: '16px' }
-            }}
-            InputLabelProps={{
-              style: { fontSize: '16px' }
-            }}
-          />
-
           <TextField
             label="Email"
             type="email"
@@ -193,26 +173,6 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
               ),
             }}
           />
-
-          <TextField
-            label="Phone Number"
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            fullWidth
-            required
-            size="small"
-            placeholder="+1 (555) 555-5555"
-            inputProps={{
-              style: { fontSize: '16px' }
-            }}
-            InputLabelProps={{
-              style: { fontSize: '16px' }
-            }}
-          />
-
-          
 
           <Box sx={{ mt: 1 }}>
             <Typography variant="body2" sx={{ fontSize: '14px', color: 'text.secondary' }}>
@@ -420,11 +380,9 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    phone: ""
+    confirmPassword: ""
   });
   const { signup } = useAuth();
 
