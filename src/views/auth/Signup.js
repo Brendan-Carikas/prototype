@@ -33,6 +33,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
     borderRadius: '12px',
     overflow: 'hidden',
     display: 'flex',
+    justifyContent: 'center'
   };
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -61,20 +62,39 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '600px',
         width: '100%',
-        mx: 'auto',
-        p: 3,
-        bgcolor: '#ffffff',
-        borderRadius: 2,
-        boxShadow: 1
+        maxWidth: {
+          xs: '100%',
+          sm: '480px'
+        },
+        height: {
+          xs: '100vh',
+          sm: 'auto'
+        },
+        mx: {
+          xs: 0,
+          sm: 'auto'
+        },
+        p: {
+          xs: 4,
+          sm: 4
+        },
+        bgcolor: (theme) => theme.palette.background.paper,
+        borderRadius: (theme) => ({
+          xs: theme.shape.authForm.xs,
+          sm: theme.shape.authForm.sm
+        }),
+        boxShadow: {
+          xs: 0,
+          sm: 1
+        }
       }}
     >
       <Box display="flex" justifyContent="center" mb={4}>
         <LogoIcon />
       </Box>
       
-      <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
+      <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4, fontWeight: 500 }}>
         Create a new account
       </Typography>
 
@@ -346,7 +366,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         left: 0,
         right: 0,
         bottom: 0,
-        bgcolor: '#f5f5f5',
+        bgcolor: (theme) => theme.palette.background.default,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -354,18 +374,43 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
       }}>
         <Box sx={{
           ...modalStyle,
-          bgcolor: '#ffffff'
+          bgcolor: (theme) => theme.palette.background.paper,
+          borderRadius: (theme) => ({
+            xs: theme.shape.authForm.xs,
+            sm: theme.shape.authForm.sm
+          }),
+          boxShadow: {
+            xs: 0,
+            sm: 1
+          }
         }}>
           {showBackground && (
             <Box
               sx={{
                 flex: '1 1 60%',
-                backgroundImage: `url(${customImage || '/static/images/backgrounds/auth-bg.png'})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                position: 'relative',
                 display: { xs: 'none', md: 'block' }
               }}
-            />
+            >
+              <Box
+                component="img"
+                src="/static/images/backgrounds/arto-corner.png"
+                alt=""
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  maxHeight: {
+                    sm: '250px',
+                    md: '300px'
+                  },
+                  width: 'auto',
+                  marginRight: '16px',
+                  marginBottom: '72px',
+                  display: { xs: 'none', sm: 'none', md: 'block' }
+                }}
+              />
+            </Box>
           )}
           {formContent}
         </Box>
@@ -373,7 +418,23 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
     );
   }
 
-  return formContent;
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        p: {
+          xs: 0,
+          sm: 5
+        }
+      }}
+    >
+      {formContent}
+    </Box>
+  );
 };
 
 const Signup = () => {

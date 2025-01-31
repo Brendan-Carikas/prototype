@@ -7,7 +7,7 @@ const LogoIcon = (props) => {
   const theme = useTheme();
   const logo = theme.palette.mode === 'dark' ? logoReverse : logoNormal;
   
-  return <img alt="Arto" src={logo} height="40px" {...props} />;
+  return <img alt="Arto" src={logo} height="48px" {...props} />;
 };
 
 export default LogoIcon;

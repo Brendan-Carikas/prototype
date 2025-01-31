@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box,
   Table,
@@ -54,6 +54,10 @@ const ConversationsTable = ({ sx }) => {
   const [orderBy, setOrderBy] = useState('time');
   const [order, setOrder] = useState('desc');
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [focusedTimeFilter, setFocusedTimeFilter] = useState(null);
+  const [focusedSource, setFocusedSource] = useState(null);
+  const timeFilterRef = useRef(null);
+  const sourceFilterRef = useRef(null);
 
   const conversations = [
     { 
@@ -262,10 +266,76 @@ const ConversationsTable = ({ sx }) => {
 
   const handleFilterClick = (event) => {
     setFilterAnchorEl(event.currentTarget);
+    // Reset focused states when opening menu
+    setFocusedTimeFilter(null);
+    setFocusedSource(null);
   };
 
   const handleFilterClose = () => {
     setFilterAnchorEl(null);
+    // Reset focused states when closing menu
+    setFocusedTimeFilter(null);
+    setFocusedSource(null);
+  };
+
+  const handleTimeFilterKeyDown = (event, index) => {
+    event.stopPropagation();
+    
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedTimeFilter((prev) => {
+          const next = prev === null ? 0 : (prev + 1) % timeFilters.length;
+          timeFilterRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedTimeFilter((prev) => {
+          const next = prev === null ? timeFilters.length - 1 : (prev - 1 + timeFilters.length) % timeFilters.length;
+          timeFilterRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'Tab':
+        if (!event.shiftKey && index === timeFilters.length - 1) {
+          event.preventDefault();
+          sourceFilterRef.current?.children[0]?.focus();
+          setFocusedSource(0);
+        }
+        break;
+    }
+  };
+
+  const handleSourceFilterKeyDown = (event, index) => {
+    event.stopPropagation();
+    
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedSource((prev) => {
+          const next = prev === null ? 0 : (prev + 1) % sources.length;
+          sourceFilterRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedSource((prev) => {
+          const next = prev === null ? sources.length - 1 : (prev - 1 + sources.length) % sources.length;
+          sourceFilterRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'Tab':
+        if (event.shiftKey && index === 0) {
+          event.preventDefault();
+          timeFilterRef.current?.children[timeFilters.length - 1]?.focus();
+          setFocusedTimeFilter(timeFilters.length - 1);
+        }
+        break;
+    }
   };
 
   const handleFilterSelect = (filter) => {
@@ -528,6 +598,9 @@ const ConversationsTable = ({ sx }) => {
                   variant="outlined"
                   onClick={handleFilterClick}
                   startIcon={<FilterListIcon />}
+                  aria-label={`Open filters${getActiveFilterCount() > 0 ? `. ${getActiveFilterCount()} active filters` : ''}`}
+                  aria-haspopup="menu"
+                  aria-expanded={Boolean(filterAnchorEl)}
                 >
                   Filter{getActiveFilterCount() > 0 ? ` (${getActiveFilterCount()})` : ''}
                 </Button>
@@ -536,6 +609,9 @@ const ConversationsTable = ({ sx }) => {
                 <IconButton
                   onClick={handleFilterClick}
                   size="small"
+                  aria-label={`Open filters${getActiveFilterCount() > 0 ? `. ${getActiveFilterCount()} active filters` : ''}`}
+                  aria-haspopup="menu"
+                  aria-expanded={Boolean(filterAnchorEl)}
                   sx={{ 
                     border: '1px solid rgba(0, 0, 0, 0.23)', 
                     borderRadius: 1,
@@ -633,6 +709,17 @@ const ConversationsTable = ({ sx }) => {
         anchorEl={filterAnchorEl}
         open={Boolean(filterAnchorEl)}
         onClose={handleFilterClose}
+        role="dialog"
+        aria-label="Filter options"
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            handleFilterClose();
+          }
+        }}
+        MenuListProps={{
+          'aria-labelledby': 'filter-button',
+          sx: { outline: 'none' }
+        }}
       >
         <Box sx={{ 
           minWidth: 200, 
@@ -644,52 +731,91 @@ const ConversationsTable = ({ sx }) => {
         }}>
           <Box sx={{ p: 1.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ mb: 0.5 }}>
+              <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="time-range-label">
                 Time Range
               </Typography>
               <Button
                 size="small"
                 onClick={handleFilterReset}
                 disabled={selectedFilter === 'all' && selectedSources.includes('all') && !startDate && !endDate}
+                aria-label="Reset all filters"
               >
                 Reset
               </Button>
             </Box>
-            <Stack spacing={0}>
-              {timeFilters.map((filter) => (
+            <Stack spacing={0} role="radiogroup" aria-labelledby="time-range-label" ref={timeFilterRef}>
+              {timeFilters.map((filter, index) => (
                 <MenuItem
                   key={filter.value}
                   onClick={() => handleFilterSelect(filter.value)}
                   selected={selectedFilter === filter.value}
                   dense
-                  sx={{ minHeight: '32px', py: 0.5, '&.Mui-selected': { backgroundColor: 'transparent' }, '&.Mui-selected:hover': { backgroundColor: 'action.hover' } }}
+                  role="radio"
+                  aria-checked={selectedFilter === filter.value}
+                  tabIndex={focusedTimeFilter === index ? 0 : -1}
+                  onKeyDown={(e) => {
+                    handleTimeFilterKeyDown(e, index);
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleFilterSelect(filter.value);
+                    }
+                  }}
+                  onFocus={() => setFocusedTimeFilter(index)}
+                  sx={{ 
+                    minHeight: '32px', 
+                    py: 0.5, 
+                    '&.Mui-selected': { backgroundColor: 'transparent' }, 
+                    '&.Mui-selected:hover': { backgroundColor: 'action.hover' },
+                    '&:focus': { backgroundColor: 'action.hover' }
+                  }}
                 >
                   <Radio 
                     checked={selectedFilter === filter.value}
                     size="small"
                     sx={{ mr: 1, p: 0.5 }}
+                    inputProps={{
+                      'aria-label': filter.label,
+                      tabIndex: -1
+                    }}
                   />
                   {filter.label}
                 </MenuItem>
               ))}
             </Stack>
             <Divider sx={{ my: 1 }} />
-            <Typography variant="subtitle1" sx={{ mb: 0.5 }}>
+            <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="source-filter-label">
               Source
             </Typography>
-            <Stack spacing={0}>
-              {sources.map((source) => (
+            <Stack spacing={0} role="group" aria-labelledby="source-filter-label" ref={sourceFilterRef}>
+              {sources.map((source, index) => (
                 <MenuItem
                   key={source}
                   onClick={() => handleSourceSelect(source)}
                   selected={selectedSources.includes(source)}
                   dense
-                  sx={{ minHeight: '32px', py: 0.5, '&.Mui-selected': { backgroundColor: 'transparent' }, '&.Mui-selected:hover': { backgroundColor: 'action.hover' } }}
+                  tabIndex={focusedSource === index ? 0 : -1}
+                  onKeyDown={(e) => {
+                    handleSourceFilterKeyDown(e, index);
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleSourceSelect(source);
+                    }
+                  }}
+                  onFocus={() => setFocusedSource(index)}
+                  sx={{ 
+                    minHeight: '32px', 
+                    py: 0.5, 
+                    '&.Mui-selected': { backgroundColor: 'transparent' }, 
+                    '&.Mui-selected:hover': { backgroundColor: 'action.hover' },
+                    '&:focus': { backgroundColor: 'action.hover' }
+                  }}
                 >
                   <Checkbox 
                     checked={selectedSources.includes(source)}
                     size="small"
                     sx={{ mr: 1, p: 0.5 }}
+                    inputProps={{
+                      'aria-label': source === 'all' ? 'All Sources' : source,
+                      tabIndex: -1
+                    }}
                   />
                   {source === 'all' ? 'All Sources' : source}
                 </MenuItem>
@@ -700,8 +826,12 @@ const ConversationsTable = ({ sx }) => {
       </Menu>
 
       {/* Custom Date Range Dialog */}
-      <Dialog open={customDateDialog} onClose={handleCustomDateCancel}>
-        <DialogTitle>Select Date Range</DialogTitle>
+      <Dialog 
+        open={customDateDialog} 
+        onClose={handleCustomDateCancel}
+        aria-labelledby="date-range-dialog-title"
+      >
+        <DialogTitle id="date-range-dialog-title">Select Date Range</DialogTitle>
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Stack spacing={3} sx={{ mt: 2, minWidth: 300 }}>
@@ -710,7 +840,15 @@ const ConversationsTable = ({ sx }) => {
                 value={startDate}
                 onChange={(newValue) => setStartDate(newValue)}
                 renderInput={(params) => (
-                  <TextField {...params} fullWidth size="small" />
+                  <TextField 
+                    {...params} 
+                    fullWidth 
+                    size="small"
+                    inputProps={{
+                      ...params.inputProps,
+                      'aria-label': 'Start date'
+                    }}
+                  />
                 )}
               />
               <DatePicker
@@ -718,15 +856,33 @@ const ConversationsTable = ({ sx }) => {
                 value={endDate}
                 onChange={(newValue) => setEndDate(newValue)}
                 renderInput={(params) => (
-                  <TextField {...params} fullWidth size="small" />
+                  <TextField 
+                    {...params} 
+                    fullWidth 
+                    size="small"
+                    inputProps={{
+                      ...params.inputProps,
+                      'aria-label': 'End date'
+                    }}
+                  />
                 )}
               />
             </Stack>
           </LocalizationProvider>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCustomDateCancel}>Cancel</Button>
-          <Button onClick={handleCustomDateConfirm} variant="contained" color="primary">
+          <Button 
+            onClick={handleCustomDateCancel}
+            aria-label="Cancel date selection"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleCustomDateConfirm} 
+            variant="contained" 
+            color="primary"
+            aria-label="Apply selected date range"
+          >
             Apply
           </Button>
         </DialogActions>
