@@ -42,20 +42,39 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '600px',
+        maxWidth: {
+          xs: '100%',
+          sm: '480px'
+        },
         width: '100%',
-        mx: 'auto',
-        p: 3,
-        bgcolor: '#ffffff',
-        borderRadius: 2,
-        boxShadow: 1
+        height: {
+          xs: '100vh',
+          sm: 'auto'
+        },
+        mx: {
+          xs: 0,
+          sm: 'auto'
+        },
+        p: {
+          xs: 4,
+          sm: 5
+        },
+        bgcolor: 'background.paper',
+        borderRadius: (theme) => ({
+          xs: theme.shape.authForm.xs,
+          sm: theme.shape.authForm.sm
+        }),
+        boxShadow: {
+          xs: 0,
+          sm: 1
+        }
       }}
     >
       <Box display="flex" justifyContent="center" mb={4}>
         <LogoIcon />
       </Box>
       
-      <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
+      <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4, fontWeight: 500 }}>
         Sign in
       </Typography>
 
@@ -216,12 +235,29 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
           <Box
             sx={{
               flex: '1 1 60%',
-              backgroundImage: `url(${customImage || '/static/images/backgrounds/auth-bg.png'})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              display: { xs: 'none', md: 'block' }
+              position: 'relative',
+              display: { xs: 'none', sm: 'none', md: 'block' }
             }}
-          />
+          >
+            <Box
+              component="img"
+              src="/static/images/backgrounds/arto-corner.png"
+              alt=""
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                maxHeight: {
+                  sm: '250px',
+                  md: '300px'
+                },
+                width: 'auto',
+                marginRight: '16px',
+                marginBottom: '72px',
+                display: { xs: 'none', sm: 'none', md: 'block' }
+              }}
+            />
+          </Box>
           {formContent}
         </Box>
       </Box>
