@@ -84,8 +84,8 @@ const AuthLayout = () => {
           },
           width: 'auto',
           display: { md: 'block' },
-          marginRight: '32px',
-          marginBottom: showFooter ? '144px' : '88px',
+          marginRight: '48px',
+          marginBottom: showFooter ? '116px' : '88px',
           transition: 'margin-bottom 0.3s ease'
         }}
       />
