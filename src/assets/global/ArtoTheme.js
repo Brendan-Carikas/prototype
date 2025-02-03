@@ -184,20 +184,6 @@ const modernTheme = createTheme({
         },
       },
     },
-
-    MuiTablePagination: {
-      styleOverrides: {
-        select: {
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
-        },
-        selectIcon: {
-          color: '#1e293b', // Using the text.primary color for better contrast
-        },
-      },
-    },
-
     MuiTypography: {
       styleOverrides: {
         root: {
@@ -216,7 +202,6 @@ const modernTheme = createTheme({
   typography: {
     ...typography,
     fontFamily: "'Libre Franklin', sans-serif"
-
   },
   shadows,
 });
