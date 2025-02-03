@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useAuthBackground } from '../../contexts/AuthBackgroundContext';
 import { LoginForm } from './Login';
 import { SignupForm } from './Signup';
-import authBg from '../../assets/images/auth-bg.png';
+import artoCorner from '../../assets/images/arto-corner.png';
 
 const ModernLogin = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const ModernLogin = () => {
   const [isSignup, setIsSignup] = useState(false);
   const { login, signup } = useAuth();
   const { customImage } = useAuthBackground();
-  const backgroundImage = customImage || authBg;
+  const backgroundImage = customImage || artoCorner;
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
 

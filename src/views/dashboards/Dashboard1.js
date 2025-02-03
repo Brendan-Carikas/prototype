@@ -18,7 +18,11 @@ const Dashboard1 = () => {
   };
 
   return (
+
     <Box component="main" sx={{ p: 3 }}>
+
+    <Box sx={{ p: 3, mt: 3 }}>
+
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
         <ChatIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
         <Typography variant="h1">

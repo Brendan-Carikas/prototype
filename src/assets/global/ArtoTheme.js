@@ -4,6 +4,24 @@ import icons from "./Icons-modern";
 import typography from "./Typography-modern";
 
 const modernTheme = createTheme({
+
+  overrides: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Libre Franklin';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: url('https://fonts.gstatic.com/s/librefranklin/v10/kmKhZrc3HgqcXrIu7GxhJfesZW2xOQ-xsNqO47m55DA.woff2') format('woff2');
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        html {
+          font-family: 'Libre Franklin', sans-serif;
+        }
+      `,
+    },
+  },
   direction: "ltr",
   palette: {
     primary: {
@@ -40,28 +58,43 @@ const modernTheme = createTheme({
   },
 
   shape: {
-    borderRadius: 6, // More rounded corners
+    borderRadius: 8,
+    authForm: {
+      xs: '0px 0px 0px 0px',
+      sm: '100px 100px 100px 0px'
+    }
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        "*": {
-          boxSizing: "border-box",
+        '@font-face': {
+          fontFamily: 'Libre Franklin',
+          fontStyle: 'normal',
+          fontDisplay: 'swap',
+          fontWeight: '300;400;500;600;700',
+          src: `
+            url('https://fonts.gstatic.com/s/librefranklin/v13/jizOREVItHgc8qDIbSTKq4XkRg8T88bjFuXOnduhLMWkANDJ.woff2') format('woff2')
+          `,
+          unicodeRange: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2212, U+2215, U+FEFF, U+FFFD'
         },
         html: {
-          height: "100%",
-          width: "100%",
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          height: '100%',
+          width: '100%'
         },
         body: {
-          height: "100%",
-          margin: 0,
-          padding: 0,
+          height: '100%',
+          fontFamily: "'Libre Franklin', sans-serif"
+        },
+        "*": {
+          boxSizing: "border-box",
         },
         "#root": {
           height: "100%",
         },
         "@import": [
-          "url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap')",
+          "url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700&display=swap')",
         ],
       },
     },
@@ -91,8 +124,10 @@ const modernTheme = createTheme({
         root: {
           textTransform: "none",
           borderRadius: "25px",
-          fontWeight: 600,
+          fontWeight: 700,
           boxShadow: "none",
+          fontFamily: "'Libre Franklin', sans-serif",
+          fontWeight: 700,
           "&:hover": {
             boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
           },
@@ -116,15 +151,23 @@ const modernTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: "12px",
+          borderRadius: "24px",
           padding: "14px",
-        
           boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
           "&:hover": {
             boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
           },
         },
       },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          '& .MuiTableCell-head': {
+            fontWeight: 700
+          }
+        }
+      }
     },
     MuiListItem: {
       styleOverrides: {
@@ -141,6 +184,7 @@ const modernTheme = createTheme({
         },
       },
     },
+
     MuiTablePagination: {
       styleOverrides: {
         select: {
@@ -153,8 +197,27 @@ const modernTheme = createTheme({
         },
       },
     },
+
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: "'Libre Franklin', sans-serif"
+        }
+      }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontFamily: "'Libre Franklin', sans-serif"
+        }
+      }
+    }
   },
-  typography,
+  typography: {
+    ...typography,
+    fontFamily: "'Libre Franklin', sans-serif"
+
+  },
   shadows,
 });
 
