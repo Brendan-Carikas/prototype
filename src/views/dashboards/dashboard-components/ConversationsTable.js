@@ -1,8 +1,4 @@
-
-import React, { useState, useRef, useEffect } from 'react';
-
 import React, { useState, useRef } from 'react';
-
 import {
   Box,
   Table,
@@ -58,14 +54,10 @@ const ConversationsTable = ({ sx }) => {
   const [orderBy, setOrderBy] = useState('time');
   const [order, setOrder] = useState('desc');
   const [expandedRows, setExpandedRows] = useState(new Set());
-
-  const [lastFocusedButtonId, setLastFocusedButtonId] = useState(null);
-
   const [focusedTimeFilter, setFocusedTimeFilter] = useState(null);
   const [focusedSource, setFocusedSource] = useState(null);
   const timeFilterRef = useRef(null);
   const sourceFilterRef = useRef(null);
-
 
   const conversations = [
     { 
@@ -461,14 +453,6 @@ const ConversationsTable = ({ sx }) => {
 
   const CollapsibleRow = ({ conversation }) => {
     const isExpanded = expandedRows.has(conversation.id);
-    const buttonRef = useRef(null);
-
-    useEffect(() => {
-      // Restore focus to the last focused button if its ID matches
-      if (buttonRef.current && buttonRef.current.id === lastFocusedButtonId) {
-        buttonRef.current.focus();
-      }
-    }, [lastFocusedButtonId]);
 
     return (
       <TableRow 
@@ -483,24 +467,11 @@ const ConversationsTable = ({ sx }) => {
       >
         <TableCell padding="none" sx={{ width: '48px', verticalAlign: 'middle' }}>
           <IconButton
-            ref={buttonRef}
-            id={`expand-btn-${conversation.id}`}
             size="small"
             onClick={(e) => {
               e.stopPropagation();
               handleRowClick(conversation.id);
-              // Store the ID of the currently focused button
-              setLastFocusedButtonId(`expand-btn-${conversation.id}`);
             }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleRowClick(conversation.id);
-                // Store the ID of the currently focused button
-                setLastFocusedButtonId(`expand-btn-${conversation.id}`);
-              }
-            }}
-            aria-label={isExpanded ? 'Collapse conversation details' : 'Expand conversation details'}
           >
             {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
@@ -598,9 +569,6 @@ const ConversationsTable = ({ sx }) => {
                   setSearchTerm(e.target.value);
                   setPage(0);
                 }}
-                inputProps={{
-                  'aria-label': 'Search conversations'
-                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -641,13 +609,9 @@ const ConversationsTable = ({ sx }) => {
                 <IconButton
                   onClick={handleFilterClick}
                   size="small"
-
-                  aria-label="Open filters"
-
                   aria-label={`Open filters${getActiveFilterCount() > 0 ? `. ${getActiveFilterCount()} active filters` : ''}`}
                   aria-haspopup="menu"
                   aria-expanded={Boolean(filterAnchorEl)}
-
                   sx={{ 
                     border: '1px solid rgba(0, 0, 0, 0.23)', 
                     borderRadius: 1,
@@ -684,9 +648,8 @@ const ConversationsTable = ({ sx }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell component="td" padding="none" sx={{ width: '48px', verticalAlign: 'middle' }} />
+                  <TableCell padding="none" sx={{ width: '48px', verticalAlign: 'middle' }} />
                   <TableCell 
-                    component="th"
                     sx={{ 
                       color: 'text.primary', 
                       fontWeight: 600, 
@@ -697,26 +660,17 @@ const ConversationsTable = ({ sx }) => {
                       },
                       verticalAlign: 'middle'
                     }}
-                    tabIndex={0}
-                    role="button"
-                    aria-label="Sort by Timeframe"
                     onClick={handleSortRequest}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSortRequest();
-                      }
-                    }}
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
                       Timeframe
                       {order === 'asc' ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </Box>
                   </TableCell>
-                  <TableCell component="th" sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
-                  <TableCell component="th" sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
-                  <TableCell component="th" sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User query</TableCell>
-                  <TableCell component="th" sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>Assistant response</TableCell>
+                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
+                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
+                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User query</TableCell>
+                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>Assistant response</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -755,68 +709,6 @@ const ConversationsTable = ({ sx }) => {
         anchorEl={filterAnchorEl}
         open={Boolean(filterAnchorEl)}
         onClose={handleFilterClose}
-
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') {
-            handleFilterClose();
-          }
-
-          // Custom tab handling to focus first item or reset button
-          if (event.key === 'Tab') {
-            event.preventDefault();
-            
-            // Check for reset button first
-            const resetButton = event.currentTarget.querySelector(
-              '.MuiButton-root:not([disabled])'
-            );
-            
-            if (resetButton) {
-              resetButton.focus();
-              return;
-            }
-
-            // If no reset button, focus first menu item
-            const menuItems = event.currentTarget.querySelectorAll('.MuiMenuItem-root');
-            if (menuItems.length > 0) {
-              menuItems[0].focus();
-            }
-          }
-        }}
-        MenuListProps={{
-          sx: {
-            '& .MuiMenuItem-root:focus': {
-              backgroundColor: 'action.hover',
-              outline: '2px solid',
-              outlineColor: 'primary.main',
-              outlineOffset: '-2px'
-            }
-          },
-          onKeyDown: (event) => {
-            // Custom keyboard navigation
-            const menuItems = event.currentTarget.querySelectorAll('.MuiMenuItem-root, .MuiRadio-root');
-            const currentIndex = Array.from(menuItems).findIndex(
-              item => item === document.activeElement
-            );
-
-            if (event.key === 'ArrowDown') {
-              event.preventDefault();
-              const nextIndex = (currentIndex + 1) % menuItems.length;
-              menuItems[nextIndex].focus();
-            } else if (event.key === 'ArrowUp') {
-              event.preventDefault();
-              const prevIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
-              menuItems[prevIndex].focus();
-            }
-          }
-        }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-
         role="dialog"
         aria-label="Filter options"
         onKeyDown={(e) => {
@@ -827,7 +719,6 @@ const ConversationsTable = ({ sx }) => {
         MenuListProps={{
           'aria-labelledby': 'filter-button',
           sx: { outline: 'none' }
-
         }}
       >
         <Box sx={{ 
@@ -840,11 +731,7 @@ const ConversationsTable = ({ sx }) => {
         }}>
           <Box sx={{ p: 1.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-
-              <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1rem' }}>
-
               <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="time-range-label">
-
                 Time Range
               </Typography>
               <Button
@@ -894,19 +781,8 @@ const ConversationsTable = ({ sx }) => {
                 </MenuItem>
               ))}
             </Stack>
-            <Divider 
-              aria-hidden="true" 
-              role="presentation"
-              sx={{ 
-                my: 1, 
-                borderColor: 'divider' 
-              }} 
-            />
-            <Typography variant="h2" sx={{ mb: 0.5, fontSize: '1rem' }}>
-
             <Divider sx={{ my: 1 }} />
             <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="source-filter-label">
-
               Source
             </Typography>
             <Stack spacing={0} role="group" aria-labelledby="source-filter-label" ref={sourceFilterRef}>
@@ -950,21 +826,12 @@ const ConversationsTable = ({ sx }) => {
       </Menu>
 
       {/* Custom Date Range Dialog */}
-
-      <Dialog open={customDateDialog} onClose={handleCustomDateCancel}>
-        <DialogTitle>
-          <Typography variant="h2" sx={{ fontSize: '1.25rem' }}>
-            Select Date Range
-          </Typography>
-        </DialogTitle>
-
       <Dialog 
         open={customDateDialog} 
         onClose={handleCustomDateCancel}
         aria-labelledby="date-range-dialog-title"
       >
         <DialogTitle id="date-range-dialog-title">Select Date Range</DialogTitle>
-
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Stack spacing={3} sx={{ mt: 2, minWidth: 300 }}>
@@ -972,8 +839,6 @@ const ConversationsTable = ({ sx }) => {
                 label="Start Date"
                 value={startDate}
                 onChange={(newValue) => setStartDate(newValue)}
-                inputFormat="dd/MM/yyyy"
-                mask="__/__/____"
                 renderInput={(params) => (
                   <TextField 
                     {...params} 
@@ -990,8 +855,6 @@ const ConversationsTable = ({ sx }) => {
                 label="End Date"
                 value={endDate}
                 onChange={(newValue) => setEndDate(newValue)}
-                inputFormat="dd/MM/yyyy"
-                mask="__/__/____"
                 renderInput={(params) => (
                   <TextField 
                     {...params} 
