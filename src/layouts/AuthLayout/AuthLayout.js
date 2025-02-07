@@ -5,7 +5,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthBackground } from '../../contexts/AuthBackgroundContext';
 import { useTheme } from '@mui/material/styles';
 import artoCorner from '../../assets/images/arto-corner.png';
-import chatBubble from '../../assets/images/Chat Bubble White.png';
+import chatBubble from '../../assets/images/art-bubble-blue.png';
 import { useState, useEffect } from 'react';
 
 const AuthLayout = () => {
@@ -44,7 +44,7 @@ const AuthLayout = () => {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: theme.palette.primary.dark,
+        bgcolor: theme.palette.background.paper,
         position: 'relative',
         overflow: 'auto'
       }}
@@ -66,7 +66,7 @@ const AuthLayout = () => {
           display: { md: 'block' },
           marginLeft: '-64px',
           marginTop: '-64px',
-          opacity: 0.1
+          opacity: 0.05
         }}
       />
       <Box

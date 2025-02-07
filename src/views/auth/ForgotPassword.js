@@ -72,6 +72,10 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
             xs: 0,
             sm: 1
           },
+          border: {
+            xs: 'none',
+            sm: '1px solid rgba(0, 0, 0, 0.12)'
+          },
           p: {
             xs: 4,
             sm: 5
