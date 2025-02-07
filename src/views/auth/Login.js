@@ -67,6 +67,10 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
         boxShadow: {
           xs: 0,
           sm: 1
+        },
+        border: {
+          xs: 'none',
+          sm: '1px solid rgba(0, 0, 0, 0.12)'
         }
       }}
     >
