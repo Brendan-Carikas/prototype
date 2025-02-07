@@ -658,12 +658,19 @@ const ConversationsTable = ({ sx }) => {
                       '&:hover': {
                         backgroundColor: 'action.hover',
                       },
+
 '&:focus': {
+
+                      '&:focus': {
+
                         backgroundColor: 'action.hover',
                         outline: '2px solid',
                         outlineColor: 'primary.main',
                         outlineOffset: '-2px'
                       },
+
+
+
 
 
                       verticalAlign: 'middle'
@@ -678,6 +685,9 @@ const ConversationsTable = ({ sx }) => {
                     role="button"
                     tabIndex={0}
                     aria-label={`Sort by timeframe, currently sorted ${order === 'asc' ? 'ascending' : 'descending'}`}
+
+
+
 
 
 
@@ -733,7 +743,10 @@ const ConversationsTable = ({ sx }) => {
                 }}
 
 
+
                 
+
+
               />
             </Box>
           </Box>
