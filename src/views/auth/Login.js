@@ -59,7 +59,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
           xs: 4,
           sm: 5
         },
-        bgcolor: (theme) => theme.palette.background.paper,
+        bgcolor: 'background.paper',
         borderRadius: (theme) => ({
           xs: theme.shape.authForm.xs,
           sm: theme.shape.authForm.sm
@@ -67,10 +67,6 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
         boxShadow: {
           xs: 0,
           sm: 1
-        },
-        border: {
-          xs: 'none',
-          sm: '1px solid rgba(0, 0, 0, 0.12)'
         }
       }}
     >
@@ -234,7 +230,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
       }}>
         <Box sx={{
           ...modalStyle,
-          bgcolor: (theme) => theme.palette.background.paper,
+          bgcolor: 'background.default',
         }}>
           <Box
             sx={{
