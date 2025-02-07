@@ -3,7 +3,6 @@ import shadows from "./Shadows";
 import icons from "./Icons-modern";
 import typography from "./Typography-modern";
 
-// Updated theme configuration for auth screens
 const modernTheme = createTheme({
 
   overrides: {
