@@ -87,6 +87,10 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         boxShadow: {
           xs: 0,
           sm: 1
+        },
+        border: {
+          xs: 'none',
+          sm: '1px solid rgba(0, 0, 0, 0.12)'
         }
       }}
     >
@@ -366,7 +370,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         left: 0,
         right: 0,
         bottom: 0,
-        bgcolor: (theme) => theme.palette.background.default,
+        bgcolor: 'white',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -374,7 +378,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
       }}>
         <Box sx={{
           ...modalStyle,
-          bgcolor: (theme) => theme.palette.background.paper,
+          bgcolor: (theme) => theme.palette.background.default,
           borderRadius: (theme) => ({
             xs: theme.shape.authForm.xs,
             sm: theme.shape.authForm.sm
@@ -429,7 +433,8 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
         p: {
           xs: 0,
           sm: 5
-        }
+        },
+       
       }}
     >
       {formContent}
