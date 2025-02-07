@@ -33,7 +33,7 @@ const modernTheme = createTheme({
       light: "#f3e8ff", // Light orchid
     },
     background: {
-      default: "#f8fafc", // Cool white
+      default: "#f2f4f6", // Light gray
       paper: "#ffffff", // Pure white
     },
     success: {
