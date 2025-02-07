@@ -63,7 +63,7 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
             xs: 0,
             sm: 'auto'
           },
-          bgcolor: (theme) => theme.palette.background.paper,
+          bgcolor: 'background.paper',
           borderRadius: theme => ({
             xs: theme.shape.authForm.xs,
             sm: theme.shape.authForm.sm
@@ -71,10 +71,6 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
           boxShadow: {
             xs: 0,
             sm: 1
-          },
-          border: {
-            xs: 'none',
-            sm: '1px solid rgba(0, 0, 0, 0.12)'
           },
           p: {
             xs: 4,

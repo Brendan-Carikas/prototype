@@ -556,7 +556,7 @@ const ConversationsTable = ({ sx }) => {
   };
 
   return (
-    <Card variant="outlined" sx={{ border: 0, ...sx }}>
+    <Card sx={sx}>
       <CardContent>
         <Box sx={{ mt: 2 }}>
           <Box sx={{ mb: 2 }}>
@@ -658,21 +658,12 @@ const ConversationsTable = ({ sx }) => {
                       '&:hover': {
                         backgroundColor: 'action.hover',
                       },
-
-'&:focus': {
-
                       '&:focus': {
-
                         backgroundColor: 'action.hover',
                         outline: '2px solid',
                         outlineColor: 'primary.main',
                         outlineOffset: '-2px'
                       },
-
-
-
-
-
                       verticalAlign: 'middle'
                     }}
                     onClick={handleSortRequest}
@@ -685,14 +676,6 @@ const ConversationsTable = ({ sx }) => {
                     role="button"
                     tabIndex={0}
                     aria-label={`Sort by timeframe, currently sorted ${order === 'asc' ? 'ascending' : 'descending'}`}
-
-
-
-
-
-
-
-
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
                       Timeframe
@@ -741,12 +724,6 @@ const ConversationsTable = ({ sx }) => {
                     backgroundColor: 'background.paper'
                   }
                 }}
-
-
-
-                
-
-
               />
             </Box>
           </Box>
