@@ -14,6 +14,7 @@ import ModernLogin from "../views/auth/ModernLogin.js";
 import Signup from "../views/auth/Signup.js";
 import ForgotPassword from "../views/auth/ForgotPassword.js";
 import InvotraAdmin from "../views/admin/InvotraAdmin";
+import AdminDashboard from "../views/dashboards/AdminDashboard.js";
 
 const ThemeRoutes = [
   {
@@ -34,6 +35,7 @@ const ThemeRoutes = [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
       { path: "admin", element: <InvotraAdmin /> },
+      { path: "admin/dashboard", element: <AdminDashboard /> },
     ],
   },
   {
