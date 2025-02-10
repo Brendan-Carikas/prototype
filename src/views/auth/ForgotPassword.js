@@ -65,8 +65,8 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
           },
           bgcolor: 'background.paper',
           borderRadius: theme => ({
-            xs: theme.shape.authForm.xs,
-            sm: theme.shape.authForm.sm
+            xs: theme.shape.authForm?.borderRadius?.xs || '0px',
+            sm: theme.shape.authForm?.borderRadius?.sm || '8px'
           }),
           boxShadow: {
             xs: 0,

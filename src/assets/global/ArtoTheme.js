@@ -61,8 +61,10 @@ const modernTheme = createTheme({
   shape: {
     borderRadius: 8,
     authForm: {
-      xs: '0px 0px 0px 0px',
-      sm: '100px 100px 100px 0px'
+      borderRadius: {
+        xs: '0px 0px 0px 0px',
+        sm: '100px 100px 100px 0px'
+      }
     }
   },
   components: {
