@@ -3,6 +3,7 @@ import {
   Box,
   Table,
   TableBody,
+  FormLabel,
   TableCell,
   TableHead,
   TableRow,
@@ -54,6 +55,7 @@ const ConversationsTable = ({ sx }) => {
   const [orderBy, setOrderBy] = useState('time');
   const [order, setOrder] = useState('desc');
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [focusedRowId, setFocusedRowId] = useState(null);
   const [focusedTimeFilter, setFocusedTimeFilter] = useState(null);
   const [focusedSource, setFocusedSource] = useState(null);
   const timeFilterRef = useRef(null);
@@ -431,6 +433,7 @@ const ConversationsTable = ({ sx }) => {
       }
       return newSet;
     });
+    setFocusedRowId(id);
   };
 
   const handleSortRequest = () => {
@@ -453,6 +456,7 @@ const ConversationsTable = ({ sx }) => {
 
   const CollapsibleRow = ({ conversation }) => {
     const isExpanded = expandedRows.has(conversation.id);
+    const isFocused = focusedRowId === conversation.id;
 
     return (
       <TableRow 
@@ -472,6 +476,17 @@ const ConversationsTable = ({ sx }) => {
               e.stopPropagation();
               handleRowClick(conversation.id);
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRowClick(conversation.id);
+              }
+            }}
+            tabIndex={0}
+            aria-expanded={isExpanded}
+            aria-label={`${isExpanded ? 'Collapse' : 'Expand'} conversation details`}
+            autoFocus={isFocused}
           >
             {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
@@ -561,7 +576,15 @@ const ConversationsTable = ({ sx }) => {
         <Box sx={{ mt: 2 }}>
           <Box sx={{ mb: 2 }}>
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <FormLabel htmlFor="search-conversations">
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ border: 0, clip: 'rect(0 0 0 0)', height: '1px', margin: -1, overflow: 'hidden', padding: 0, position: 'absolute', whiteSpace: 'nowrap', width: '1px' }}>
+                    Search conversations by identifier, query or response
+                  </Box>
+                </Box>
+              </FormLabel>
               <TextField
+                id="search-conversations"
                 size="small"
                 placeholder="Search by identifier, query or response..."
                 value={searchTerm}
@@ -597,10 +620,16 @@ const ConversationsTable = ({ sx }) => {
                 <Button
                   variant="outlined"
                   onClick={handleFilterClick}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleFilterClick(e);
+                    }
+                  }}
                   startIcon={<FilterListIcon />}
                   aria-label={`Open filters${getActiveFilterCount() > 0 ? `. ${getActiveFilterCount()} active filters` : ''}`}
-                  aria-haspopup="menu"
+                  aria-haspopup="dialog"
                   aria-expanded={Boolean(filterAnchorEl)}
+                  id="filter-button"
                 >
                   Filter{getActiveFilterCount() > 0 ? ` (${getActiveFilterCount()})` : ''}
                 </Button>
@@ -734,18 +763,44 @@ const ConversationsTable = ({ sx }) => {
       <Menu
         anchorEl={filterAnchorEl}
         open={Boolean(filterAnchorEl)}
-        onClose={handleFilterClose}
+        onClose={(event, reason) => {
+          if (reason === 'escapeKeyDown' || reason === 'backdropClick') {
+            handleFilterClose();
+          }
+        }}
         role="dialog"
         aria-label="Filter options"
         onKeyDown={(e) => {
           if (e.key === 'Escape') {
             handleFilterClose();
+          } else if (e.key === 'Tab') {
+            e.preventDefault();
+            e.stopPropagation();
+            const resetButton = document.querySelector('[role="dialog"] button:not([disabled])');
+            const firstRadio = document.querySelector('[role="dialog"] [role="radio"]');
+            
+            if (!e.shiftKey) {
+              if (document.activeElement === resetButton) {
+                firstRadio?.focus();
+              } else {
+                (resetButton || firstRadio)?.focus();
+              }
+            } else {
+              if (document.activeElement === firstRadio && resetButton) {
+                resetButton.focus();
+              } else {
+                firstRadio?.focus();
+              }
+            }
           }
         }}
         MenuListProps={{
           'aria-labelledby': 'filter-button',
-          sx: { outline: 'none' }
+          autoFocusItem: false,
+          disableAutoFocusItem: true
         }}
+        disableAutoFocusItem
+        keepMounted
       >
         <Box sx={{ 
           minWidth: 200, 
@@ -757,7 +812,7 @@ const ConversationsTable = ({ sx }) => {
         }}>
           <Box sx={{ p: 1.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="time-range-label">
+              <Typography variant="subtitle1" component="h2" sx={{ mb: 0.5 }} id="time-range-label">
                 Time Range
               </Typography>
               <Button
@@ -808,7 +863,7 @@ const ConversationsTable = ({ sx }) => {
               ))}
             </Stack>
             <Divider sx={{ my: 1 }} />
-            <Typography variant="subtitle1" sx={{ mb: 0.5 }} id="source-filter-label">
+            <Typography variant="subtitle1" component="h2" sx={{ mb: 0.5 }} id="source-filter-label">
               Source
             </Typography>
             <Stack spacing={0} role="group" aria-labelledby="source-filter-label" ref={sourceFilterRef}>
