@@ -21,7 +21,7 @@ const Dashboard1 = () => {
     <Box sx={{ p: 3, mt: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
         <ChatIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
-        <Typography variant="h2">
+        <Typography variant="h2" component="h1">
           Conversations
         </Typography>
         <Tooltip title="Each row in the table represents a single query and response. Conversations may be split across multiple rows." placement="right">
