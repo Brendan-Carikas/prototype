@@ -40,9 +40,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import { useNavigate } from 'react-router-dom';
 
-const ConversationsTable = ({ sx }) => {
+const FeedbackTable = ({ sx }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -69,7 +71,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'WhatsApp', 
       identifier: '+44 7700 900123',
       query: "Hi, I need to check my order status for #ORD-456789",
-      response: "Hello! I'll help you check that order. I can see that order #ORD-456789 is currently scheduled for delivery tomorrow between 2-4 PM. Would you like me to send you the tracking details?"
+      response: "Hello! I'll help you check that order. I can see that order #ORD-456789 is currently scheduled for delivery tomorrow between 2-4 PM. Would you like me to send you the tracking details?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-002-1', 
@@ -77,7 +80,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Teams', 
       identifier: 'sarah.jones@company.com',
       query: "I'm getting an error when trying to access the CRM system. It says 'Authentication Failed' but I'm sure my password is correct.",
-      response: "Hi Sarah, I'll help you troubleshoot this. First, could you confirm when you last successfully accessed the CRM? Also, have you recently changed your password or received any password reset emails?"
+      response: "Hi Sarah, I'll help you troubleshoot this. First, could you confirm when you last successfully accessed the CRM? Also, have you recently changed your password or received any password reset emails?",
+      feedback: 'negative'
     },
     { 
       id: 'conv-003-1', 
@@ -85,7 +89,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Website Chatbot', 
       identifier: 'customer_29jan_1017',
       query: "Hello, I'm trying to find the sizing guide for your winter collection.",
-      response: "I'll help you find our sizing guide. Are you looking for men's, women's, or children's sizing information?"
+      response: "I'll help you find our sizing guide. Are you looking for men's, women's, or children's sizing information?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-001-2', 
@@ -125,7 +130,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'WhatsApp', 
       identifier: '+44 7700 900123',
       query: "Thursday 9-11 AM would be perfect.",
-      response: "Great! I've rescheduled your delivery for Thursday between 9-11 AM. You'll receive a confirmation email shortly with the updated tracking information. Is there anything else you need help with?"
+      response: "Great! I've rescheduled your delivery for Thursday between 9-11 AM. You'll receive a confirmation email shortly with the updated tracking information. Is there anything else you need help with?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-003-3', 
@@ -133,7 +139,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Website Chatbot', 
       identifier: 'customer_29jan_1017',
       query: "Yes, could you explain the difference between your regular and relaxed fit?",
-      response: "Our regular fit is tailored to be slightly fitted while maintaining comfort, with measurements of [measurements]. The relaxed fit is more generous, designed for a looser feel, with measurements of [measurements]. Which style are you interested in?"
+      response: "Our regular fit is tailored to be slightly fitted while maintaining comfort, with measurements of [measurements]. The relaxed fit is more generous, designed for a looser feel, with measurements of [measurements]. Which style are you interested in?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-004-2', 
@@ -141,7 +148,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'WhatsApp', 
       identifier: '+44 7700 900456',
       query: "Yes please, I really need it by tomorrow.",
-      response: "I've arranged for expedited delivery. Your package will be delivered tomorrow before noon. I've also added a £10 credit to your account for the inconvenience. You'll receive a text with the new tracking details shortly."
+      response: "I've arranged for expedited delivery. Your package will be delivered tomorrow before noon. I've also added a £10 credit to your account for the inconvenience. You'll receive a text with the new tracking details shortly.",
+      feedback: 'positive'
     },
     { 
       id: 'conv-002-3', 
@@ -165,7 +173,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Teams',
       identifier: 'mark.wilson@company.com',
       query: "Hi, I need to schedule an urgent meeting with the development team for tomorrow.",
-      response: "I'll help you schedule that meeting. What time would work best for you tomorrow, and how long should I block for the meeting?"
+      response: "I'll help you schedule that meeting. What time would work best for you tomorrow, and how long should I block for the meeting?",
+      feedback: 'negative'
     },
     { 
       id: 'conv-002-4', 
@@ -181,7 +190,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'WhatsApp', 
       identifier: '+44 7700 900789',
       query: "Do you have any appointments available for a hair consultation this week?",
-      response: "I'll check our salon's availability. We have openings on Wednesday at 2 PM, Thursday at 11 AM, and Friday at 3 PM. Would any of these times work for you?"
+      response: "I'll check our salon's availability. We have openings on Wednesday at 2 PM, Thursday at 11 AM, and Friday at 3 PM. Would any of these times work for you?",
+      feedback: 'negative'
     },
     { 
       id: 'conv-003-5', 
@@ -213,7 +223,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Teams', 
       identifier: 'sarah.jones@company.com',
       query: "I've downloaded the app and I'm ready for the QR code.",
-      response: "Perfect! Here's your unique QR code: [QR Code Image]. Once you've scanned it, enter the 6-digit code from the app to complete the setup. This will ensure your account is secure with 2FA."
+      response: "Perfect! Here's your unique QR code: [QR Code Image]. Once you've scanned it, enter the 6-digit code from the app to complete the setup. This will ensure your account is secure with 2FA.",
+      feedback: 'positive'
     },
     { 
       id: 'conv-003-6', 
@@ -229,7 +240,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Teams', 
       identifier: 'mark.wilson@company.com',
       query: "11 AM works. Could you send the meeting invite to the whole development team?",
-      response: "I'll send out the calendar invite right away for tomorrow from 11 AM to 12:30 PM. I'll include all development team members and add the meeting link. Would you like me to add a specific agenda or meeting description?"
+      response: "I'll send out the calendar invite right away for tomorrow from 11 AM to 12:30 PM. I'll include all development team members and add the meeting link. Would you like me to add a specific agenda or meeting description?",
+      feedback: 'negative'
     },
     { 
       id: 'conv-006-3', 
@@ -237,7 +249,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'WhatsApp', 
       identifier: '+44 7700 900789',
       query: "I'm Emma Thompson, first-time visitor. I'm interested in discussing hair coloring options.",
-      response: "Thanks, Emma! I've booked your consultation for Thursday at 11 AM. Our color specialist, Sarah, will be available to discuss various coloring options with you. Would you like me to send you our pre-consultation questionnaire to help us better understand your hair history?"
+      response: "Thanks, Emma! I've booked your consultation for Thursday at 11 AM. Our color specialist, Sarah, will be available to discuss various coloring options with you. Would you like me to send you our pre-consultation questionnaire to help us better understand your hair history?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-002-6', 
@@ -245,7 +258,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Teams', 
       identifier: 'sarah.jones@company.com',
       query: "Done! I've entered the code and 2FA is now set up.",
-      response: "Excellent! Your account is now secured with 2FA. You'll need to enter a code from the authenticator app each time you log in. Remember to keep your backup codes safe - would you like me to send them to you now?"
+      response: "Excellent! Your account is now secured with 2FA. You'll need to enter a code from the authenticator app each time you log in. Remember to keep your backup codes safe - would you like me to send them to you now?",
+      feedback: 'positive'
     },
     { 
       id: 'conv-003-7', 
@@ -253,7 +267,8 @@ const ConversationsTable = ({ sx }) => {
       source: 'Website Chatbot', 
       identifier: 'customer_29jan_1017',
       query: "Yes, please add the gloves too. That should be everything.",
-      response: "I've added both the black wool sweater (M) and matching gloves (S/M) to your cart. Your total comes to £125. Would you like to proceed to checkout now, or do you have any questions about shipping or returns?"
+      response: "I've added both the black wool sweater (M) and matching gloves (S/M) to your cart. Your total comes to £125. Would you like to proceed to checkout now, or do you have any questions about shipping or returns?",
+      feedback: 'positive'
     },
   ];
 
@@ -567,6 +582,17 @@ const ConversationsTable = ({ sx }) => {
             {conversation.response}
           </Typography>
         </TableCell>
+        <TableCell sx={{ verticalAlign: 'middle', width: '120px' }}>
+          {conversation.feedback && (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              {conversation.feedback === 'positive' ? (
+                <ThumbUpOutlinedIcon sx={{ color: 'success.main' }} />
+              ) : (
+                <ThumbDownOutlinedIcon sx={{ color: 'error.main' }} />
+              )}
+            </Box>
+          )}
+        </TableCell>
       </TableRow>
     );
   };
@@ -716,6 +742,7 @@ const ConversationsTable = ({ sx }) => {
                   <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User query</TableCell>
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>Assistant response</TableCell>
+                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle', width: '120px', whiteSpace: 'nowrap' }}>Feedback rating</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -975,4 +1002,4 @@ const ConversationsTable = ({ sx }) => {
   );
 };
 
-export default ConversationsTable;
+export default FeedbackTable;
