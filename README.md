@@ -137,3 +137,6 @@ This project is private and proprietary. All rights reserved.
 - Material-UI team for the excellent component library
 - Supabase team for the backend infrastructure
 - ApexCharts for the charting library
+=======
+# prototype
+>>>>>>> 557ab263a906330269f0e3fe4ef13344548e0987
