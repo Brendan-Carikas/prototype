@@ -1,68 +1,51 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
 
-    // Listen for changes on auth state (logged in, signed out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const login = async (email, password) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      if (data?.user) {
-        setUser(data.user);
+      if (email === 'Demo' && password === 'Demo') {
+        setUser({ email: 'Demo' });
         navigate('/app/dashboards/dashboard1');
         return true;
       }
+      throw new Error('Invalid credentials');
     } catch (error) {
       console.error('Error logging in:', error.message);
       return false;
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
+    setUser(null);
+    navigate('/login');
+  };
+
+  const signup = async (email, password) => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      setUser(null);
-      navigate('/login');
+      // For demo purposes, we'll just log in the user
+      if (email === 'Demo' && password === 'Demo') {
+        setUser({ email: 'Demo' });
+        navigate('/app/dashboards/dashboard1');
+        return true;
+      }
+      throw new Error('Invalid credentials');
     } catch (error) {
-      console.error('Error logging out:', error.message);
+      console.error('Error signing up:', error.message);
+      return false;
     }
   };
 
-  if (loading) {
-    return null; // or your loading component
-  }
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
