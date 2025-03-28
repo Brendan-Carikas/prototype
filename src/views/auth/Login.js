@@ -91,14 +91,15 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <Stack spacing={3}>
           <TextField
-            label="Email"
-            type="email"
+            label="Username"
+            type="text"
             name="email"
             value={formData.email}
             onChange={handleChange}
             fullWidth
             required
             size="small"
+            helperText="Demo username: Demo"
             placeholder="Enter your email"
             inputProps={{
               style: { fontSize: '16px' }
@@ -118,6 +119,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
               fullWidth
               required
               size="small"
+              helperText="Demo password: Demo"
               placeholder="Enter your password"
               inputProps={{
                 style: { fontSize: '16px' }
