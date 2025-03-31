@@ -39,11 +39,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CloseIcon from '@mui/icons-material/Close';
-import InfoOutlined from '@mui/icons-material/InfoOutlined';
-import { useNavigate } from 'react-router-dom';
+// Removed unused import: InfoOutlined
+// Removed unused import: useNavigate
 
 const ConversationsTable = ({ sx }) => {
-  const navigate = useNavigate();
+  // Removed unused navigate variable
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
