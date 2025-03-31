@@ -53,7 +53,7 @@ const ConversationsTable = ({ sx }) => {
   const [customDateDialog, setCustomDateDialog] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [orderBy, setOrderBy] = useState('time');
+  // Removed unused orderBy and setOrderBy variables
   const [order, setOrder] = useState('desc');
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [focusedRowId, setFocusedRowId] = useState(null);
