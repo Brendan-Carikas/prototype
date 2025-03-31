@@ -308,6 +308,9 @@ const ConversationsTable = ({ sx }) => {
           setFocusedSource(0);
         }
         break;
+      default:
+        // No action needed for other keys
+        break;
     }
   };
 
@@ -337,6 +340,9 @@ const ConversationsTable = ({ sx }) => {
           timeFilterRef.current?.children[timeFilters.length - 1]?.focus();
           setFocusedTimeFilter(timeFilters.length - 1);
         }
+        break;
+      default:
+        // No action needed for other keys
         break;
     }
   };
@@ -404,18 +410,6 @@ const ConversationsTable = ({ sx }) => {
     }
 
     return filtered;
-  };
-
-  const getConversationGroups = (conversations) => {
-    const groups = {};
-    conversations.forEach(conv => {
-      const baseId = conv.id.split('-').slice(0, -1).join('-');
-      if (!groups[baseId]) {
-        groups[baseId] = [];
-      }
-      groups[baseId].push(conv);
-    });
-    return Object.values(groups);
   };
 
   const sortedConversations = [...getFilteredConversations()].sort((a, b) => {
