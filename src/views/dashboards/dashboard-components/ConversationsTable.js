@@ -32,8 +32,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { enGB } from 'date-fns/locale';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ChatIcon from '@mui/icons-material/Chat';
+// Removed unused import: MoreHorizIcon
+// Removed unused import: ChatIcon
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
