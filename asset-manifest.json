@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/prototype/static/js/main.21839836.js",
+    "main.js": "/prototype/static/js/main.02c50880.js",
     "static/js/453.0dafe30d.chunk.js": "/prototype/static/js/453.0dafe30d.chunk.js",
     "static/media/arto-corner.png": "/prototype/static/media/arto-corner.a4c51c97d6a7ae760c5e.png",
     "static/media/art-bubble-blue.png": "/prototype/static/media/art-bubble-blue.08de6feebba7ba7a8ad2.png",
@@ -8,10 +8,10 @@
     "static/media/arto-site-logo-reverse.png": "/prototype/static/media/arto-site-logo-reverse.ddc688591cc712870686.png",
     "static/media/InvotraLogo.png": "/prototype/static/media/InvotraLogo.566ab9845774e35be4f7.png",
     "index.html": "/prototype/index.html",
-    "main.21839836.js.map": "/prototype/static/js/main.21839836.js.map",
+    "main.02c50880.js.map": "/prototype/static/js/main.02c50880.js.map",
     "453.0dafe30d.chunk.js.map": "/prototype/static/js/453.0dafe30d.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.21839836.js"
+    "static/js/main.02c50880.js"
   ]
 }
