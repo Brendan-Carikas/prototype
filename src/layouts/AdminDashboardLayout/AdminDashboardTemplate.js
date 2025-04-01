@@ -10,12 +10,9 @@ import {
   useMediaQuery,
   Container,
   Grid,
-  Tooltip,
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import { styled } from '@mui/material/styles';
 import { TopbarHeight } from "../../assets/global/Theme-variable";
 import Footer from "../../components/Footer/Footer";
