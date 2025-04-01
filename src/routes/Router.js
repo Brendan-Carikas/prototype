@@ -35,7 +35,7 @@ const ThemeRoutes = [
     children: [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
-      { path: "dashboards/convo", element: <ConvoDashboard /> },
+      { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
     ],
