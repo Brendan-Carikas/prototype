@@ -21,17 +21,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org/'
           
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps --no-fund --no-audit --prefer-offline
+        env:
+          npm_config_registry: 'https://registry.npmjs.org/'
         
       - name: Build
-        run: npm run build
+        run: CI=false npm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
         
       - name: Deploy to Firebase
-        run: |
-          npx firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --non-interactive
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          channelId: live
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
