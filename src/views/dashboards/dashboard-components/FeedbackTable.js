@@ -870,7 +870,7 @@ const FeedbackTable = ({ sx }) => {
                 }}
                 sx={{ flexGrow: 1 }}
               />
-              <Box sx={{ display: { xs: 'none', sm: 'block' }, display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <FormControlLabel
                   control={
                     <Switch
