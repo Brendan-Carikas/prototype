@@ -23,7 +23,7 @@ const ModernLogin = () => {
   const { customImage } = useAuthBackground();
   const backgroundImage = customImage || artoCorner;
   const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+  // Removed unused isMobile variable
 
   const handleChange = (e) => {
     const { name, value } = e.target;

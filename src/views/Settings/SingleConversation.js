@@ -7,7 +7,6 @@ import {
   Button,
   Grid,
   Stack,
-  Chip,
   AppBar,
   Toolbar,
 } from '@mui/material';
@@ -20,7 +19,7 @@ const SingleConversation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-  const assistantId = location.state?.assistantId;
+  // Removed unused assistantId variable
 
   // Mock data for demonstration
   const messages = [

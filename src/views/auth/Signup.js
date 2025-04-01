@@ -21,7 +21,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 
 export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, setShowPassword, error, onLoginClick }) => {
-  const { isModal, customImage, showBackground } = useAuthBackground();
+  const { isModal, showBackground } = useAuthBackground(); // Removed unused customImage
 
   const modalStyle = {
     position: 'absolute',

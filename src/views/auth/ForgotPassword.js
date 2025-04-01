@@ -15,8 +15,8 @@ import { useTheme } from "@mui/material/styles";
 import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 
 export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) => {
-  const { isModal, customImage, showBackground } = useAuthBackground();
-  const theme = useTheme();
+  // Removed unused variables
+  useAuthBackground(); // Keep the hook call
 
   const formContent = (
     <Box
