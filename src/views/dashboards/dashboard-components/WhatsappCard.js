@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Button } from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const WhatsappCard = ({ sx }) => {
   const whatsappNumber = '+1 234 567 8900';

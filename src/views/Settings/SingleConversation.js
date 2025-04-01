@@ -18,8 +18,8 @@ import logo from '../../assets/images/arto-site-logo.png';
 const SingleConversation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const location = useLocation();
-  // Removed unused assistantId variable
+  // Removed unused location variable and assistantId variable
+  useLocation(); // Keep the hook call
 
   // Mock data for demonstration
   const messages = [
