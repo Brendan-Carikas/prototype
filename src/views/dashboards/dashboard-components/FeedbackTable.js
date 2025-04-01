@@ -24,7 +24,10 @@ import {
   Divider,
   InputAdornment,
   Radio,
-  Checkbox
+  Checkbox,
+  Switch,
+  FormControlLabel,
+  Chip
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -49,6 +52,9 @@ const FeedbackTable = ({ sx }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedSources, setSelectedSources] = useState(['all']);
+  const [selectedFeedbackRatings, setSelectedFeedbackRatings] = useState(['all']);
+  const [selectedFeedbackCategories, setSelectedFeedbackCategories] = useState(['all']);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
   const [customDateDialog, setCustomDateDialog] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -59,8 +65,12 @@ const FeedbackTable = ({ sx }) => {
   const [focusedRowId, setFocusedRowId] = useState(null);
   const [focusedTimeFilter, setFocusedTimeFilter] = useState(null);
   const [focusedSource, setFocusedSource] = useState(null);
+  const [focusedFeedbackRating, setFocusedFeedbackRating] = useState(null);
+  const [focusedFeedbackCategory, setFocusedFeedbackCategory] = useState(null);
   const timeFilterRef = useRef(null);
   const sourceFilterRef = useRef(null);
+  const feedbackRatingRef = useRef(null);
+  const feedbackCategoryRef = useRef(null);
 
   const conversations = [
     { 
@@ -70,7 +80,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: '+44 7700 900123',
       query: "Hi, I need to check my order status for #ORD-456789",
       response: "Hello! I'll help you check that order. I can see that order #ORD-456789 is currently scheduled for delivery tomorrow between 2-4 PM. Would you like me to send you the tracking details?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'helpful_resolution',
+      userComment: "The assistant was very helpful in checking my order status."
     },
     { 
       id: 'conv-002-1', 
@@ -79,7 +91,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'sarah.jones@company.com',
       query: "I'm getting an error when trying to access the CRM system. It says 'Authentication Failed' but I'm sure my password is correct.",
       response: "Hi Sarah, I'll help you troubleshoot this. First, could you confirm when you last successfully accessed the CRM? Also, have you recently changed your password or received any password reset emails?",
-      feedback: 'negative'
+      feedback: 'negative',
+      feedbackCategory: 'unhelpful_resolution',
+      userComment: "The troubleshooting steps didn't solve my issue."
     },
     { 
       id: 'conv-003-1', 
@@ -88,7 +102,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'customer_29jan_1017',
       query: "Hello, I'm trying to find the sizing guide for your winter collection.",
       response: "I'll help you find our sizing guide. Are you looking for men's, women's, or children's sizing information?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'fast_and_efficient',
+      userComment: "Quick response and helpful guidance."
     },
     { 
       id: 'conv-001-2', 
@@ -104,7 +120,10 @@ const FeedbackTable = ({ sx }) => {
       source: 'Website Chatbot', 
       identifier: 'customer_29jan_1017',
       query: "Women's sizing please.",
-      response: "Here's our women's sizing guide: [Link]. It includes detailed measurements for all items in our winter collection. Would you like me to explain any specific measurements?"
+      response: "Here's our women's sizing guide: [Link]. It includes detailed measurements for all items in our winter collection. Would you like me to explain any specific measurements?",
+      feedback: 'negative',
+      feedbackCategory: 'technical_issues',
+      userComment: "The link provided doesn't work."
     },
     { 
       id: 'conv-002-2', 
@@ -129,7 +148,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: '+44 7700 900123',
       query: "Thursday 9-11 AM would be perfect.",
       response: "Great! I've rescheduled your delivery for Thursday between 9-11 AM. You'll receive a confirmation email shortly with the updated tracking information. Is there anything else you need help with?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'helpful_resolution',
+      userComment: "Rescheduling was quick and easy."
     },
     { 
       id: 'conv-003-3', 
@@ -138,7 +159,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'customer_29jan_1017',
       query: "Yes, could you explain the difference between your regular and relaxed fit?",
       response: "Our regular fit is tailored to be slightly fitted while maintaining comfort, with measurements of [measurements]. The relaxed fit is more generous, designed for a looser feel, with measurements of [measurements]. Which style are you interested in?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'knowledgeable_support',
+      userComment: "Very detailed explanation of the different fits."
     },
     { 
       id: 'conv-004-2', 
@@ -147,7 +170,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: '+44 7700 900456',
       query: "Yes please, I really need it by tomorrow.",
       response: "I've arranged for expedited delivery. Your package will be delivered tomorrow before noon. I've also added a £10 credit to your account for the inconvenience. You'll receive a text with the new tracking details shortly.",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'fast_and_efficient',
+      userComment: "Excellent service, problem solved quickly."
     },
     { 
       id: 'conv-002-3', 
@@ -172,7 +197,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'mark.wilson@company.com',
       query: "Hi, I need to schedule an urgent meeting with the development team for tomorrow.",
       response: "I'll help you schedule that meeting. What time would work best for you tomorrow, and how long should I block for the meeting?",
-      feedback: 'negative'
+      feedback: 'negative',
+      feedbackCategory: 'slow_and_inefficient',
+      userComment: "Too many questions, should have just checked the calendar."
     },
     { 
       id: 'conv-002-4', 
@@ -189,7 +216,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: '+44 7700 900789',
       query: "Do you have any appointments available for a hair consultation this week?",
       response: "I'll check our salon's availability. We have openings on Wednesday at 2 PM, Thursday at 11 AM, and Friday at 3 PM. Would any of these times work for you?",
-      feedback: 'negative'
+      feedback: 'negative',
+      feedbackCategory: 'lack_of_expertise',
+      userComment: "Didn't ask what type of consultation I needed."
     },
     { 
       id: 'conv-003-5', 
@@ -197,7 +226,10 @@ const FeedbackTable = ({ sx }) => {
       source: 'Website Chatbot', 
       identifier: 'customer_29jan_1017',
       query: "Yes, please add it to my cart. Can you also check if you have matching wool gloves?",
-      response: "I've added the black wool sweater to your cart. For matching gloves, we have wool-blend gloves in black available in S/M and L/XL sizes. Would you like to see the details?"
+      response: "I've added the black wool sweater to your cart. For matching gloves, we have wool-blend gloves in black available in S/M and L/XL sizes. Would you like to see the details?",
+      feedback: 'positive',
+      feedbackCategory: 'chatbot_was_intelligent',
+      userComment: "The chatbot understood exactly what I needed."
     },
     { 
       id: 'conv-005-2', 
@@ -222,7 +254,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'sarah.jones@company.com',
       query: "I've downloaded the app and I'm ready for the QR code.",
       response: "Perfect! Here's your unique QR code: [QR Code Image]. Once you've scanned it, enter the 6-digit code from the app to complete the setup. This will ensure your account is secure with 2FA.",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'easy_to_use',
+      userComment: "Clear instructions made setup easy."
     },
     { 
       id: 'conv-003-6', 
@@ -239,7 +273,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'mark.wilson@company.com',
       query: "11 AM works. Could you send the meeting invite to the whole development team?",
       response: "I'll send out the calendar invite right away for tomorrow from 11 AM to 12:30 PM. I'll include all development team members and add the meeting link. Would you like me to add a specific agenda or meeting description?",
-      feedback: 'negative'
+      feedback: 'negative',
+      feedbackCategory: 'unhelpful_resolution',
+      userComment: "Should have just sent the invite instead of asking more questions."
     },
     { 
       id: 'conv-006-3', 
@@ -248,7 +284,9 @@ const FeedbackTable = ({ sx }) => {
       identifier: '+44 7700 900789',
       query: "I'm Emma Thompson, first-time visitor. I'm interested in discussing hair coloring options.",
       response: "Thanks, Emma! I've booked your consultation for Thursday at 11 AM. Our color specialist, Sarah, will be available to discuss various coloring options with you. Would you like me to send you our pre-consultation questionnaire to help us better understand your hair history?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'friendly_tone',
+      userComment: "Very friendly and helpful booking experience."
     },
     { 
       id: 'conv-002-6', 
@@ -266,11 +304,20 @@ const FeedbackTable = ({ sx }) => {
       identifier: 'customer_29jan_1017',
       query: "Yes, please add the gloves too. That should be everything.",
       response: "I've added both the black wool sweater (M) and matching gloves (S/M) to your cart. Your total comes to £125. Would you like to proceed to checkout now, or do you have any questions about shipping or returns?",
-      feedback: 'positive'
+      feedback: 'positive',
+      feedbackCategory: 'helpful_resolution',
+      userComment: "Completed my order quickly and offered additional help."
     },
   ];
 
   const sources = ['all', 'Teams', 'Website Chatbot', 'WhatsApp'];
+
+  const feedbackRatings = ['all', 'positive', 'negative'];
+  
+  const feedbackCategories = {
+    positive: ['all', 'fast_and_efficient', 'helpful_resolution', 'knowledgeable_support', 'friendly_tone', 'easy_to_use', 'chatbot_was_intelligent', 'other'],
+    negative: ['all', 'slow_and_inefficient', 'unhelpful_resolution', 'lack_of_expertise', 'unfriendly_tone', 'technical_issues', 'chatbot_didnt_understand', 'other']
+  };
 
   const timeFilters = [
     { value: 'all', label: 'All time' },
@@ -359,6 +406,73 @@ const FeedbackTable = ({ sx }) => {
         break;
     }
   };
+  
+  const handleFeedbackRatingKeyDown = (event, index) => {
+    event.stopPropagation();
+    
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedFeedbackRating((prev) => {
+          const next = prev === null ? 0 : (prev + 1) % feedbackRatings.length;
+          feedbackRatingRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedFeedbackRating((prev) => {
+          const next = prev === null ? feedbackRatings.length - 1 : (prev - 1 + feedbackRatings.length) % feedbackRatings.length;
+          feedbackRatingRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'Tab':
+        if (event.shiftKey && index === 0) {
+          event.preventDefault();
+          sourceFilterRef.current?.children[sources.length - 1]?.focus();
+          setFocusedSource(sources.length - 1);
+        }
+        break;
+      default:
+        // No action needed for other keys
+        break;
+    }
+  };
+  
+  const handleFeedbackCategoryKeyDown = (event, index, type) => {
+    event.stopPropagation();
+    const categories = feedbackCategories[type];
+    
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setFocusedFeedbackCategory((prev) => {
+          const next = prev === null ? 0 : (prev + 1) % categories.length;
+          feedbackCategoryRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setFocusedFeedbackCategory((prev) => {
+          const next = prev === null ? categories.length - 1 : (prev - 1 + categories.length) % categories.length;
+          feedbackCategoryRef.current?.children[next]?.focus();
+          return next;
+        });
+        break;
+      case 'Tab':
+        if (event.shiftKey && index === 0) {
+          event.preventDefault();
+          feedbackRatingRef.current?.children[feedbackRatings.length - 1]?.focus();
+          setFocusedFeedbackRating(feedbackRatings.length - 1);
+        }
+        break;
+      default:
+        // No action needed for other keys
+        break;
+    }
+  };
 
   const handleFilterSelect = (filter) => {
     setSelectedFilter(filter);
@@ -380,6 +494,40 @@ const FeedbackTable = ({ sx }) => {
         }
       } else {
         setSelectedSources([...newSources, source]);
+      }
+    }
+  };
+  
+  const handleFeedbackRatingSelect = (rating) => {
+    if (rating === 'all') {
+      setSelectedFeedbackRatings(['all']);
+    } else {
+      const newRatings = selectedFeedbackRatings.filter(r => r !== 'all');
+      if (selectedFeedbackRatings.includes(rating)) {
+        if (newRatings.length === 1) {
+          setSelectedFeedbackRatings(['all']);
+        } else {
+          setSelectedFeedbackRatings(newRatings.filter(r => r !== rating));
+        }
+      } else {
+        setSelectedFeedbackRatings([...newRatings, rating]);
+      }
+    }
+  };
+  
+  const handleFeedbackCategorySelect = (category, type) => {
+    if (category === 'all') {
+      // Reset all categories of this type
+      const newCategories = selectedFeedbackCategories.filter(c => 
+        !feedbackCategories[type].includes(c)
+      );
+      setSelectedFeedbackCategories([...newCategories, 'all']);
+    } else {
+      const newCategories = selectedFeedbackCategories.filter(c => c !== 'all');
+      if (selectedFeedbackCategories.includes(category)) {
+        setSelectedFeedbackCategories(newCategories.filter(c => c !== category));
+      } else {
+        setSelectedFeedbackCategories([...newCategories, category]);
       }
     }
   };
@@ -411,6 +559,20 @@ const FeedbackTable = ({ sx }) => {
     if (!selectedSources.includes('all')) {
       filtered = filtered.filter(conv => selectedSources.includes(conv.source));
     }
+    
+    // Apply feedback rating filter
+    if (!selectedFeedbackRatings.includes('all')) {
+      filtered = filtered.filter(conv => 
+        conv.feedback && selectedFeedbackRatings.includes(conv.feedback)
+      );
+    }
+    
+    // Apply feedback category filter
+    if (!selectedFeedbackCategories.includes('all')) {
+      filtered = filtered.filter(conv => 
+        conv.feedbackCategory && selectedFeedbackCategories.includes(conv.feedbackCategory)
+      );
+    }
 
     // Apply search filter
     if (searchTerm) {
@@ -418,7 +580,8 @@ const FeedbackTable = ({ sx }) => {
       filtered = filtered.filter(conv =>
         conv.identifier.toLowerCase().includes(searchTermLower) ||
         conv.query.toLowerCase().includes(searchTermLower) ||
-        conv.response.toLowerCase().includes(searchTermLower)
+        conv.response.toLowerCase().includes(searchTermLower) ||
+        (conv.userComment && conv.userComment.toLowerCase().includes(searchTermLower))
       );
     }
 
@@ -452,12 +615,16 @@ const FeedbackTable = ({ sx }) => {
     let count = 0;
     if (selectedFilter !== 'all') count++;
     if (!selectedSources.includes('all')) count++;
+    if (!selectedFeedbackRatings.includes('all')) count++;
+    if (!selectedFeedbackCategories.includes('all')) count++;
     return count;
   };
 
   const handleFilterReset = () => {
     setSelectedFilter('all');
     setSelectedSources(['all']);
+    setSelectedFeedbackRatings(['all']);
+    setSelectedFeedbackCategories(['all']);
     setStartDate(null);
     setEndDate(null);
   };
@@ -499,25 +666,31 @@ const FeedbackTable = ({ sx }) => {
             {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-            {conversation.time}
-          </Typography>
-        </TableCell>
-        <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-            {conversation.source}
-          </Typography>
-        </TableCell>
-        <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
-          <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-            {conversation.identifier}
-          </Typography>
-        </TableCell>
+        {!showFeedback && (
+          <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+            <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              {conversation.time}
+            </Typography>
+          </TableCell>
+        )}
+        {!showFeedback && (
+          <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+            <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              {conversation.source}
+            </Typography>
+          </TableCell>
+        )}
+        {!showFeedback && (
+          <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+            <Typography sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              {conversation.identifier}
+            </Typography>
+          </TableCell>
+        )}
         <TableCell 
           sx={{ 
             color: 'text.primary',
-            width: '30%',
+            width: showFeedback ? '20%' : '30%',
             transition: 'none',
             verticalAlign: 'middle'
           }}
@@ -547,7 +720,7 @@ const FeedbackTable = ({ sx }) => {
         <TableCell 
           sx={{ 
             color: 'text.primary',
-            width: '30%',
+            width: showFeedback ? '20%' : '30%',
             transition: 'none',
             verticalAlign: 'middle'
           }}
@@ -574,17 +747,79 @@ const FeedbackTable = ({ sx }) => {
             {conversation.response}
           </Typography>
         </TableCell>
-        <TableCell sx={{ verticalAlign: 'middle', width: '120px' }}>
+        <TableCell sx={{ verticalAlign: 'middle', width: '150px' }}>
           {conversation.feedback && (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
               {conversation.feedback === 'positive' ? (
-                <ThumbUpOutlinedIcon sx={{ color: 'success.main' }} />
+                <>
+                  <ThumbUpOutlinedIcon sx={{ color: 'success.main' }} />
+                  <Typography sx={{ color: 'success.main', fontSize: '0.75rem', fontWeight: 500 }}>
+                    Helpful
+                  </Typography>
+                </>
               ) : (
-                <ThumbDownOutlinedIcon sx={{ color: 'error.main' }} />
+                <>
+                  <ThumbDownOutlinedIcon sx={{ color: 'error.main' }} />
+                  <Typography sx={{ color: 'error.main', fontSize: '0.75rem', fontWeight: 500 }}>
+                    Not helpful
+                  </Typography>
+                </>
               )}
             </Box>
           )}
         </TableCell>
+        {showFeedback && (
+          <TableCell sx={{ verticalAlign: 'middle', whiteSpace: 'nowrap', width: '200px' }}>
+            {conversation.feedbackCategory ? (
+              <Chip 
+                label={conversation.feedbackCategory.split('_').join(' ').replace(/^\w/, c => c.toUpperCase())}
+                size="small"
+                variant="outlined"
+                color="primary"
+                sx={{ 
+                  fontWeight: 500,
+                  fontSize: '0.75rem'
+                }}
+              />
+            ) : (
+              <Chip 
+                label="None"
+                size="small"
+                variant="outlined"
+                color="default"
+                sx={{ 
+                  fontWeight: 500,
+                  fontSize: '0.75rem'
+                }}
+              />
+            )}
+          </TableCell>
+        )}
+        {showFeedback && (
+          <TableCell sx={{ verticalAlign: 'middle', width: '20%' }}>
+            <Typography 
+              sx={{ 
+                display: '-webkit-box',
+                WebkitLineClamp: {
+                  xs: isExpanded ? 'unset' : 3,
+                  sm: isExpanded ? 'unset' : 2
+                },
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                ...((!isExpanded && conversation.userComment && conversation.userComment.length > 180) && {
+                  '&::after': {
+                    content: '"..."',
+                    display: 'inline',
+                  }
+                })
+              }}
+            >
+              {conversation.userComment || 'None'}
+            </Typography>
+          </TableCell>
+        )}
       </TableRow>
     );
   };
@@ -635,7 +870,21 @@ const FeedbackTable = ({ sx }) => {
                 }}
                 sx={{ flexGrow: 1 }}
               />
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Box sx={{ display: { xs: 'none', sm: 'block' }, display: 'flex', alignItems: 'center', gap: 2 }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showFeedback}
+                      onChange={(e) => setShowFeedback(e.target.checked)}
+                      name="feedbackToggle"
+                      size="small"
+                      color="primary"
+                    
+                    />
+                  }
+                  label="Include feedback"
+                  sx={{ m: 0, '& .MuiFormControlLabel-label': { fontWeight: 'bold' } }}
+                />
                 <Button
                   variant="outlined"
                   onClick={handleFilterClick}
@@ -697,44 +946,56 @@ const FeedbackTable = ({ sx }) => {
               <TableHead>
                 <TableRow>
                   <TableCell component="td" padding="none" sx={{ width: '48px', verticalAlign: 'middle' }} />
-                  <TableCell 
-                    sx={{ 
-                      color: 'text.primary', 
-                      fontWeight: 600, 
-                      whiteSpace: 'nowrap',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        backgroundColor: 'action.hover',
-                      },
-                      '&:focus': {
-                        backgroundColor: 'action.hover',
-                        outline: '2px solid',
-                        outlineColor: 'primary.main',
-                        outlineOffset: '-2px'
-                      },
-                      verticalAlign: 'middle'
-                    }}
-                    onClick={handleSortRequest}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        handleSortRequest();
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Sort by timeframe, currently sorted ${order === 'asc' ? 'ascending' : 'descending'}`}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
-                      Timeframes
-                      {order === 'asc' ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
-                  <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
+                  {!showFeedback && (
+                    <TableCell 
+                      sx={{ 
+                        color: 'text.primary', 
+                        fontWeight: 600, 
+                        whiteSpace: 'nowrap',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          backgroundColor: 'action.hover',
+                        },
+                        '&:focus': {
+                          backgroundColor: 'action.hover',
+                          outline: '2px solid',
+                          outlineColor: 'primary.main',
+                          outlineOffset: '-2px'
+                        },
+                        verticalAlign: 'middle'
+                      }}
+                      onClick={handleSortRequest}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          handleSortRequest();
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Sort by timeframe, currently sorted ${order === 'asc' ? 'ascending' : 'descending'}`}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
+                        Timeframes
+                        {order === 'asc' ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      </Box>
+                    </TableCell>
+                  )}
+                  {!showFeedback && (
+                    <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Source</TableCell>
+                  )}
+                  {!showFeedback && (
+                    <TableCell sx={{ color: 'text.secondary', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>User identifier</TableCell>
+                  )}
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User query</TableCell>
                   <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>Assistant response</TableCell>
-                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle', width: '120px', whiteSpace: 'nowrap' }}>Feedback rating</TableCell>
+                  <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle', width: '150px', whiteSpace: 'nowrap' }}>Feedback rating</TableCell>
+                  {showFeedback && (
+                    <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle', whiteSpace: 'nowrap', width: '200px' }}>Feedback category</TableCell>
+                  )}
+                  {showFeedback && (
+                    <TableCell sx={{ color: 'text.primary', fontWeight: 600, verticalAlign: 'middle' }}>User comment</TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -922,6 +1183,134 @@ const FeedbackTable = ({ sx }) => {
                 </MenuItem>
               ))}
             </Stack>
+            
+            <Divider sx={{ my: 1 }} />
+            <Typography variant="subtitle1" component="h2" sx={{ mb: 0.5 }} id="feedback-rating-label">
+              Feedback Rating
+            </Typography>
+            <Stack spacing={0} role="group" aria-labelledby="feedback-rating-label" ref={feedbackRatingRef}>
+              {feedbackRatings.map((rating, index) => (
+                <MenuItem
+                  key={rating}
+                  onClick={() => handleFeedbackRatingSelect(rating)}
+                  selected={selectedFeedbackRatings.includes(rating)}
+                  dense
+                  tabIndex={focusedFeedbackRating === index ? 0 : -1}
+                  onKeyDown={(e) => {
+                    handleFeedbackRatingKeyDown(e, index);
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleFeedbackRatingSelect(rating);
+                    }
+                  }}
+                  onFocus={() => setFocusedFeedbackRating(index)}
+                  sx={{ 
+                    minHeight: '32px', 
+                    py: 0.5, 
+                    '&.Mui-selected': { backgroundColor: 'transparent' }, 
+                    '&.Mui-selected:hover': { backgroundColor: 'action.hover' },
+                    '&:focus': { backgroundColor: 'action.hover' }
+                  }}
+                >
+                  <Checkbox 
+                    checked={selectedFeedbackRatings.includes(rating)}
+                    size="small"
+                    sx={{ mr: 1, p: 0.5 }}
+                    inputProps={{
+                      'aria-label': rating === 'all' ? 'All Ratings' : rating,
+                      tabIndex: -1
+                    }}
+                  />
+                  {rating === 'all' ? 'All Ratings' : rating.charAt(0).toUpperCase() + rating.slice(1)}
+                </MenuItem>
+              ))}
+            </Stack>
+            
+            {showFeedback && (
+              <>
+                <Divider sx={{ my: 1 }} />
+                <Typography variant="subtitle1" component="h2" sx={{ mb: 0.5 }} id="feedback-category-label">
+                  Feedback Categories
+                </Typography>
+                
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>Positive</Typography>
+                <Stack spacing={0} role="group" aria-labelledby="positive-category-label" ref={feedbackCategoryRef}>
+                  {feedbackCategories.positive.map((category, index) => (
+                    <MenuItem
+                      key={`positive-${category}`}
+                      onClick={() => handleFeedbackCategorySelect(category, 'positive')}
+                      selected={selectedFeedbackCategories.includes(category)}
+                      dense
+                      tabIndex={focusedFeedbackCategory === index ? 0 : -1}
+                      onKeyDown={(e) => {
+                        handleFeedbackCategoryKeyDown(e, index, 'positive');
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          handleFeedbackCategorySelect(category, 'positive');
+                        }
+                      }}
+                      onFocus={() => setFocusedFeedbackCategory(index)}
+                      sx={{ 
+                        minHeight: '32px', 
+                        py: 0.5, 
+                        '&.Mui-selected': { backgroundColor: 'transparent' }, 
+                        '&.Mui-selected:hover': { backgroundColor: 'action.hover' },
+                        '&:focus': { backgroundColor: 'action.hover' }
+                      }}
+                    >
+                      <Checkbox 
+                        checked={selectedFeedbackCategories.includes(category)}
+                        size="small"
+                        sx={{ mr: 1, p: 0.5 }}
+                        inputProps={{
+                          'aria-label': category === 'all' ? 'All Positive Categories' : category,
+                          tabIndex: -1
+                        }}
+                      />
+                      {category === 'all' ? 'All positive categories' : 
+                        category.split('_').join(' ').replace(/^\w/, c => c.toUpperCase())
+                      }
+                    </MenuItem>
+                  ))}
+                </Stack>
+                
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>Negative</Typography>
+                <Stack spacing={0} role="group" aria-labelledby="negative-category-label">
+                  {feedbackCategories.negative.map((category, index) => (
+                    <MenuItem
+                      key={`negative-${category}`}
+                      onClick={() => handleFeedbackCategorySelect(category, 'negative')}
+                      selected={selectedFeedbackCategories.includes(category)}
+                      dense
+                      tabIndex={-1}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          handleFeedbackCategorySelect(category, 'negative');
+                        }
+                      }}
+                      sx={{ 
+                        minHeight: '32px', 
+                        py: 0.5, 
+                        '&.Mui-selected': { backgroundColor: 'transparent' }, 
+                        '&.Mui-selected:hover': { backgroundColor: 'action.hover' },
+                        '&:focus': { backgroundColor: 'action.hover' }
+                      }}
+                    >
+                      <Checkbox 
+                        checked={selectedFeedbackCategories.includes(category)}
+                        size="small"
+                        sx={{ mr: 1, p: 0.5 }}
+                        inputProps={{
+                          'aria-label': category === 'all' ? 'All Negative Categories' : category,
+                          tabIndex: -1
+                        }}
+                      />
+                      {category === 'all' ? 'All negative categories' : 
+                        category.split('_').join(' ').replace(/^\w/, c => c.toUpperCase())
+                      }
+                    </MenuItem>
+                  ))}
+                </Stack>
+              </>
+            )}
           </Box>
         </Box>
       </Menu>
