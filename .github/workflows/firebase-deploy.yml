@@ -21,20 +21,27 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org/'
-          
+      
+      # Configure npm settings
+      - name: Setup .npmrc
+        run: |
+          echo "registry=https://registry.npmjs.org/" > .npmrc
+          echo "always-auth=false" >> .npmrc
+      
+      # Install dependencies with npm
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps --no-fund --no-audit --prefer-offline
-        env:
-          npm_config_registry: 'https://registry.npmjs.org/'
+        run: |
+          npm install --force --no-fund --no-audit
         
+      # Build with CI=false to prevent treating warnings as errors
       - name: Build
         run: CI=false npm run build
         env:
-          NODE_OPTIONS: "--max-old-space-size=4096"
+          NODE_OPTIONS: "--max-old-space-size=8192"
         
+      # Deploy to Firebase using the official action
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
