@@ -19,8 +19,7 @@ import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPassword, error, onSignupClick }) => {
-  // Removed unused variables
-  useAuthBackground(); // Keep the hook call
+  const { isModal } = useAuthBackground(); // Keep only the needed variable
 
   const modalStyle = {
     position: 'absolute',
