@@ -13,39 +13,38 @@ on:
           - staging
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'npm'
-      
-      # Configure npm settings
-      - name: Setup .npmrc
+      # Use a pre-built bundle from the build directory
+      # This assumes you've already built the project locally and committed the build folder
+      - name: Check if build directory exists
+        id: check_build
         run: |
-          echo "registry=https://registry.npmjs.org/" > .npmrc
-          echo "always-auth=false" >> .npmrc
+          if [ -d "build" ]; then
+            echo "Build directory exists"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Build directory does not exist"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
       
-      # Install dependencies with npm
-      - name: Install dependencies
-        run: |
-          npm install --force --no-fund --no-audit
-        
-      # Build with CI=false to prevent treating warnings as errors
-      - name: Build
-        run: CI=false npm run build
-        env:
-          NODE_OPTIONS: "--max-old-space-size=8192"
-        
-      # Deploy to Firebase using the official action
+      # Deploy to Firebase directly using the firebase-tools Docker image
       - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
+        if: steps.check_build.outputs.exists == 'true'
+        uses: w9jds/firebase-action@master
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-          channelId: live
-          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      
+      # Show error message if build directory doesn't exist
+      - name: Build directory missing
+        if: steps.check_build.outputs.exists == 'false'
+        run: |
+          echo "Error: Build directory not found!"
+          echo "Please run 'npm run build' locally and commit the build directory before deploying."
+          exit 1
