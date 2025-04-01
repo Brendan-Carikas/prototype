@@ -11,7 +11,6 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useAuthBackground } from "../../contexts/AuthBackgroundContext";
-import { useTheme } from "@mui/material/styles";
 import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 
 export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) => {

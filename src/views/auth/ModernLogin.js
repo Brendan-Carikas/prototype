@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   useTheme as useMuiTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAuthBackground } from '../../contexts/AuthBackgroundContext';
