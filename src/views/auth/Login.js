@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import {
   Box,
   Typography,
-  FormGroup,
-  FormControlLabel,
   Button,
   Stack,
-  Checkbox,
   TextField,
   Alert,
   InputAdornment,
@@ -22,7 +19,8 @@ import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPassword, error, onSignupClick }) => {
-  const { isModal, customImage } = useAuthBackground();
+  // Removed unused variables
+  useAuthBackground(); // Keep the hook call
 
   const modalStyle = {
     position: 'absolute',
@@ -275,7 +273,8 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
 
 const LoginNew = () => {
   const { login } = useAuth();
-  const { isModal, customImage } = useAuthBackground();
+  // Removed unused variables
+  useAuthBackground(); // Keep the hook call
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({

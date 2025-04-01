@@ -3,7 +3,6 @@ import { Grid, Box, Typography, Tooltip, IconButton } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 
-import ConversationsTable from "./dashboard-components/ConversationsTable";
 import FeedbackTable from "./dashboard-components/FeedbackTable";
 
 const ConvoDashboard = () => {

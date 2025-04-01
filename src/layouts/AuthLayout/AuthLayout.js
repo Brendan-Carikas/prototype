@@ -9,7 +9,7 @@ import chatBubble from '../../assets/images/art-bubble-blue.png';
 import { useState, useEffect } from 'react';
 
 const AuthLayout = () => {
-  const { showBackground, customImage } = useAuthBackground();
+  const { customImage } = useAuthBackground(); // Removed unused showBackground
   const backgroundImage = customImage || artoCorner;
   const location = useLocation();
   const theme = useTheme();

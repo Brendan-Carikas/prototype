@@ -26,7 +26,8 @@ import ImageIcon from '@mui/icons-material/Image';
 import PaletteIcon from '@mui/icons-material/Palette';
 
 const InvotraAdmin = () => {
-  const { currentUser } = useAuth();
+  // Removed unused currentUser variable
+  useAuth(); // Keep the hook call
   const { currentTheme, setTheme, unsavedChanges, saveTheme } = useTheme();
   const { 
     showBackground, 
@@ -62,22 +63,7 @@ const InvotraAdmin = () => {
     setTheme(event.target.value);
   };
 
-  const handleLoginStyleChange = (event) => {
-    const value = event.target.value;
-    if (value === 'modal') {
-      setShowBackground(true);
-      setIsModal(true);
-      setIsTwoColumn(false);
-    } else if (value === 'twocolumn') {
-      setShowBackground(true);
-      setIsModal(false);
-      setIsTwoColumn(true);
-    } else {
-      setShowBackground(true);
-      setIsModal(false);
-      setIsTwoColumn(false);
-    }
-  };
+  // Removed unused handleLoginStyleChange function
 
   return (
     <Box p={3}>

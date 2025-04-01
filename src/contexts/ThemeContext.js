@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { baseTheme } from '../assets/global/Theme-variable';
+// Removed unused baseTheme import
 import modernTheme from '../assets/global/Theme-modern';
 import darkTheme from '../assets/global/Theme-dark';
 import artoTheme from '../assets/global/ArtoTheme';
