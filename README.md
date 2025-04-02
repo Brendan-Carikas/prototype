@@ -40,30 +40,20 @@ npm run build
 
 # Deploy to GitHub Pages
 npm run deploy
+```
 
-# Deploy to Firebase Hosting
-npm run firebase-deploy
+#### Deploy to Firebase Hosting (Recommended)
+The simplest and most reliable method is to deploy directly from your local machine:
 
-#Deploy Locally (Recommended)
-This is the simplest and most reliable method:
-
-1. Make your code changes
-2. Build the application:
-bash
-CopyInsert in Terminal
+```bash
+# 1. Build the application
 CI=false npm run build
 
-3. Deploy directly to Firebase:
-bash
-CopyInsert in Terminal
+# 2. Deploy directly to Firebase
 firebase deploy --only hosting
+```
 
 This approach bypasses GitHub Actions entirely and deploys directly from your local machine, which is faster and avoids any potential issues with the GitHub Actions environment.
-
-
-
-
-```
 
 ### Code Quality
 This project uses ESLint to maintain code quality. The build process treats warnings as errors, ensuring clean code in production.

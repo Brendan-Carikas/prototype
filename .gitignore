@@ -9,8 +9,7 @@
 /coverage
 
 # production
-# Temporarily allowing build directory for Firebase deployment
-# /build
+/build
 
 # misc
 .DS_Store
