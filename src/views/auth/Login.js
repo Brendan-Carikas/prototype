@@ -19,7 +19,7 @@ import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPassword, error, onSignupClick }) => {
-  const { isModal, showBackground, displayLoginDetails } = useAuthBackground();
+  const { isModal, showBackground } = useAuthBackground();
 
   const modalStyle = {
     position: 'absolute',
@@ -96,7 +96,6 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
             fullWidth
             required
             size="small"
-            helperText={displayLoginDetails ? "Demo username: Demo" : ""}
             placeholder="Enter your email"
             inputProps={{
               style: { fontSize: '16px' }
@@ -116,7 +115,6 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
               fullWidth
               required
               size="small"
-              helperText={displayLoginDetails ? "Demo password: Demo" : ""}
               placeholder="Enter your password"
               inputProps={{
                 style: { fontSize: '16px' }
