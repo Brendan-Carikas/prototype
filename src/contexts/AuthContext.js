@@ -1,51 +1,100 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth';
+import { auth } from '../firebase';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // Removed unused loading state
+  const [loading, setLoading] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const navigate = useNavigate();
+  
+  // Listen for auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    
+    return () => unsubscribe();
+  }, []);
 
 
 
   const login = async (email, password) => {
     try {
+      // Demo mode login
       if (email === 'Demo' && password === 'Demo') {
-        setUser({ email: 'Demo' });
+        setUser({ email: 'Demo', uid: 'demo-user-id' });
+        setIsDemoMode(true);
         navigate('/app/dashboards/dashboard1');
-        return true;
+        return { success: true };
       }
-      throw new Error('Invalid credentials');
+      
+      // Firebase Auth login
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setIsDemoMode(false);
+      navigate('/app/dashboards/dashboard1');
+      return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Error logging in:', error.message);
-      return false;
+      return { success: false, error: error.message };
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    navigate('/login');
+  const logout = async () => {
+    try {
+      if (isDemoMode) {
+        setUser(null);
+        setIsDemoMode(false);
+      } else {
+        await signOut(auth);
+      }
+      navigate('/login');
+      return true;
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+      return false;
+    }
   };
 
   const signup = async (email, password) => {
     try {
-      // For demo purposes, we'll just log in the user
+      // Demo mode signup
       if (email === 'Demo' && password === 'Demo') {
-        setUser({ email: 'Demo' });
+        setUser({ email: 'Demo', uid: 'demo-user-id' });
+        setIsDemoMode(true);
         navigate('/app/dashboards/dashboard1');
-        return true;
+        return { success: true };
       }
-      throw new Error('Invalid credentials');
+      
+      // Firebase Auth signup
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      setIsDemoMode(false);
+      navigate('/app/dashboards/dashboard1');
+      return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Error signing up:', error.message);
-      return false;
+      return { success: false, error: error.message };
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signup }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      signup, 
+      loading,
+      isDemoMode
+    }}>
       {children}
     </AuthContext.Provider>
   );

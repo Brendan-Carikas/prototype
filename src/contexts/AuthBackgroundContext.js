@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
+import { settingsService } from '../services/settingsService';
 
 const AUTH_BG_KEY = 'auth_background_visible';
 const AUTH_BG_IMAGE_KEY = 'auth_background_image';
@@ -17,35 +19,15 @@ export function useAuthBackground() {
 }
 
 export function AuthBackgroundProvider({ children }) {
-  const [showBackground, setShowBackground] = useState(() => {
-    const saved = localStorage.getItem(AUTH_BG_KEY);
-    return saved !== null ? JSON.parse(saved) : false;
-  });
-
-  const [alignLeft, setAlignLeft] = useState(() => {
-    const saved = localStorage.getItem(AUTH_BG_ALIGN_KEY);
-    return saved !== null ? JSON.parse(saved) : false;
-  });
-
-  const [customImage, setCustomImage] = useState(() => {
-    const saved = localStorage.getItem(AUTH_BG_IMAGE_KEY);
-    return saved || null;
-  });
-  
-  const [isModal, setIsModal] = useState(() => {
-    const saved = localStorage.getItem(AUTH_MODAL_KEY);
-    return saved !== null ? JSON.parse(saved) : false;
-  });
-
-  const [isTwoColumn, setIsTwoColumn] = useState(() => {
-    const saved = localStorage.getItem(AUTH_TWO_COLUMN_KEY);
-    return saved !== null ? JSON.parse(saved) : false;
-  });
-
-  const [displayLoginDetails, setDisplayLoginDetails] = useState(() => {
-    const saved = localStorage.getItem(AUTH_DISPLAY_LOGIN_DETAILS_KEY);
-    return saved !== null ? JSON.parse(saved) : true;
-  });
+  const { user, isDemoMode } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  // Initialize with default values
+  const [showBackground, setShowBackground] = useState(false);
+  const [alignLeft, setAlignLeft] = useState(false);
+  const [customImage, setCustomImage] = useState(null);
+  const [isModal, setIsModal] = useState(false);
+  const [isTwoColumn, setIsTwoColumn] = useState(false);
+  const [displayLoginDetails, setDisplayLoginDetails] = useState(true);
   
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   
@@ -79,26 +61,95 @@ export function AuthBackgroundProvider({ children }) {
     setUnsavedChanges(true);
   };
   
-  const saveChanges = () => {
-    localStorage.setItem(AUTH_BG_KEY, JSON.stringify(showBackground));
-    localStorage.setItem(AUTH_BG_ALIGN_KEY, JSON.stringify(alignLeft));
-    if (customImage) {
-      localStorage.setItem(AUTH_BG_IMAGE_KEY, customImage);
-    } else {
-      localStorage.removeItem(AUTH_BG_IMAGE_KEY);
+  const saveChanges = async () => {
+    try {
+      const settings = {
+        showBackground,
+        alignLeft,
+        customImage,
+        isModal,
+        isTwoColumn,
+        displayLoginDetails
+      };
+      
+      let success = false;
+      
+      if (isDemoMode) {
+        // In demo mode, save to localStorage
+        success = settingsService.saveSettingsToLocalStorage({
+          'auth_background_visible': showBackground,
+          'auth_background_align': alignLeft,
+          'auth_background_image': customImage,
+          'auth_background_modal': isModal,
+          'auth_background_two_column': isTwoColumn,
+          'auth_display_login_details': displayLoginDetails
+        });
+      } else if (user) {
+        // If authenticated with Firebase, save to Firestore
+        success = await settingsService.saveUserSettings(settings);
+      }
+      
+      if (success) {
+        setUnsavedChanges(false);
+        console.log('Settings saved successfully');
+      } else {
+        console.error('Failed to save settings');
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
     }
-    localStorage.setItem(AUTH_MODAL_KEY, JSON.stringify(isModal));
-    localStorage.setItem(AUTH_TWO_COLUMN_KEY, JSON.stringify(isTwoColumn));
-    localStorage.setItem(AUTH_DISPLAY_LOGIN_DETAILS_KEY, JSON.stringify(displayLoginDetails));
-    setUnsavedChanges(false);
   };
 
-  // Remove automatic localStorage updates in useEffect hooks
-  // Only save settings when saveChanges is explicitly called
-
+  // Load settings when user changes
   useEffect(() => {
-    setUnsavedChanges(true);
-  }, [showBackground, alignLeft, customImage, isModal, isTwoColumn, displayLoginDetails]);
+    const loadSettings = async () => {
+      setIsLoading(true);
+      try {
+        let settings = null;
+        
+        if (isDemoMode) {
+          // In demo mode, load from localStorage
+          const localSettings = {
+            showBackground: JSON.parse(localStorage.getItem(AUTH_BG_KEY) || 'false'),
+            alignLeft: JSON.parse(localStorage.getItem(AUTH_BG_ALIGN_KEY) || 'false'),
+            customImage: localStorage.getItem(AUTH_BG_IMAGE_KEY) || null,
+            isModal: JSON.parse(localStorage.getItem(AUTH_MODAL_KEY) || 'false'),
+            isTwoColumn: JSON.parse(localStorage.getItem(AUTH_TWO_COLUMN_KEY) || 'false'),
+            displayLoginDetails: JSON.parse(localStorage.getItem(AUTH_DISPLAY_LOGIN_DETAILS_KEY) || 'true')
+          };
+          settings = localSettings;
+        } else if (user) {
+          // If authenticated with Firebase, load from Firestore
+          settings = await settingsService.getUserSettings();
+        }
+        
+        if (settings) {
+          setShowBackground(settings.showBackground);
+          setAlignLeft(settings.alignLeft);
+          setCustomImage(settings.customImage);
+          setIsModal(settings.isModal);
+          setIsTwoColumn(settings.isTwoColumn);
+          setDisplayLoginDetails(settings.displayLoginDetails);
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      } finally {
+        setIsLoading(false);
+        setUnsavedChanges(false);
+      }
+    };
+    
+    if (user || isDemoMode) {
+      loadSettings();
+    }
+  }, [user, isDemoMode]);
+  
+  // Track changes to mark as unsaved
+  useEffect(() => {
+    if (!isLoading) {
+      setUnsavedChanges(true);
+    }
+  }, [showBackground, alignLeft, customImage, isModal, isTwoColumn, displayLoginDetails, isLoading]);
 
   const value = {
     showBackground,
@@ -114,7 +165,8 @@ export function AuthBackgroundProvider({ children }) {
     displayLoginDetails,
     setDisplayLoginDetails: handleDisplayLoginDetailsChange,
     unsavedChanges,
-    saveChanges
+    saveChanges,
+    isLoading
   };
 
   return (

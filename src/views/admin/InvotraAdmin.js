@@ -19,6 +19,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAuthBackground } from "../../contexts/AuthBackgroundContext";
+import { useSnackbar } from 'notistack';
 import LoginIcon from '@mui/icons-material/Login';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,6 +27,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import PaletteIcon from '@mui/icons-material/Palette';
 
 const InvotraAdmin = () => {
+  const { enqueueSnackbar } = useSnackbar();
   // Removed unused currentUser variable
   useAuth(); // Keep the hook call
   const { currentTheme, setTheme, unsavedChanges, saveTheme } = useTheme();
@@ -226,7 +228,10 @@ const InvotraAdmin = () => {
                     variant="contained"
                     color="primary"
                     startIcon={<SaveIcon />}
-                    onClick={saveBackgroundChanges}
+                    onClick={() => {
+                      saveBackgroundChanges();
+                      enqueueSnackbar('Settings saved successfully', { variant: 'success' });
+                    }}
                     disabled={!backgroundUnsavedChanges}
                   >
                     Save Changes
