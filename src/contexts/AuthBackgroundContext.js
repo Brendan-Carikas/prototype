@@ -5,6 +5,7 @@ const AUTH_BG_IMAGE_KEY = 'auth_background_image';
 const AUTH_BG_ALIGN_KEY = 'auth_background_align';
 const AUTH_MODAL_KEY = 'auth_background_modal';
 const AUTH_TWO_COLUMN_KEY = 'auth_background_two_column';
+const AUTH_DISPLAY_LOGIN_DETAILS_KEY = 'auth_display_login_details';
 const AuthBackgroundContext = createContext();
 
 export function useAuthBackground() {
@@ -40,6 +41,11 @@ export function AuthBackgroundProvider({ children }) {
     const saved = localStorage.getItem(AUTH_TWO_COLUMN_KEY);
     return saved !== null ? JSON.parse(saved) : false;
   });
+
+  const [displayLoginDetails, setDisplayLoginDetails] = useState(() => {
+    const saved = localStorage.getItem(AUTH_DISPLAY_LOGIN_DETAILS_KEY);
+    return saved !== null ? JSON.parse(saved) : true;
+  });
   
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   
@@ -67,6 +73,11 @@ export function AuthBackgroundProvider({ children }) {
     setIsTwoColumn(newValue);
     setUnsavedChanges(true);
   };
+
+  const handleDisplayLoginDetailsChange = (newValue) => {
+    setDisplayLoginDetails(newValue);
+    setUnsavedChanges(true);
+  };
   
   const saveChanges = () => {
     localStorage.setItem(AUTH_BG_KEY, JSON.stringify(showBackground));
@@ -78,36 +89,16 @@ export function AuthBackgroundProvider({ children }) {
     }
     localStorage.setItem(AUTH_MODAL_KEY, JSON.stringify(isModal));
     localStorage.setItem(AUTH_TWO_COLUMN_KEY, JSON.stringify(isTwoColumn));
+    localStorage.setItem(AUTH_DISPLAY_LOGIN_DETAILS_KEY, JSON.stringify(displayLoginDetails));
     setUnsavedChanges(false);
   };
 
-  useEffect(() => {
-    localStorage.setItem(AUTH_BG_KEY, JSON.stringify(showBackground));
-  }, [showBackground]);
-
-  useEffect(() => {
-    localStorage.setItem(AUTH_BG_ALIGN_KEY, JSON.stringify(alignLeft));
-  }, [alignLeft]);
-
-  useEffect(() => {
-    if (customImage) {
-      localStorage.setItem(AUTH_BG_IMAGE_KEY, customImage);
-    } else {
-      localStorage.removeItem(AUTH_BG_IMAGE_KEY);
-    }
-  }, [customImage]);
-
-  useEffect(() => {
-    localStorage.setItem(AUTH_MODAL_KEY, JSON.stringify(isModal));
-  }, [isModal]);
-
-  useEffect(() => {
-    localStorage.setItem(AUTH_TWO_COLUMN_KEY, JSON.stringify(isTwoColumn));
-  }, [isTwoColumn]);
+  // Remove automatic localStorage updates in useEffect hooks
+  // Only save settings when saveChanges is explicitly called
 
   useEffect(() => {
     setUnsavedChanges(true);
-  }, [showBackground, alignLeft, customImage, isModal, isTwoColumn]);
+  }, [showBackground, alignLeft, customImage, isModal, isTwoColumn, displayLoginDetails]);
 
   const value = {
     showBackground,
@@ -120,6 +111,8 @@ export function AuthBackgroundProvider({ children }) {
     setIsModal: handleIsModalChange,
     isTwoColumn,
     setIsTwoColumn: handleIsTwoColumnChange,
+    displayLoginDetails,
+    setDisplayLoginDetails: handleDisplayLoginDetailsChange,
     unsavedChanges,
     saveChanges
   };

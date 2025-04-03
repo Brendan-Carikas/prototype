@@ -38,6 +38,8 @@ const InvotraAdmin = () => {
     setIsTwoColumn,
     customImage, 
     setCustomImage,
+    displayLoginDetails,
+    setDisplayLoginDetails,
     unsavedChanges: backgroundUnsavedChanges,
     saveChanges: saveBackgroundChanges
   } = useAuthBackground();
@@ -173,15 +175,12 @@ const InvotraAdmin = () => {
                     onChange={(e) => {
                       const value = e.target.value;
                       if (value === 'modal') {
-                        setShowBackground(true);
                         setIsModal(true);
                         setIsTwoColumn(false);
                       } else if (value === 'twocolumn') {
-                        setShowBackground(true);
                         setIsModal(false);
                         setIsTwoColumn(true);
                       } else {
-                        setShowBackground(true);
                         setIsModal(false);
                         setIsTwoColumn(false);
                       }
@@ -204,6 +203,23 @@ const InvotraAdmin = () => {
                     />
                   </RadioGroup>
                 </FormControl>
+
+                <Box mt={2}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={displayLoginDetails}
+                        onChange={(e) => setDisplayLoginDetails(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="Display login details"
+                  />
+                  
+                  <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                    Toggle to show or hide demo login credentials on login screen
+                  </Typography>
+                </Box>
 
                 <Box>
                   <Button

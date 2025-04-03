@@ -14,8 +14,7 @@ import { useAuthBackground } from "../../contexts/AuthBackgroundContext";
 import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 
 export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) => {
-  // Removed unused variables
-  useAuthBackground(); // Keep the hook call
+  const { showBackground } = useAuthBackground();
 
   const formContent = (
     <Box
@@ -29,24 +28,26 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
         p: 0
       }}
     >
-      <Box
-        component="img"
-        src="/static/images/backgrounds/arto-corner.png"
-        alt=""
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          maxHeight: {
-            sm: '250px',
-            md: '300px'
-          },
-          width: 'auto',
-          display: { xs: 'none', sm: 'none', md: 'block' },
-          marginRight: '16px',
-          marginBottom: '72px'
-        }}
-      />
+      {showBackground && (
+        <Box
+          component="img"
+          src="/static/images/backgrounds/arto-corner.png"
+          alt=""
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            maxHeight: {
+              sm: '250px',
+              md: '300px'
+            },
+            width: 'auto',
+            display: { xs: 'none', sm: 'none', md: 'block' },
+            marginRight: '16px',
+            marginBottom: '72px'
+          }}
+        />
+      )}
       <Box
         sx={{
           width: "100%",

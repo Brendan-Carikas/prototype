@@ -9,7 +9,7 @@ import chatBubble from '../../assets/images/art-bubble-blue.png';
 import { useState, useEffect } from 'react';
 
 const AuthLayout = () => {
-  const { customImage } = useAuthBackground(); // Removed unused showBackground
+  const { customImage, showBackground } = useAuthBackground();
   const backgroundImage = customImage || artoCorner;
   const location = useLocation();
   const theme = useTheme();
@@ -49,46 +49,50 @@ const AuthLayout = () => {
         overflow: 'auto'
       }}
     >
-      <Box
-        component="img"
-        src={chatBubble}
-        alt=""
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          maxHeight: {
-            xs: '200px',
-            sm: '300px',
-            md: '800px'
-          },
-          width: 'auto',
-          display: { md: 'block' },
-          marginLeft: '-64px',
-          marginTop: '-64px',
-          opacity: 0.05
-        }}
-      />
-      <Box
-        component="img"
-        src={backgroundImage}
-        alt=""
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          maxHeight: {
-            xs: '400px',
-            sm: '600px',
-            md: '600px'
-          },
-          width: 'auto',
-          display: { md: 'block' },
-          marginRight: '48px',
-          marginBottom: showFooter ? '116px' : '88px',
-          transition: 'margin-bottom 0.3s ease'
-        }}
-      />
+      {showBackground && (
+        <Box
+          component="img"
+          src={chatBubble}
+          alt=""
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            maxHeight: {
+              xs: '200px',
+              sm: '300px',
+              md: '800px'
+            },
+            width: 'auto',
+            display: { md: 'block' },
+            marginLeft: '-64px',
+            marginTop: '-64px',
+            opacity: 0.05
+          }}
+        />
+      )}
+      {showBackground && (
+        <Box
+          component="img"
+          src={backgroundImage}
+          alt=""
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            right: 0,
+            maxHeight: {
+              xs: '400px',
+              sm: '600px',
+              md: '600px'
+            },
+            width: 'auto',
+            display: { md: 'block' },
+            marginRight: '48px',
+            marginBottom: showFooter ? '116px' : '88px',
+            transition: 'margin-bottom 0.3s ease'
+          }}
+        />
+      )}
       <Box sx={{ flex: 1, position: 'relative', zIndex: 1 }}>
         <Box
           sx={{
