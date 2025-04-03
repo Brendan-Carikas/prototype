@@ -19,7 +19,7 @@ const ModernLogin = () => {
   const [error, setError] = useState('');
   const [isSignup, setIsSignup] = useState(false);
   const { login, signup } = useAuth();
-  const { customImage } = useAuthBackground();
+  const { customImage, showBackground } = useAuthBackground();
   const backgroundImage = customImage || artoCorner;
   const muiTheme = useMuiTheme();
   // Removed unused isMobile variable
@@ -75,16 +75,18 @@ const ModernLogin = () => {
         bgcolor: muiTheme.palette.background.default
       }}
     >
-      <Box
-        sx={{
-          flex: { xs: '1 1 auto', md: '1 1 60%' },
-          minHeight: { md: '100vh' },
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          display: { xs: 'none', md: 'block' }
-        }}
-      />
+      {showBackground && (
+        <Box
+          sx={{
+            flex: { xs: '1 1 auto', md: '1 1 60%' },
+            minHeight: { md: '100vh' },
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: { xs: 'none', md: 'block' }
+          }}
+        />
+      )}
       <Box
         sx={{
           width: '100%',

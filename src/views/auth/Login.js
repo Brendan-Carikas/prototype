@@ -19,7 +19,7 @@ import LogoIcon from "../../layouts/FullLayout/Logo/LogoIcon";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPassword, error, onSignupClick }) => {
-  const { isModal } = useAuthBackground(); // Keep only the needed variable
+  const { isModal, showBackground, displayLoginDetails } = useAuthBackground();
 
   const modalStyle = {
     position: 'absolute',
@@ -96,7 +96,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
             fullWidth
             required
             size="small"
-            helperText="Demo username: Demo"
+            helperText={displayLoginDetails ? "Demo username: Demo" : ""}
             placeholder="Enter your email"
             inputProps={{
               style: { fontSize: '16px' }
@@ -116,7 +116,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
               fullWidth
               required
               size="small"
-              helperText="Demo password: Demo"
+              helperText={displayLoginDetails ? "Demo password: Demo" : ""}
               placeholder="Enter your password"
               inputProps={{
                 style: { fontSize: '16px' }
@@ -235,32 +235,34 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
           ...modalStyle,
           bgcolor: 'background.default',
         }}>
-          <Box
-            sx={{
-              flex: '1 1 60%',
-              position: 'relative',
-              display: { xs: 'none', sm: 'none', md: 'block' }
-            }}
-          >
+          {showBackground && (
             <Box
-              component="img"
-              src="/static/images/backgrounds/arto-corner.png"
-              alt=""
               sx={{
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                maxHeight: {
-                  sm: '250px',
-                  md: '300px'
-                },
-                width: 'auto',
-                marginRight: '16px',
-                marginBottom: '72px',
+                flex: '1 1 60%',
+                position: 'relative',
                 display: { xs: 'none', sm: 'none', md: 'block' }
               }}
-            />
-          </Box>
+            >
+              <Box
+                component="img"
+                src="/static/images/backgrounds/arto-corner.png"
+                alt=""
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  maxHeight: {
+                    sm: '250px',
+                    md: '300px'
+                  },
+                  width: 'auto',
+                  marginRight: '16px',
+                  marginBottom: '72px',
+                  display: { xs: 'none', sm: 'none', md: 'block' }
+                }}
+              />
+            </Box>
+          )}
           {formContent}
         </Box>
       </Box>
@@ -272,8 +274,8 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
 
 const LoginNew = () => {
   const { login } = useAuth();
-  // Removed unused variables
-  useAuthBackground(); // Keep the hook call
+  // Keep the hook call without extracting unused variables
+  useAuthBackground();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
