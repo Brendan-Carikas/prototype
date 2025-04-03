@@ -1,6 +1,7 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
+import { SnackbarProvider } from 'notistack';
 import Themeroutes from "./routes/Router";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthBackgroundProvider } from "./contexts/AuthBackgroundContext";
@@ -13,16 +14,18 @@ function App() {
 
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <AuthBackgroundProvider>
-          <NotificationProvider>
-            <AIAssistantsProvider>
-              <CssBaseline />
-              {routing}
-            </AIAssistantsProvider>
-          </NotificationProvider>
-        </AuthBackgroundProvider>
-      </AuthProvider>
+      <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+        <AuthProvider>
+          <AuthBackgroundProvider>
+            <NotificationProvider>
+              <AIAssistantsProvider>
+                <CssBaseline />
+                {routing}
+              </AIAssistantsProvider>
+            </NotificationProvider>
+          </AuthBackgroundProvider>
+        </AuthProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
