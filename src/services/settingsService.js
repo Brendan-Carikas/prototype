@@ -71,13 +71,24 @@ export const settingsService = {
   // For demo mode - save settings to localStorage as fallback
   saveSettingsToLocalStorage(settings) {
     try {
-      // Save each setting with the exact key name expected by AuthBackgroundContext
-      if (settings['auth_background_visible'] !== undefined) {
-        localStorage.setItem('auth_background_visible', JSON.stringify(settings['auth_background_visible']));
-      }
-      if (settings['auth_background_align'] !== undefined) {
-        localStorage.setItem('auth_background_align', JSON.stringify(settings['auth_background_align']));
-      }
+      // Direct mapping to localStorage keys
+      const keyMap = {
+        'auth_background_visible': settings['auth_background_visible'],
+        'auth_background_align': settings['auth_background_align'],
+        'auth_background_modal': settings['auth_background_modal'],
+        'auth_background_two_column': settings['auth_background_two_column'],
+        'auth_display_login_details': settings['auth_display_login_details']
+      };
+      
+      // Save each setting with proper serialization
+      Object.entries(keyMap).forEach(([key, value]) => {
+        if (value !== undefined) {
+          localStorage.setItem(key, JSON.stringify(value));
+          console.log(`Saved ${key}:`, value);
+        }
+      });
+      
+      // Handle image separately since it's not JSON
       if (settings['auth_background_image'] !== undefined) {
         if (settings['auth_background_image'] === null) {
           localStorage.removeItem('auth_background_image');
@@ -85,15 +96,7 @@ export const settingsService = {
           localStorage.setItem('auth_background_image', settings['auth_background_image']);
         }
       }
-      if (settings['auth_background_modal'] !== undefined) {
-        localStorage.setItem('auth_background_modal', JSON.stringify(settings['auth_background_modal']));
-      }
-      if (settings['auth_background_two_column'] !== undefined) {
-        localStorage.setItem('auth_background_two_column', JSON.stringify(settings['auth_background_two_column']));
-      }
-      if (settings['auth_display_login_details'] !== undefined) {
-        localStorage.setItem('auth_display_login_details', JSON.stringify(settings['auth_display_login_details']));
-      }
+      
       return true;
     } catch (error) {
       console.error('Error saving settings to localStorage:', error);
