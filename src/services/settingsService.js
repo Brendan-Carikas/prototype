@@ -71,13 +71,29 @@ export const settingsService = {
   // For demo mode - save settings to localStorage as fallback
   saveSettingsToLocalStorage(settings) {
     try {
-      Object.entries(settings).forEach(([key, value]) => {
-        if (value === null || value === undefined) {
-          localStorage.removeItem(`auth_${key}`);
+      // Save each setting with the exact key name expected by AuthBackgroundContext
+      if (settings['auth_background_visible'] !== undefined) {
+        localStorage.setItem('auth_background_visible', JSON.stringify(settings['auth_background_visible']));
+      }
+      if (settings['auth_background_align'] !== undefined) {
+        localStorage.setItem('auth_background_align', JSON.stringify(settings['auth_background_align']));
+      }
+      if (settings['auth_background_image'] !== undefined) {
+        if (settings['auth_background_image'] === null) {
+          localStorage.removeItem('auth_background_image');
         } else {
-          localStorage.setItem(`auth_${key}`, typeof value === 'string' ? value : JSON.stringify(value));
+          localStorage.setItem('auth_background_image', settings['auth_background_image']);
         }
-      });
+      }
+      if (settings['auth_background_modal'] !== undefined) {
+        localStorage.setItem('auth_background_modal', JSON.stringify(settings['auth_background_modal']));
+      }
+      if (settings['auth_background_two_column'] !== undefined) {
+        localStorage.setItem('auth_background_two_column', JSON.stringify(settings['auth_background_two_column']));
+      }
+      if (settings['auth_display_login_details'] !== undefined) {
+        localStorage.setItem('auth_display_login_details', JSON.stringify(settings['auth_display_login_details']));
+      }
       return true;
     } catch (error) {
       console.error('Error saving settings to localStorage:', error);

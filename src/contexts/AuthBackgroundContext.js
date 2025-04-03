@@ -75,7 +75,7 @@ export function AuthBackgroundProvider({ children }) {
       let success = false;
       
       if (isDemoMode) {
-        // In demo mode, save to localStorage
+        // In demo mode, save to localStorage using the exact key names
         success = settingsService.saveSettingsToLocalStorage({
           'auth_background_visible': showBackground,
           'auth_background_align': alignLeft,
@@ -83,6 +83,16 @@ export function AuthBackgroundProvider({ children }) {
           'auth_background_modal': isModal,
           'auth_background_two_column': isTwoColumn,
           'auth_display_login_details': displayLoginDetails
+        });
+        
+        // Also log the values being saved for debugging
+        console.log('Saving settings to localStorage:', {
+          showBackground,
+          alignLeft,
+          customImage,
+          isModal,
+          isTwoColumn,
+          displayLoginDetails
         });
       } else if (user) {
         // If authenticated with Firebase, save to Firestore
