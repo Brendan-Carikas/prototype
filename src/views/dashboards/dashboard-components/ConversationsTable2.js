@@ -32,7 +32,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { enGB } from 'date-fns/locale';
 // Removed unused import: MoreHorizIcon
 // Removed unused import: ChatIcon
-import FilterListIcon from '@mui/icons-material/FilterList';
+// import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -265,12 +265,13 @@ const ConversationsTable2 = ({ sx }) => {
     { value: 'custom', label: 'Custom range' },
   ];
 
-  const handleFilterClick = (event) => {
-    setFilterAnchorEl(event.currentTarget);
-    // Reset focused states when opening menu
-    setFocusedTimeFilter(null);
-    setFocusedSource(null);
-  };
+  // Function for filter click handling
+  // const handleFilterClick = (event) => {
+  //   setFilterAnchorEl(event.currentTarget);
+  //   // Reset focused states when opening menu
+  //   setFocusedTimeFilter(null);
+  //   setFocusedSource(null);
+  // };
 
   const handleFilterClose = () => {
     setFilterAnchorEl(null);
@@ -433,12 +434,13 @@ const ConversationsTable2 = ({ sx }) => {
     setOrder(order === 'asc' ? 'desc' : 'asc');
   };
 
-  const getActiveFilterCount = () => {
-    let count = 0;
-    if (selectedFilter !== 'all') count++;
-    if (!selectedSources.includes('all')) count++;
-    return count;
-  };
+  // Function to count active filters
+  // const getActiveFilterCount = () => {
+  //   let count = 0;
+  //   if (selectedFilter !== 'all') count++;
+  //   if (!selectedSources.includes('all')) count++;
+  //   return count;
+  // };
 
   const handleFilterReset = () => {
     setSelectedFilter('all');
