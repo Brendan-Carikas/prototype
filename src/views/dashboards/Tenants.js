@@ -75,14 +75,7 @@ const Tenants = () => {
                 endIcon={<ArrowForwardIosIcon sx={{ fontSize: 12 }} />}
                 sx={{ 
                   borderRadius: 4, 
-                  backgroundColor: '#f0f7f0', 
-                  borderColor: '#e0e0e0',
-                  color: '#2e7d32',
                   textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: '#e8f5e9',
-                    borderColor: '#c8e6c9'
-                  }
                 }}
               >
                 LIVE Site
@@ -115,14 +108,7 @@ const Tenants = () => {
                 endIcon={<ArrowForwardIosIcon sx={{ fontSize: 12 }} />}
                 sx={{ 
                   borderRadius: 4, 
-                  backgroundColor: '#f0f7f0', 
-                  borderColor: '#e0e0e0',
-                  color: '#2e7d32',
                   textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: '#e8f5e9',
-                    borderColor: '#c8e6c9'
-                  }
                 }}
               >
                 LIVE Site
@@ -155,14 +141,7 @@ const Tenants = () => {
                 endIcon={<ArrowForwardIosIcon sx={{ fontSize: 12 }} />}
                 sx={{ 
                   borderRadius: 4, 
-                  backgroundColor: '#f0f7f0', 
-                  borderColor: '#e0e0e0',
-                  color: '#2e7d32',
                   textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: '#e8f5e9',
-                    borderColor: '#c8e6c9'
-                  }
                 }}
               >
                 LIVE Site

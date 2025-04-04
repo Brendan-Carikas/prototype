@@ -50,7 +50,7 @@ const Dashboard2 = () => {
         
         
         {/* Row 2 - Conversations List */}
-        <Grid item xs={12} sx={{ p: 1, mt: 2 }}>
+        <Grid item xs={12} sx={{ p: 1, mt: 2, mb: 6 }}>
           <ConversationsTable2 sx={cardStyle} />
         </Grid>
       </Grid>

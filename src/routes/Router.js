@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 
 // Layouts
 import FullLayout from "../layouts/FullLayout/FullLayout.js";
+import DrawerLayout from "../layouts/DrawerLayout/DrawerLayout.js";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout.js";
 import ConversationLayout from "../layouts/ConversationLayout/ConversationLayout.js";
 
@@ -38,12 +39,18 @@ const ThemeRoutes = [
     children: [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
-      { path: "dashboards/dashboard2", element: <Dashboard2 /> },
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
-      { path: "dashboards/tenants", element: <Tenants /> },
-      { path: "dashboards/billing", element: <Billing /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
+    ],
+  },
+  {
+    path: "/app/dashboards",
+    element: <DrawerLayout />,
+    children: [
+      { path: "dashboard2", element: <Dashboard2 /> },
+      { path: "tenants", element: <Tenants /> },
+      { path: "billing", element: <Billing /> },
     ],
   },
   {
