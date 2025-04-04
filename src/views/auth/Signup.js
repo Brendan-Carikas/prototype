@@ -266,6 +266,23 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
             />
           </Box>
 
+          <Box sx={{ width: '100%', mt: 1 }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="marketing"
+                  color="primary"
+                  size="small"
+                />
+              }
+              label={
+                <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                  I agree to receive occasional marketing communications.
+                </Typography>
+              }
+            />
+          </Box>
+
 
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
             <Box
