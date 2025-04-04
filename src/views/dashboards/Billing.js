@@ -120,11 +120,14 @@ const PricingTable = () => {
         <Typography 
           variant={pricingTableTheme.typography.tableHeading.variant} 
           component="h2" 
+          align="center"
           sx={{ 
             mb: pricingTableTheme.typography.tableHeading.marginBottom, 
+            mt: '40px',
             fontWeight: pricingTableTheme.typography.tableHeading.fontWeight, 
             color: pricingTableTheme.typography.tableHeading.color, 
-            fontSize: pricingTableTheme.typography.tableHeading.fontSize
+            fontSize: '24px',
+            textAlign: 'center'
           }}
         >
           Choose your plan
@@ -247,10 +250,12 @@ const PricingTable = () => {
       <Typography 
         variant={pricingTableTheme.typography.tableHeading.variant} 
         component="h2" 
+        align="left"
         sx={{ 
           mb: pricingTableTheme.typography.tableHeading.marginBottom, 
           fontWeight: pricingTableTheme.typography.tableHeading.fontWeight, 
-          color: pricingTableTheme.typography.tableHeading.color 
+          color: pricingTableTheme.typography.tableHeading.color,
+          textAlign: 'left'
         }}
       >
         Choose your plan
