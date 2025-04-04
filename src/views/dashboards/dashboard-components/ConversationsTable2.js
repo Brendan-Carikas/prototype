@@ -613,8 +613,24 @@ const ConversationsTable2 = ({ sx }) => {
             </Box>
           </Box>
 
-          <Box sx={{ overflowX: 'auto', width: '100%', WebkitOverflowScrolling: 'touch' }}>
-            <Table>
+          <Box sx={{ 
+            overflowX: 'auto', 
+            width: '100%', 
+            WebkitOverflowScrolling: 'touch',
+            '&::-webkit-scrollbar': {
+              height: '8px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'rgba(0, 0, 0, 0.05)',
+            },
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05)',
+          }}>
+            <Table sx={{ minWidth: { xs: 800, sm: 900 } }}>
               <TableHead>
                 <TableRow>
                   <TableCell component="td" padding="none" sx={{ width: '48px', verticalAlign: 'middle' }} />
