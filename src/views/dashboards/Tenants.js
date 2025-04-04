@@ -64,6 +64,9 @@ const Tenants = () => {
                 <Typography variant="body2" color="text.secondary">
                   invotra.chargebee.com
                 </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
+                  Created: 12 Jan 2024
+                </Typography>
               </Box>
               <Button 
                 variant="outlined" 
@@ -101,6 +104,9 @@ const Tenants = () => {
                 <Typography variant="body2" color="text.secondary">
                   acme.chargebee.com
                 </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
+                  Created: 03 Mar 2024
+                </Typography>
               </Box>
               <Button 
                 variant="outlined" 
@@ -137,6 +143,9 @@ const Tenants = () => {
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   techstart.chargebee.com
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
+                  Created: 18 Feb 2024
                 </Typography>
               </Box>
               <Button 
