@@ -25,7 +25,7 @@ const pricingTableTheme = {
     planName: {
       desktop: {
         variant: 'h5',
-        fontWeight: 400,
+        fontWeight: 700,
         marginBottom: 1,
       },
       mobile: {
@@ -48,7 +48,7 @@ const pricingTableTheme = {
     priceAmount: {
       desktop: {
         variant: 'h3',
-        fontWeight: 500,
+        fontWeight: 400,
         color: '#1C1362',
       },
       mobile: {
@@ -76,7 +76,7 @@ const pricingTableTheme = {
       color: '#64748b',
     },
     tableHeading: {
-      variant: 'h2',
+      variant: 'h3',
       fontWeight: 400,
       color: '#000000',
       marginBottom: 4,
