@@ -34,14 +34,14 @@ export const AuthProvider = ({ children }) => {
       if (email === 'Demo' && password === 'Demo') {
         setUser({ email: 'Demo', uid: 'demo-user-id' });
         setIsDemoMode(true);
-        navigate('/app/dashboards/dashboard1');
+        navigate('/app/dashboards/dashboard2');
         return { success: true };
       }
       
       // Firebase Auth login
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       setIsDemoMode(false);
-      navigate('/app/dashboards/dashboard1');
+      navigate('/app/dashboards/dashboard2');
       return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Error logging in:', error.message);
@@ -71,14 +71,14 @@ export const AuthProvider = ({ children }) => {
       if (email === 'Demo' && password === 'Demo') {
         setUser({ email: 'Demo', uid: 'demo-user-id' });
         setIsDemoMode(true);
-        navigate('/app/dashboards/dashboard1');
+        navigate('/app/dashboards/dashboard2');
         return { success: true };
       }
       
       // Firebase Auth signup
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setIsDemoMode(false);
-      navigate('/app/dashboards/dashboard1');
+      navigate('/app/dashboards/dashboard2');
       return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Error signing up:', error.message);

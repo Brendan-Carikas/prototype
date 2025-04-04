@@ -76,7 +76,7 @@ const pricingTableTheme = {
       color: '#64748b',
     },
     tableHeading: {
-      variant: 'h3',
+      variant: 'h4',
       fontWeight: 400,
       color: '#000000',
       marginBottom: 4,

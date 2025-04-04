@@ -1,21 +1,21 @@
 import React from "react";
-import { Grid, Box, Typography, Card, Button, Divider, Paper } from "@mui/material";
+import { Grid, Box, Typography, Button, Paper } from "@mui/material";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // Import ChargeBee logo
 import chargebeeLogo from '../../assets/images/CB _logo.png';
 
-
 const Tenants = () => {
-  const cardStyle = {
-    border: '1px solid',
-    borderColor: 'divider',
-    boxShadow: 'none',
-    height: '100%',
-    '& .MuiCardContent-root': {
-      height: '100%',
-    },
-  };
+  // Card style for future use
+  // const cardStyle = {
+  //   border: '1px solid',
+  //   borderColor: 'divider',
+  //   boxShadow: 'none',
+  //   height: '100%',
+  //   '& .MuiCardContent-root': {
+  //     height: '100%',
+  //   },
+  // };
 
   return (
     <Box sx={{ p: 3, mt: 3 }}>
@@ -32,7 +32,7 @@ const Tenants = () => {
           <img 
             src={chargebeeLogo} 
             alt="ChargeBee Logo" 
-            style={{ height: '24px', marginRight: '10px' }} 
+            style={{ height: '16px', marginRight: '10px' }} 
           />
         </Box>
         <Button 

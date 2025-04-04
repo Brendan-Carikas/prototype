@@ -1,21 +1,28 @@
 import React from "react";
 import { Grid, Box, Typography, Card, Button, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useMediaQuery, useTheme } from "@mui/material";
 import PaymentIcon from '@mui/icons-material/Payment';
-import CheckIcon from '@mui/icons-material/Check';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
+import SupportOutlinedIcon from '@mui/icons-material/SupportOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 // Import pricing table theme
 import pricingTableTheme from '../../assets/global/PricingTableTheme';
 
 const Billing = () => {
-  const cardStyle = {
-    border: '1px solid',
-    borderColor: 'divider',
-    boxShadow: 'none',
-    height: '100%',
-    '& .MuiCardContent-root': {
-      height: '100%',
-    },
-  };
+  // Card style for future use
+  // const cardStyle = {
+  //   border: '1px solid',
+  //   borderColor: 'divider',
+  //   boxShadow: 'none',
+  //   height: '100%',
+  //   '& .MuiCardContent-root': {
+  //     height: '100%',
+  //   },
+  // };
 
   return (
     <Box sx={{ p: 3, mt: 3 }}>
@@ -172,29 +179,45 @@ const PricingTable = () => {
               
               <Box sx={{ mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                    <MessageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
                   <Typography>2,000 messages per month</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                    <StorageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
                   <Typography>Data integration and setup</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                    <SupportOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
                   <Typography>Support level: {plan.features.supportLevel}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  {plan.features.accountManager ? 
-                    <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1 }} /> : 
-                    <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, mr: 1 }} />}
-                  <Typography>Dedicated account manager</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                    <PersonOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography>Dedicated account manager</Typography>
+                    {plan.features.accountManager ? 
+                      <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
+                      <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                  </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-                  {plan.features.serviceReviews ? 
-                    <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1, mt: 0.5 }} /> : 
-                    <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, mr: 1, mt: 0.5 }} />}
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5 }}>
+                    <AssessmentOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
                   <Box>
-                    <Typography>Service reviews</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography>Service reviews</Typography>
+                      {plan.features.serviceReviews ? 
+                        <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
+                        <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                    </Box>
                     {plan.features.serviceReviews && 
                       <Typography variant="body2" color="text.secondary">
                         {plan.features.serviceReviews}
@@ -203,11 +226,16 @@ const PricingTable = () => {
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-                  {plan.features.incidentHelpline ? 
-                    <CheckIcon sx={{ color: pricingTableTheme.colors.success, mr: 1, mt: 0.5 }} /> : 
-                    <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, mr: 1, mt: 0.5 }} />}
+                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5 }}>
+                    <HelpOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                  </Box>
                   <Box>
-                    <Typography>Access to incident helpline</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography>Access to incident helpline</Typography>
+                      {plan.features.incidentHelpline ? 
+                        <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
+                        <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                    </Box>
                     {plan.features.incidentHelpline && 
                       <Typography variant="body2" color="text.secondary">
                         {plan.features.incidentDetails}
@@ -310,11 +338,14 @@ const PricingTable = () => {
             {/* Messages */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>2,000 messages per month</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <MessageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>2,000 messages per month</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
-                  <CheckIcon sx={{ color: pricingTableTheme.colors.success }} />
+                  <CheckCircleIcon sx={{ color: '#36ada4', fontSize: '1.3rem', fontWeight: 'bold' }} />
                 </TableCell>
               ))}
             </TableRow>
@@ -322,11 +353,14 @@ const PricingTable = () => {
             {/* Data Integration */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Data integration and setup</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <StorageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Data integration and setup</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
-                  <CheckIcon sx={{ color: pricingTableTheme.colors.success }} />
+                  <CheckCircleIcon sx={{ color: '#36ada4', fontSize: '1.3rem', fontWeight: 'bold' }} />
                 </TableCell>
               ))}
             </TableRow>
@@ -334,7 +368,10 @@ const PricingTable = () => {
             {/* Support Level */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Support level</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <SupportOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Support level</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
@@ -346,12 +383,15 @@ const PricingTable = () => {
             {/* Account Manager */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Dedicated account manager</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <PersonOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Dedicated account manager</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
                   {plan.features.accountManager ? 
-                    <CheckIcon sx={{ color: pricingTableTheme.colors.success }} /> : 
+                    <CheckCircleIcon sx={{ color: '#36ada4', fontSize: '1.3rem', fontWeight: 'bold' }} /> : 
                     <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled }} />}
                 </TableCell>
               ))}
@@ -360,7 +400,10 @@ const PricingTable = () => {
             {/* Service Reviews */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Service reviews</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AssessmentOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Service reviews</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
@@ -374,13 +417,16 @@ const PricingTable = () => {
             {/* Incident Helpline */}
             <TableRow>
               <TableCell component="th" scope="row">
-                <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Incident helpline</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <HelpOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, mr: 1.5, fontSize: '1.2rem' }} />
+                  <Typography fontWeight={pricingTableTheme.typography.featureText.fontWeight}>Incident helpline</Typography>
+                </Box>
               </TableCell>
               {plans.map((plan, index) => (
                 <TableCell key={index} align="center" sx={{ backgroundColor: index === 1 || index === 3 ? pricingTableTheme.colors.background : 'transparent' }}>
                   {plan.features.incidentHelpline ? 
                     <Box>
-                      <CheckIcon sx={{ color: pricingTableTheme.colors.success }} />
+                      <CheckCircleIcon sx={{ color: '#36ada4', fontSize: '1.3rem', fontWeight: 'bold' }} />
                       {plan.features.incidentDetails && <Typography variant="caption" display="block">{plan.features.incidentDetails}</Typography>}
                     </Box> : 
                     <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled }} />}
