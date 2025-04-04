@@ -6,13 +6,15 @@ import {
   Button,
   Stack,
   Toolbar,
+  IconButton,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../../contexts/AuthContext";
 import logo from "../../../assets/images/arto-site-logo.png";
 
-const Header = ({ sx }) => {
+const Header = ({ sx, toggleSidebar, open }) => {
   const { logout } = useAuth();
 
   const handleLogout = async () => {
@@ -34,6 +36,15 @@ const Header = ({ sx }) => {
       position="fixed"
     >
       <Toolbar>
+        <IconButton
+          color="primary"
+          aria-label="toggle sidebar"
+          onClick={toggleSidebar}
+          edge="start"
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
         <Link to="/">
           <img src={logo} alt="Arto" height="36px" />
         </Link>
@@ -63,6 +74,8 @@ const Header = ({ sx }) => {
 
 Header.propTypes = {
   sx: PropTypes.object,
+  toggleSidebar: PropTypes.func,
+  open: PropTypes.bool,
 };
 
 export default Header;
