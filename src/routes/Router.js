@@ -8,7 +8,10 @@ import ConversationLayout from "../layouts/ConversationLayout/ConversationLayout
 
 // Pages
 import Dashboard1 from "../views/dashboards/Dashboard1.js";
+import Dashboard2 from "../views/dashboards/Dashboard2.js";
 import ConvoDashboard from "../views/dashboards/ConvoDashboard.js";
+import Tenants from "../views/dashboards/Tenants.js";
+import Billing from "../views/dashboards/Billing.js";
 import SingleConversation from "../views/Settings/SingleConversation.js";
 import LoginSelector from "../views/auth/LoginSelector.js";
 import ModernLogin from "../views/auth/ModernLogin.js";
@@ -35,7 +38,10 @@ const ThemeRoutes = [
     children: [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
+      { path: "dashboards/dashboard2", element: <Dashboard2 /> },
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
+      { path: "dashboards/tenants", element: <Tenants /> },
+      { path: "dashboards/billing", element: <Billing /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
     ],
