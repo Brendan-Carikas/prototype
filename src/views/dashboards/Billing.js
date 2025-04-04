@@ -27,8 +27,8 @@ const Billing = () => {
   return (
     <Box sx={{ p: 3, mt: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
-        <PaymentIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
-        <Typography variant="h2" component="h1">
+        <PaymentIcon color="primary" sx={{ width: 40, height: 40, mr: 2, mb: 2 }} />
+        <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
           Billing
         </Typography>
       </Box>
