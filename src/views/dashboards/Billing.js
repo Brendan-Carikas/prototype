@@ -179,70 +179,91 @@ const PricingTable = () => {
               
               <Box sx={{ mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                  <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, display: { xs: 'none', sm: 'flex' } }}>
                     <MessageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
                   </Box>
-                  <Typography>2,000 messages per month</Typography>
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ textAlign: { xs: 'left' } }}>2,000 messages per month</Typography>
+                  </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                  <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, display: { xs: 'none', sm: 'flex' } }}>
                     <StorageOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
                   </Box>
-                  <Typography>Data integration and setup</Typography>
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ textAlign: { xs: 'left' } }}>Data integration and setup</Typography>
+                  </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
+                  <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, display: { xs: 'none', sm: 'flex' } }}>
                     <SupportOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
                   </Box>
-                  <Typography>Support level: {plan.features.supportLevel}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1 }}>
-                    <PersonOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography>Dedicated account manager</Typography>
-                    {plan.features.accountManager ? 
-                      <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
-                      <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ textAlign: { xs: 'left' } }}>Support level: {plan.features.supportLevel}</Typography>
                   </Box>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5 }}>
-                    <AssessmentOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
-                  </Box>
-                  <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography>Service reviews</Typography>
-                      {plan.features.serviceReviews ? 
-                        <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
-                        <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                {/* Only show account manager row if feature is available or we're not on mobile */}
+                {(plan.features.accountManager || !isMobile) && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, display: { xs: 'none', sm: 'flex' } }}>
+                      <PersonOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
                     </Box>
-                    {plan.features.serviceReviews && 
-                      <Typography variant="body2" color="text.secondary">
-                        {plan.features.serviceReviews}
-                      </Typography>
-                    }
-                  </Box>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5 }}>
-                    <HelpOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
-                  </Box>
-                  <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography>Access to incident helpline</Typography>
-                      {plan.features.incidentHelpline ? 
-                        <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold' }} /> : 
-                        <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem' }} />}
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <Typography sx={{ textAlign: { xs: 'left' } }}>Dedicated account manager</Typography>
+                      {/* Desktop view icon */}
+                      {plan.features.accountManager ? 
+                        <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold', display: { xs: 'none', sm: 'inline-flex' } }} /> : 
+                        <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem', display: { xs: 'none', sm: 'inline-flex' } }} />}
+
                     </Box>
-                    {plan.features.incidentHelpline && 
-                      <Typography variant="body2" color="text.secondary">
-                        {plan.features.incidentDetails}
-                      </Typography>
-                    }
                   </Box>
-                </Box>
+                )}
+                {/* Only show service reviews row if feature is available or we're not on mobile */}
+                {(plan.features.serviceReviews || !isMobile) && (
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
+                    <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5, display: { xs: 'none', sm: 'flex' } }}>
+                      <AssessmentOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                    </Box>
+                    <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <Typography sx={{ textAlign: { xs: 'left' } }}>Service reviews</Typography>
+                        {/* Desktop view icon */}
+                        {plan.features.serviceReviews ? 
+                          <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold', display: { xs: 'none', sm: 'inline-flex' } }} /> : 
+                          <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem', display: { xs: 'none', sm: 'inline-flex' } }} />}
+
+                      </Box>
+                      {plan.features.serviceReviews && 
+                        <Typography variant="body2" color="textSecondary" sx={{ textAlign: { xs: 'left' } }}>
+                          {plan.features.serviceReviews}
+                        </Typography>
+                      }
+                    </Box>
+                  </Box>
+                )}
+                {/* Only show incident helpline row if feature is available or we're not on mobile */}
+                {(plan.features.incidentHelpline || !isMobile) && (
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
+                    <Box sx={{ alignItems: 'center', minWidth: '28px', mr: 1, mt: 0.5, display: { xs: 'none', sm: 'flex' } }}>
+                      <HelpOutlineOutlinedIcon sx={{ color: pricingTableTheme.colors.primary, fontSize: '1.2rem' }} />
+                    </Box>
+                    <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <Typography sx={{ textAlign: { xs: 'left' } }}>Incident helpline</Typography>
+                        {/* Desktop view icon */}
+                        {plan.features.incidentHelpline ? 
+                          <CheckCircleIcon sx={{ color: '#36ada4', ml: 1, fontSize: '1.2rem', fontWeight: 'bold', display: { xs: 'none', sm: 'inline-flex' } }} /> : 
+                          <CloseIcon sx={{ color: pricingTableTheme.colors.textDisabled, ml: 1, fontSize: '1rem', display: { xs: 'none', sm: 'inline-flex' } }} />}
+
+                      </Box>
+                      {plan.features.incidentHelpline && 
+                        <Typography variant="body2" color="textSecondary" sx={{ textAlign: { xs: 'left' } }}>
+                          {plan.features.incidentDetails}
+                        </Typography>
+                      }
+                    </Box>
+                  </Box>
+                )}
               </Box>
               
               <Button 
