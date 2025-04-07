@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "artoadmin",
     "public": "build",
     "ignore": [
       "firebase.json",

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "ids-project-597cc"
+  },
+  "targets": {
+    "ids-project-597cc": {
+      "hosting": {
+        "artoadmin": [
+          "artoadmin"
+        ]
+      }
+    }
   }
 }

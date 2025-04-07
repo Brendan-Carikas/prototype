@@ -33,8 +33,8 @@ const AuthLayout = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // If it's the modern login page, don't apply the auth layout
-  if (location.pathname === '/modern-login') {
+  // If it's the modern login page or IDS login page, don't apply the auth layout
+  if (location.pathname === '/modern-login' || location.pathname === '/ids-login') {
     return <Outlet />;
   }
 
