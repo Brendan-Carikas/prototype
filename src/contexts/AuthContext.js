@@ -55,7 +55,8 @@ export const AuthProvider = ({ children }) => {
       // Firebase Auth login
       const userCredential = await signInWithEmailAndPassword(auth, username, password);
       setIsDemoMode(false);
-      navigate('/app/dashboards/dashboard2');
+      // Redirect to Login.js instead of dashboard
+      navigate('/auth/login');
       return { success: true, user: userCredential.user };
     } catch (error) {
       console.error('Error logging in with IDS:', error.message);
