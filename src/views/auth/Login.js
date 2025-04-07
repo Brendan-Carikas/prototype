@@ -139,7 +139,7 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
             />
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-              <RouterLink to="/forgot-password" style={{ textDecoration: 'none' }}>
+              <RouterLink to="/auth/forgot-password" style={{ textDecoration: 'none' }}>
                 <Link
                   component="span"
                   variant="body2"
@@ -192,9 +192,9 @@ const LoginForm = ({ onSubmit, formData, handleChange, showPassword, setShowPass
                   Create account
                 </Button>
               ) : (
-                <RouterLink to="/signup">
+                <RouterLink to="/auth/signup">
                   <a
-                    href="/signup"
+                    href="/auth/signup"
                     style={{ 
                       color: '#1C1362',
                       fontWeight: 'bold',

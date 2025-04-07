@@ -2,8 +2,6 @@ import React from "react";
 import { Grid, Box, Typography, Button, Paper } from "@mui/material";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-// Import ChargeBee logo
-import chargebeeLogo from '../../assets/images/CB _logo.png';
 
 const Tenants = () => {
   // Card style for future use
@@ -26,27 +24,6 @@ const Tenants = () => {
         </Typography>
       </Box>
       
-      {/* ChargeBee Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <img 
-            src={chargebeeLogo} 
-            alt="ChargeBee Logo" 
-            style={{ height: '16px', marginRight: '10px' }} 
-          />
-        </Box>
-        <Button 
-          variant="text" 
-          color="primary"
-          size="small"
-          sx={{ 
-            textTransform: 'none',
-          }}
-        >
-          Sign out
-        </Button>
-      </Box>
-
       <Grid container spacing={2}>
         {/* Tenant Cards */}
         <Grid item xs={12}>

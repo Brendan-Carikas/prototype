@@ -33,6 +33,10 @@ const ThemeRoutes = [
   { path: "", element: <Navigate to="/ids-login" replace /> },
   // Redirect from login to IDS login (to handle direct #/login access)
   { path: "/login", element: <Navigate to="/ids-login" replace /> },
+  // Redirect from signup to auth/signup
+  { path: "/signup", element: <Navigate to="/auth/signup" replace /> },
+  // Redirect from forgot-password to auth/forgot-password
+  { path: "/forgot-password", element: <Navigate to="/auth/forgot-password" replace /> },
   {
     path: "/auth",
     element: <AuthLayout />,
@@ -51,6 +55,7 @@ const ThemeRoutes = [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
+      { path: "dashboards/tenants", element: <Tenants /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
     ],
@@ -60,7 +65,6 @@ const ThemeRoutes = [
     element: <ProtectedRoute><DrawerLayout /></ProtectedRoute>,
     children: [
       { path: "dashboard2", element: <Dashboard2 /> },
-      { path: "tenants", element: <Tenants /> },
       { path: "billing", element: <Billing /> },
     ],
   },
