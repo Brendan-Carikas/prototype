@@ -28,15 +28,17 @@ import IDSLogin from "../views/invauth/IDSLogin.js";
 const ThemeRoutes = [
   // Direct route for IDSLogin without AuthLayout
   { path: "/ids-login", element: <IDSLogin /> },
+  // Redirect from root to IDS login
+  { path: "/", element: <Navigate to="/ids-login" replace /> },
   {
-    path: "/",
+    path: "/auth",
     element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginSelector /> },
       { path: "modern-login", element: <ModernLogin /> },
       { path: "signup", element: <Signup /> },
       { path: "forgot-password", element: <ForgotPassword /> },
-      { path: "", element: <Navigate to="/login" /> },
+      { path: "", element: <Navigate to="/ids-login" /> },
     ],
   },
   {

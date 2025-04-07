@@ -9,14 +9,13 @@ import {
   IconButton,
   Alert,
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '../../contexts/AuthContext';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InvotraLogo from '../../assets/images/InvotraLogo.png';
 
 const IDSLogin = () => {
-  const navigate = useNavigate();
   const { loginWithIDS } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
