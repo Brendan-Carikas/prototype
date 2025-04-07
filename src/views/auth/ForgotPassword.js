@@ -134,7 +134,7 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
               </Button>
 
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                <RouterLink to="/login" style={{ textDecoration: "none" }}>
+                <RouterLink to="/auth/login" style={{ textDecoration: "none" }}>
                   <Link
                     component="span"
                     variant="body2"

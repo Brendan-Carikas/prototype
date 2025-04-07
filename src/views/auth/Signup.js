@@ -356,7 +356,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
           <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
             <Typography variant="body2" color="textSecondary">
               Already have an account?{" "}
-              <RouterLink to="/login" style={{ textDecoration: "none" }}>
+              <RouterLink to="/auth/login" style={{ textDecoration: "none" }}>
                 <Link
                   component="span"
                   variant="body2"
