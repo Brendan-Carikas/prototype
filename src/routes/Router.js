@@ -7,6 +7,9 @@ import DrawerLayout from "../layouts/DrawerLayout/DrawerLayout.js";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout.js";
 import ConversationLayout from "../layouts/ConversationLayout/ConversationLayout.js";
 
+// Auth Protection
+import ProtectedRoute from "../components/ProtectedRoute.js";
+
 // Pages
 import Dashboard1 from "../views/dashboards/Dashboard1.js";
 import Dashboard2 from "../views/dashboards/Dashboard2.js";
@@ -20,8 +23,11 @@ import Signup from "../views/auth/Signup.js";
 import ForgotPassword from "../views/auth/ForgotPassword.js";
 import InvotraAdmin from "../views/admin/InvotraAdmin";
 import AdminDashboard from "../views/dashboards/AdminDashboard.js";
+import IDSLogin from "../views/invauth/IDSLogin.js";
 
 const ThemeRoutes = [
+  // Direct route for IDSLogin without AuthLayout
+  { path: "/ids-login", element: <IDSLogin /> },
   {
     path: "/",
     element: <AuthLayout />,
@@ -35,7 +41,7 @@ const ThemeRoutes = [
   },
   {
     path: "/app",
-    element: <FullLayout />,
+    element: <ProtectedRoute><FullLayout /></ProtectedRoute>,
     children: [
       { path: "", element: <Navigate to="/app/dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", element: <Dashboard1 /> },
@@ -46,7 +52,7 @@ const ThemeRoutes = [
   },
   {
     path: "/app/dashboards",
-    element: <DrawerLayout />,
+    element: <ProtectedRoute><DrawerLayout /></ProtectedRoute>,
     children: [
       { path: "dashboard2", element: <Dashboard2 /> },
       { path: "tenants", element: <Tenants /> },
@@ -55,7 +61,7 @@ const ThemeRoutes = [
   },
   {
     path: "/app/settings/conversations",
-    element: <ConversationLayout />,
+    element: <ProtectedRoute><ConversationLayout /></ProtectedRoute>,
     children: [
       { path: ":id", element: <SingleConversation /> },
     ],

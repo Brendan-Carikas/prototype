@@ -49,6 +49,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Specific login method for IDS login page
+  const loginWithIDS = async (username, password) => {
+    try {
+      // Firebase Auth login
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      setIsDemoMode(false);
+      navigate('/app/dashboards/dashboard2');
+      return { success: true, user: userCredential.user };
+    } catch (error) {
+      console.error('Error logging in with IDS:', error.message);
+      return { 
+        success: false, 
+        error: error.code, 
+        message: error.message 
+      };
+    }
+  };
+
   const logout = async () => {
     try {
       if (isDemoMode) {
@@ -57,7 +75,8 @@ export const AuthProvider = ({ children }) => {
       } else {
         await signOut(auth);
       }
-      navigate('/login');
+      // Redirect to IDS login page instead of the standard login
+      navigate('/ids-login');
       return true;
     } catch (error) {
       console.error('Error logging out:', error.message);
@@ -90,6 +109,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{ 
       user, 
       login, 
+      loginWithIDS, 
       logout, 
       signup, 
       loading,
