@@ -37,7 +37,6 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
   };
 
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [recaptchaChecked, setRecaptchaChecked] = useState(true);
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
@@ -46,15 +45,12 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
       formData.email?.trim() &&
       formData.password?.trim() &&
       formData.confirmPassword?.trim() &&
-      termsAccepted &&
-      recaptchaChecked;
+      termsAccepted;
     
     setIsFormValid(isValid);
-  }, [formData, termsAccepted, recaptchaChecked]);
+  }, [formData, termsAccepted]);
 
-  const handleRecaptchaChange = (value) => {
-    setRecaptchaChecked(value);
-  };
+  // CAPTCHA handling removed
 
   const formContent = (
     <Box
@@ -284,56 +280,7 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
           </Box>
 
 
-          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
-            <Box
-              sx={{
-                width: '302px',
-                height: '76px',
-                border: '1px solid #d3d3d3',
-                borderRadius: 1,
-                backgroundColor: '#f9f9f9',
-                display: 'flex',
-                alignItems: 'center',
-                px: 2,
-                gap: 2,
-              }}
-            >
-              <Checkbox
-                checked={recaptchaChecked}
-                size="small"
-                sx={{ 
-                  width: 24,
-                  height: 24,
-                  border: '2px solid #c1c1c1',
-                  borderRadius: 1,
-                  '&:hover': {
-                    bgcolor: 'transparent'
-                  }
-                }}
-                onChange={(e) => handleRecaptchaChange(e.target.checked)}
-              />
-              <Typography
-                variant="body2"
-                sx={{
-                  color: '#000000',
-                  fontSize: '14px',
-                  userSelect: 'none'
-                }}
-              >
-                I'm not a robot
-              </Typography>
-              <Box sx={{ ml: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-                <img 
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAADq0lEQVR4nO2bTWhcVRTHf+e+l7yZJLZJk0nSNKaIFawfiFAXbqwLaXEhdOFGLbhzWYoUpLhzVXChLgQFoYIK6qKCKEJFEKmgHxpKq2DaTNokM5P5yMu8e4+LeWmGvExmknnvTWbmBwPz3r3nnHP+/zn33HffHKhQoUKFChUq3JtIuQIrpbQAvUAHEAWiwIr5CQP15msFiAEzwBQwCowAk8aYTDnbXhQBSqkQcD/wELAD6AE2A21AtEDRJDAHTAPjwBAwCJw1xiyVo/15EVBfX9+mtX4GeBp4AGgqR0PyYBm4APwEHFJKnQbMnTTAcRyllNoF7DPGPAqo/2Nj88B14Cvg60gkcn1lZSWbT8G8I0ApFQaeBT4CHsyn7DpyGfgYOGSMWb5dgTsKoJTqAD4Fdt9Qzn2OAK8ZY0auF+B2jXWUUnuBs9xd5MH09Zx5DdfhlhGglGoGvgWeXEvhuwwDvGiM+eZmJ28qgFLqMeB7oHkdG1YOEsBeY8wvuSdyp4BSqgv4jP+/8wDNmL4/lHsyRwCllAv8CLSvd6vKSLvp+0O5Ua+Ap4BHNqhR5eQR0/8s2QgQQA5v4Ia1AXvcHEkCvABs2+AGlZNtpi9ZsgIopVqBdzaqNeXGWLLX9AnIjoBXgcaNbFC5MZY8Y/oEZAXYs8GNKTd7ILcRbgJ6y1B5q1Kqyfxt01pPK6WSQAZIGmPm76RypZQDNGitW4EWrXUzcA/QAawDPb29vb8PDQ39FQqFdgKbylC5UkoNWJYVtSxrxrKsK7Ztj9i2PWrb9l+2bU/Ztj1n2/ayZVkr4XB4JRwOZ8LhsI5EIjoajepIJEI0GqWhoSFbR2NjY7aexsZGHMcBwHVdXNfFcZxsnXcohEspRXd3N11dXWzZsoWOjg46OzsRkew1RIR4PE48HicWizE7O8vMzAzT09PMzc2RyWRQSpFMJkkmk6RSKdLpNOl0mlQqxdLSEktLS2QyGUSEdDpNOp0mlUqRSCRIJBIsLCwQj8dZXFwkkUiQTCZJpVKk02nS6TTGGESEdDpNJpMhk8mQzWCZTIZMJkMmk8EYk/1kjw0YY7L5QinF4uIiCwsLxONxFhcXSSQSpFIpUqkU6XSaVCqVbWsqlSKZTJJIJFhcXGRhYYF4PE4ikSCZTGbbkEwmSaVSpNNpjDFZ+xKJBPPz88zPz7OwsEAikSCZTGbbkEwmWV5eZnl5mVQqxfLyMisrK6yurpJOp0mn02QyGYwxWKUSQP6tQEQwxmCMQUSyvxvzr5D7ICKICCKSPXat/PXnrpW//nzhcteolKpQoUKFChX+BfwDNvj6RKhLKkQAAAAASUVORK5CYII="
-                  alt="reCAPTCHA"
-                  style={{ width: '30px', height: '30px' }}
-                />
-                <Typography variant="caption" sx={{ fontSize: '10px', color: '#555555' }}>
-                  reCAPTCHA
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
+          {/* CAPTCHA section removed */}
 
           <Button
             type="submit"
