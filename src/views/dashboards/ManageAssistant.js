@@ -92,7 +92,7 @@ const getFileIcon = (type) => {
   }
 };
 
-const Assistant = () => {
+const ManageAssistant = () => {
   // State for tab value
   const [tabValue, setTabValue] = useState(0);
   // State for selected files
@@ -488,4 +488,4 @@ const Assistant = () => {
   );
 };
 
-export default Assistant;
+export default ManageAssistant;

@@ -16,6 +16,8 @@ import Dashboard2 from "../views/dashboards/Dashboard2.js";
 import ConvoDashboard from "../views/dashboards/ConvoDashboard.js";
 import Tenants from "../views/dashboards/Tenants.js";
 import Assistant from "../views/dashboards/Assistant.js";
+import Assistants from "../views/dashboards/Assistants.js";
+import ManageAssistant from "../views/dashboards/ManageAssistant.js";
 import Billing from "../views/dashboards/Billing.js";
 import SingleConversation from "../views/Settings/SingleConversation.js";
 import LoginSelector from "../views/auth/LoginSelector.js";
@@ -58,6 +60,8 @@ const ThemeRoutes = [
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
       { path: "dashboards/tenants", element: <Tenants /> },
       { path: "dashboards/assistant", element: <Assistant /> },
+      { path: "dashboards/assistants", element: <Assistants /> },
+      { path: "dashboards/manage-assistant", element: <ManageAssistant /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
     ],
