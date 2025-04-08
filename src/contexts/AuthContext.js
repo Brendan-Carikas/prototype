@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       // Demo mode login
-      if (email === 'Demo' && password === 'Demo') {
+      if (email === 'Demo' && password === 'u33jNocUPZEHtVe337BH') {
         setUser({ email: 'Demo', uid: 'demo-user-id' });
         setIsDemoMode(true);
         navigate('/app/dashboards/dashboard2');
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password) => {
     try {
       // Demo mode signup
-      if (email === 'Demo' && password === 'Demo') {
+      if (email === 'Demo' && password === 'u33jNocUPZEHtVe337BH') {
         setUser({ email: 'Demo', uid: 'demo-user-id' });
         setIsDemoMode(true);
         navigate('/app/dashboards/dashboard2');
