@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChatIcon from '@mui/icons-material/Chat';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+// Removed unused ApartmentIcon import
 import PaymentIcon from '@mui/icons-material/Payment';
 import logo from '../../assets/images/arto-site-logo.png';
 import { useAuth } from '../../contexts/AuthContext';
