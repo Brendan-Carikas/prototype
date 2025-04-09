@@ -207,7 +207,7 @@ const ManageAssistant = () => {
       console.log("Files selected:", files);
       
       // Define supported file extensions
-      const supportedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md', 'csv', 'xlsx', 'xls', 'js', 'py', 'java', 'html', 'css', 'php'];
+      const supportedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md', 'csv'];
       
       // Filter out unsupported files
       const unsupportedFilesList = [];
@@ -241,8 +241,7 @@ const ManageAssistant = () => {
         let fileType = 'default';
         if (fileExtension === 'pdf') fileType = 'pdf';
         else if (['doc', 'docx'].includes(fileExtension)) fileType = 'doc';
-        else if (['csv', 'xlsx', 'xls'].includes(fileExtension)) fileType = 'csv';
-        else if (['js', 'py', 'java', 'html', 'css', 'php'].includes(fileExtension)) fileType = 'code';
+        else if (['csv'].includes(fileExtension)) fileType = 'csv';
         else if (['md', 'txt'].includes(fileExtension)) fileType = 'md';
         
         // Format file size
@@ -742,13 +741,8 @@ const ManageAssistant = () => {
             }
           </DialogContentText>
           <DialogContentText sx={{ mt: 2 }}>
-            Supported formats include:
+            Only PDF, DOCX, TXT, MD, and CSV files are supported.
           </DialogContentText>
-          <ul style={{ marginTop: '8px' }}>
-            <li>Documents: PDF, DOC, DOCX, TXT, MD</li>
-            <li>Data: CSV, XLS, XLSX</li>
-            <li>Code: JS, PY, JAVA, HTML, CSS, PHP</li>
-          </ul>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setFormatErrorModalOpen(false)} variant="contained" autoFocus>
