@@ -7,8 +7,6 @@ import {
   Paper, 
   Tabs, 
   Tab, 
-  // Card, 
-  // CardContent,
   Button,
   Checkbox,
   Table,
@@ -17,17 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  // IconButton,
-  // Tooltip,
   TextField,
-  // MenuItem,
-  // Select,
-  // FormControl,
-  // InputLabel,
-  // Slider,
-  // Switch,
-  // FormControlLabel,
-  // Divider,
   Dialog,
   DialogActions,
   DialogContent,
@@ -48,7 +36,6 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import CodeIcon from '@mui/icons-material/Code';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-// import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SaveIcon from '@mui/icons-material/Save';
 import TuneIcon from '@mui/icons-material/Tune';
 
