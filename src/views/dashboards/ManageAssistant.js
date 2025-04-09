@@ -104,6 +104,8 @@ const ManageAssistant = () => {
   const [tabValue, setTabValue] = useState(0);
   // State for selected files
   const [selectedFiles, setSelectedFiles] = useState([]);
+  // State for files list (initialized with sample files)
+  const [filesList, setFilesList] = useState(sampleFiles);
   // State to toggle between empty state and files view (for demo purposes)
   const [hasFiles, setHasFiles] = useState(true);
   // State for save confirmation modal
@@ -177,7 +179,7 @@ const ManageAssistant = () => {
   // Handle select all files
   const handleSelectAllFiles = (event) => {
     if (event.target.checked) {
-      setSelectedFiles(sampleFiles.map(file => file.id));
+      setSelectedFiles(filesList.map(file => file.id));
     } else {
       setSelectedFiles([]);
     }
@@ -198,7 +200,43 @@ const ManageAssistant = () => {
       // In a real app, you would upload the files to your backend
       console.log("Files selected:", files);
       
-      // For demo purposes, just show that files were added
+      // Create new file entries for the selected files
+      const newFiles = Array.from(files).map((file, index) => {
+        // Get file extension
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        
+        // Determine file type for icon
+        let fileType = 'default';
+        if (fileExtension === 'pdf') fileType = 'pdf';
+        else if (['doc', 'docx'].includes(fileExtension)) fileType = 'doc';
+        else if (['csv', 'xlsx', 'xls'].includes(fileExtension)) fileType = 'csv';
+        else if (['js', 'py', 'java', 'html', 'css', 'php'].includes(fileExtension)) fileType = 'code';
+        else if (['md', 'txt'].includes(fileExtension)) fileType = 'md';
+        
+        // Format file size
+        const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(1);
+        
+        // Get current date
+        const today = new Date();
+        const dateAdded = today.toISOString().split('T')[0];
+        
+        // Generate a unique ID
+        const newId = filesList.length > 0 ? Math.max(...filesList.map(f => f.id)) + 1 + index : 1 + index;
+        
+        return {
+          id: newId,
+          name: file.name,
+          type: fileType,
+          size: `${fileSizeInMB} MB`,
+          dateAdded: dateAdded,
+          originalFile: file // Store the original file object if needed
+        };
+      });
+      
+      // Add new files to the list
+      setFilesList(prevFiles => [...prevFiles, ...newFiles]);
+      
+      // Ensure files view is shown
       setHasFiles(true);
       
       // Show success message
@@ -214,11 +252,22 @@ const ManageAssistant = () => {
   // Handle delete selected files
   const handleDeleteSelected = () => {
     // In a real app, you would delete the files from your backend
-    // For this demo, we'll just clear the selection
+    
+    // Remove selected files from the filesList
+    setFilesList(prevFiles => prevFiles.filter(file => !selectedFiles.includes(file.id)));
+    
+    // Clear selection
     setSelectedFiles([]);
-    if (selectedFiles.length === sampleFiles.length) {
+    
+    // If all files are deleted, show empty state
+    if (selectedFiles.length === filesList.length) {
       setHasFiles(false);
     }
+    
+    // Show success message
+    setSnackbarMessage(`${selectedFiles.length} file(s) deleted successfully`);
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
   };
   
   // Handle opening the save confirmation modal
@@ -425,7 +474,7 @@ const ManageAssistant = () => {
               {/* Controls */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
-                  Your Files ({sampleFiles.length})
+                  Your Files ({filesList.length})
                 </Typography>
                 <Box>
                   <Button 
@@ -436,7 +485,7 @@ const ManageAssistant = () => {
                     disabled={selectedFiles.length === 0}
                     onClick={handleDeleteSelected}
                   >
-                    Delete Selected
+                    Delete
                   </Button>
                   <Button 
                     variant="contained" 
@@ -462,8 +511,8 @@ const ManageAssistant = () => {
                     <TableRow>
                       <TableCell padding="checkbox">
                         <Checkbox
-                          indeterminate={selectedFiles.length > 0 && selectedFiles.length < sampleFiles.length}
-                          checked={selectedFiles.length === sampleFiles.length}
+                          indeterminate={selectedFiles.length > 0 && selectedFiles.length < filesList.length}
+                          checked={selectedFiles.length === filesList.length}
                           onChange={handleSelectAllFiles}
                         />
                       </TableCell>
@@ -473,7 +522,7 @@ const ManageAssistant = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {sampleFiles.map((file) => (
+                    {filesList.map((file) => (
                       <TableRow 
                         key={file.id}
                         selected={selectedFiles.includes(file.id)}
