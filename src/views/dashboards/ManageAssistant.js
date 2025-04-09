@@ -111,12 +111,20 @@ const ManageAssistant = () => {
   const [tabValue, setTabValue] = useState(0);
   // State for selected files
   const [selectedFiles, setSelectedFiles] = useState([]);
+  // State for files list (initialized with sample files)
+  const [filesList, setFilesList] = useState(sampleFiles);
   // State to toggle between empty state and files view (for demo purposes)
   const [hasFiles, setHasFiles] = useState(true);
   // State for save confirmation modal
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   // State for cancel confirmation modal
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  // State for delete confirmation modal
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  // State for file format error modal
+  const [formatErrorModalOpen, setFormatErrorModalOpen] = useState(false);
+  // State for unsupported file names
+  const [unsupportedFiles, setUnsupportedFiles] = useState([]);
   // State for snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -219,7 +227,7 @@ const ManageAssistant = () => {
   // Handle select all files
   const handleSelectAllFiles = (event) => {
     if (event.target.checked) {
-      setSelectedFiles(sampleFiles.map(file => file.id));
+      setSelectedFiles(filesList.map(file => file.id));
     } else {
       setSelectedFiles([]);
     }
@@ -240,13 +248,76 @@ const ManageAssistant = () => {
       // In a real app, you would upload the files to your backend
       console.log("Files selected:", files);
       
-      // For demo purposes, just show that files were added
-      setHasFiles(true);
+      // Define supported file extensions
+      const supportedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md', 'csv'];
       
-      // Show success message
-      setSnackbarMessage(`${files.length} file(s) uploaded successfully`);
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+      // Filter out unsupported files
+      const unsupportedFilesList = [];
+      const supportedFiles = Array.from(files).filter(file => {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const isSupported = supportedExtensions.includes(fileExtension);
+        if (!isSupported) {
+          unsupportedFilesList.push(file.name);
+        }
+        return isSupported;
+      });
+      
+      // If there are unsupported files, show error modal
+      if (unsupportedFilesList.length > 0) {
+        setUnsupportedFiles(unsupportedFilesList);
+        setFormatErrorModalOpen(true);
+        
+        // If there are no supported files, exit early
+        if (supportedFiles.length === 0) {
+          event.target.value = '';
+          return;
+        }
+      }
+      
+      // Create new file entries for the supported files
+      const newFiles = supportedFiles.map((file, index) => {
+        // Get file extension
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        
+        // Determine file type for icon
+        let fileType = 'default';
+        if (fileExtension === 'pdf') fileType = 'pdf';
+        else if (['doc', 'docx'].includes(fileExtension)) fileType = 'doc';
+        else if (['csv'].includes(fileExtension)) fileType = 'csv';
+        else if (['md', 'txt'].includes(fileExtension)) fileType = 'md';
+        
+        // Format file size
+        const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(1);
+        
+        // Get current date
+        const today = new Date();
+        const dateAdded = today.toISOString().split('T')[0];
+        
+        // Generate a unique ID
+        const newId = filesList.length > 0 ? Math.max(...filesList.map(f => f.id)) + 1 + index : 1 + index;
+        
+        return {
+          id: newId,
+          name: file.name,
+          type: fileType,
+          size: `${fileSizeInMB} MB`,
+          dateAdded: dateAdded,
+          originalFile: file // Store the original file object if needed
+        };
+      });
+      
+      // Add new files to the list if there are any supported files
+      if (newFiles.length > 0) {
+        setFilesList(prevFiles => [...prevFiles, ...newFiles]);
+        
+        // Ensure files view is shown
+        setHasFiles(true);
+        
+        // Show success message
+        setSnackbarMessage(`${newFiles.length} file(s) uploaded successfully`);
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      }
       
       // Reset the file input so the same file can be selected again if needed
       event.target.value = '';
@@ -256,16 +327,41 @@ const ManageAssistant = () => {
   // Handle delete selected files
   const handleDeleteSelected = () => {
     // In a real app, you would delete the files from your backend
-    // For this demo, we'll just clear the selection
+    
+    // Store the count of files being deleted for the message
+    const deletedCount = selectedFiles.length;
+    
+    // Remove selected files from the filesList
+    setFilesList(prevFiles => prevFiles.filter(file => !selectedFiles.includes(file.id)));
+    
+    // Clear selection
     setSelectedFiles([]);
-    if (selectedFiles.length === sampleFiles.length) {
+    
+    // If all files are deleted, show empty state
+    if (selectedFiles.length === filesList.length) {
       setHasFiles(false);
     }
+    
+    // Close the delete confirmation modal
+    setDeleteModalOpen(false);
+    
+    // Show success message
+    setSnackbarMessage(`${deletedCount} file(s) deleted successfully`);
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
   };
   
   // Handle opening the save confirmation modal
   const handleOpenSaveModal = () => {
-    setSaveModalOpen(true);
+    // Only show the confirmation dialog if there are unsaved changes
+    if (hasUnsavedChanges()) {
+      setSaveModalOpen(true);
+    } else {
+      // If no changes, just show a message
+      setSnackbarMessage('No changes to save');
+      setSnackbarSeverity('info');
+      setSnackbarOpen(true);
+    }
   };
   
   // Handle closing the save confirmation modal
@@ -273,24 +369,38 @@ const ManageAssistant = () => {
     setSaveModalOpen(false);
   };
   
-  // Handle opening the cancel confirmation modal
+  // Handle opening the cancel modal
   const handleOpenCancelModal = () => {
+ feature/assistants-ui-updates
     if (hasUnsavedChanges()) {
       setCancelModalOpen(true);
     } else {
       // No changes to cancel, redirect to Assistants screen
       navigate('/app/dashboards/assistants');
+
+    // Only open the modal if there are unsaved changes
+    if (hasUnsavedChanges()) {
+      setCancelModalOpen(true);
+ main
     }
   };
-  
-  // Handle closing the cancel confirmation modal
+
+  // Handle closing the cancel modal
   const handleCloseCancelModal = () => {
     setCancelModalOpen(false);
   };
+ feature/assistants-ui-updates
   
   // Handle canceling changes
   const handleCancelChanges = () => {
     // Revert to original state
+
+
+  // Handle cancel changes
+  const handleDiscardChanges = () => {
+    // Reset form fields to their original values
+    setSystemPrompt(originalSystemPrompt);
+ main
     setAssistantName(originalAssistantName);
     setSystemPrompt(originalSystemPrompt);
     
@@ -462,17 +572,18 @@ const ManageAssistant = () => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
             <Button 
               variant="outlined" 
-              size="large"
-              sx={{ mr: 2 }}
               onClick={handleOpenCancelModal}
+              sx={{ mr: 2 }}
+              disabled={!hasUnsavedChanges()}
             >
-              Cancel
+              Discard changes
             </Button>
             <Button 
               variant="contained" 
               startIcon={<SaveIcon />}
               size="large"
               onClick={handleOpenSaveModal}
+              disabled={!hasUnsavedChanges()}
             >
               Save Configuration
             </Button>
@@ -486,7 +597,7 @@ const ManageAssistant = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <StorageIcon color="primary" sx={{ mr: 1 }} />
               <Typography variant="h4">
-                Knowledge Base
+                Knowledge
               </Typography>
             </Box>
             <Typography variant="subtitle1" color="text.secondary">
@@ -499,18 +610,20 @@ const ManageAssistant = () => {
               {/* Controls */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
-                  Your Files ({sampleFiles.length})
+                  Your Files ({filesList.length})
                 </Typography>
                 <Box>
                   <Button 
                     variant="outlined" 
-                    color="error" 
                     startIcon={<DeleteIcon />} 
-                    sx={{ mr: 1 }}
+                    sx={{ 
+                      mr: 1,
+                      transition: 'none'
+                    }}
                     disabled={selectedFiles.length === 0}
-                    onClick={handleDeleteSelected}
+                    onClick={() => setDeleteModalOpen(true)}
                   >
-                    Delete Selected
+                    Delete
                   </Button>
                   <Button 
                     variant="contained" 
@@ -536,8 +649,8 @@ const ManageAssistant = () => {
                     <TableRow>
                       <TableCell padding="checkbox">
                         <Checkbox
-                          indeterminate={selectedFiles.length > 0 && selectedFiles.length < sampleFiles.length}
-                          checked={selectedFiles.length === sampleFiles.length}
+                          indeterminate={selectedFiles.length > 0 && selectedFiles.length < filesList.length}
+                          checked={selectedFiles.length === filesList.length}
                           onChange={handleSelectAllFiles}
                         />
                       </TableCell>
@@ -547,7 +660,7 @@ const ManageAssistant = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {sampleFiles.map((file) => (
+                    {filesList.map((file) => (
                       <TableRow 
                         key={file.id}
                         selected={selectedFiles.includes(file.id)}
@@ -650,7 +763,7 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseSaveModal}>Cancel</Button>
+          <Button onClick={handleCloseSaveModal} variant="outlined">Cancel</Button>
           <Button onClick={handleSaveConfiguration} variant="contained" color="primary" autoFocus>
             Save
           </Button>
@@ -665,18 +778,71 @@ const ManageAssistant = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Cancel changes"}
+          {"Discard changes?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This will result in the loss of any changes you have made.
-            Your configuration will revert to the last saved state.
+            Are you sure you want to discard your changes? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelModal}>Cancel</Button>
-          <Button onClick={handleCancelChanges} variant="contained" color="primary" autoFocus>
-            Confirm
+          <Button onClick={handleCloseCancelModal} variant="outlined">No</Button>
+          <Button onClick={handleDiscardChanges} variant="contained" color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* Delete Confirmation Modal */}
+      <Dialog
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Delete ${selectedFiles.length} file${selectedFiles.length === 1 ? '' : 's'}`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {selectedFiles.length === 1 
+              ? "Are you sure you want to delete the selected file? This action cannot be undone."
+              : `Are you sure you want to delete ${selectedFiles.length} selected files? This action cannot be undone.`
+            }
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteModalOpen(false)} variant="outlined">Cancel</Button>
+          <Button onClick={handleDeleteSelected} variant="contained" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* File Format Error Modal */}
+      <Dialog
+        open={formatErrorModalOpen}
+        onClose={() => setFormatErrorModalOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Unsupported File Format"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {unsupportedFiles.length === 1 
+              ? `The file "${unsupportedFiles[0]}" is in an unsupported format.` 
+              : `The following files are in unsupported formats: ${unsupportedFiles.join(', ')}`
+            }
+          </DialogContentText>
+          <DialogContentText sx={{ mt: 2 }}>
+            Only PDF, DOCX, TXT, MD, and CSV files are supported.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setFormatErrorModalOpen(false)} variant="outlined" autoFocus>
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
