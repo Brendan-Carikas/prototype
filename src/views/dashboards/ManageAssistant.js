@@ -223,7 +223,15 @@ const ManageAssistant = () => {
   
   // Handle opening the save confirmation modal
   const handleOpenSaveModal = () => {
-    setSaveModalOpen(true);
+    // Only show the confirmation dialog if there are unsaved changes
+    if (hasUnsavedChanges()) {
+      setSaveModalOpen(true);
+    } else {
+      // If no changes, just show a message
+      setSnackbarMessage('No changes to save');
+      setSnackbarSeverity('info');
+      setSnackbarOpen(true);
+    }
   };
   
   // Handle closing the save confirmation modal
@@ -390,6 +398,7 @@ const ManageAssistant = () => {
               startIcon={<SaveIcon />}
               size="large"
               onClick={handleOpenSaveModal}
+              disabled={!hasUnsavedChanges()}
             >
               Save Configuration
             </Button>
