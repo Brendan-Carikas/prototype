@@ -112,6 +112,8 @@ const ManageAssistant = () => {
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   // State for cancel confirmation modal
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  // State for delete confirmation modal
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   // State for snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -253,6 +255,9 @@ const ManageAssistant = () => {
   const handleDeleteSelected = () => {
     // In a real app, you would delete the files from your backend
     
+    // Store the count of files being deleted for the message
+    const deletedCount = selectedFiles.length;
+    
     // Remove selected files from the filesList
     setFilesList(prevFiles => prevFiles.filter(file => !selectedFiles.includes(file.id)));
     
@@ -264,8 +269,11 @@ const ManageAssistant = () => {
       setHasFiles(false);
     }
     
+    // Close the delete confirmation modal
+    setDeleteModalOpen(false);
+    
     // Show success message
-    setSnackbarMessage(`${selectedFiles.length} file(s) deleted successfully`);
+    setSnackbarMessage(`${deletedCount} file(s) deleted successfully`);
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
   };
@@ -483,7 +491,7 @@ const ManageAssistant = () => {
                     startIcon={<DeleteIcon />} 
                     sx={{ mr: 1 }}
                     disabled={selectedFiles.length === 0}
-                    onClick={handleDeleteSelected}
+                    onClick={() => setDeleteModalOpen(true)}
                   >
                     Delete
                   </Button>
@@ -652,6 +660,32 @@ const ManageAssistant = () => {
           <Button onClick={handleCloseCancelModal}>Cancel</Button>
           <Button onClick={handleCancelChanges} variant="contained" color="primary" autoFocus>
             Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* Delete Confirmation Modal */}
+      <Dialog
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Delete ${selectedFiles.length} file${selectedFiles.length === 1 ? '' : 's'}`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {selectedFiles.length === 1 
+              ? "Are you sure you want to delete the selected file? This action is irreversible."
+              : `Are you sure you want to delete ${selectedFiles.length} selected files? This action is irreversible.`
+            }
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteModalOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteSelected} variant="contained" color="error" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
