@@ -327,26 +327,18 @@ const ManageAssistant = () => {
     setSaveModalOpen(false);
   };
   
-  // Handle opening the cancel confirmation modal
+  // Handle opening the cancel modal
   const handleOpenCancelModal = () => {
-    // Only show the confirmation dialog if there are unsaved changes
-    if (hasUnsavedChanges()) {
-      setCancelModalOpen(true);
-    } else {
-      // If no changes, just show a message
-      setSnackbarMessage('No unsaved changes found.');
-      setSnackbarSeverity('info');
-      setSnackbarOpen(true);
-    }
+    setCancelModalOpen(true);
   };
-  
-  // Handle closing the cancel confirmation modal
+
+  // Handle closing the cancel modal
   const handleCloseCancelModal = () => {
     setCancelModalOpen(false);
   };
-  
-  // Handle canceling changes
-  const handleCancelChanges = () => {
+
+  // Handle cancel changes
+  const handleDiscardChanges = () => {
     // Reset form fields to their original values
     setSystemPrompt(originalSystemPrompt);
     setAssistantName(originalAssistantName);
@@ -475,11 +467,10 @@ const ManageAssistant = () => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
             <Button 
               variant="outlined" 
-              size="large"
-              sx={{ mr: 2 }}
               onClick={handleOpenCancelModal}
+              sx={{ mr: 2 }}
             >
-              Cancel
+              Discard changes
             </Button>
             <Button 
               variant="contained" 
@@ -681,17 +672,16 @@ const ManageAssistant = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Cancel changes"}
+          {"Discard changes?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This will result in the loss of any changes you have made.
-            Your configuration will revert to the last saved state.
+            Are you sure you want to discard your changes? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseCancelModal} variant="outlined">No</Button>
-          <Button onClick={handleCancelChanges} variant="contained" color="primary" autoFocus>
+          <Button onClick={handleDiscardChanges} variant="contained" color="primary" autoFocus>
             Yes
           </Button>
         </DialogActions>
