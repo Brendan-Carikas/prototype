@@ -177,12 +177,14 @@ const Assistants = () => {
                     <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                       {assistant.name}
                     </Typography>
+                    {/* Model and status fields temporarily hidden
                     <Typography variant="body2" color="text.secondary">
                       {assistant.model || 'GPT-3.5'}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {assistant.status || 'Active'}
                     </Typography>
+                    */}
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
                       Created: {assistant.created}
                     </Typography>
