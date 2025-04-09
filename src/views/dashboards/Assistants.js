@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Grid, Box, Typography, Paper, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Fab, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SmartToyIcon from '@mui/icons-material/SmartToy';
@@ -11,7 +11,7 @@ const Assistants = () => {
   const navigate = useNavigate();
   
   // Define default assistants
-  const defaultAssistants = [
+  const defaultAssistants = useMemo(() => [
     {
       id: 'customer-support',
       name: 'Customer Support Assistant',
@@ -34,10 +34,10 @@ const Assistants = () => {
       status: 'Active',
       created: '05 Apr 2025'
     }
-  ];
+  ], []);
   
   // Function to load assistants from localStorage
-  const loadAssistantsFromStorage = () => {
+  const loadAssistantsFromStorage = useCallback(() => {
     try {
       const storedAssistants = localStorage.getItem('customAssistants');
       return storedAssistants ? [...defaultAssistants, ...JSON.parse(storedAssistants)] : defaultAssistants;
@@ -45,7 +45,7 @@ const Assistants = () => {
       console.error('Error loading assistants from localStorage:', error);
       return defaultAssistants;
     }
-  };
+  }, [defaultAssistants]);
   
   // State for assistants list
   const [assistants, setAssistants] = useState(loadAssistantsFromStorage);
@@ -130,7 +130,7 @@ const Assistants = () => {
       window.removeEventListener('newAssistantCreated', handleNewAssistant);
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []);
+  }, [loadAssistantsFromStorage]);
   
   // Card style for future use
   // const cardStyle = {
