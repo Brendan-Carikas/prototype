@@ -106,6 +106,11 @@ const Assistants = () => {
     setAssistantToDelete(null);
   };
   
+  // Function to handle creating a new assistant - temporarily commented out
+  // const handleCreateAssistant = () => {
+  //   navigate('/app/dashboards/manage-assistant?id=new');
+  // };
+  
   // Function to add a new assistant (called from ManageAssistant)
   useEffect(() => {
     // Function to handle storage changes
@@ -142,17 +147,6 @@ const Assistants = () => {
     };
   }, [loadAssistantsFromStorage]);
   
-  // Card style for future use
-  // const cardStyle = {
-  //   border: '1px solid',
-  //   borderColor: 'divider',
-  //   boxShadow: 'none',
-  //   height: '100%',
-  //   '& .MuiCardContent-root': {
-  //     height: '100%',
-  //   },
-  // };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <ResponsiveDrawer />
@@ -183,7 +177,13 @@ const Assistants = () => {
                     <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                       {assistant.name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {assistant.model || 'GPT-3.5'}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {assistant.status || 'Active'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
                       Created: {assistant.created}
                     </Typography>
                     {assistant.updated && (
