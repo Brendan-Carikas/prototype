@@ -500,7 +500,7 @@ const ManageAssistant = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <StorageIcon color="primary" sx={{ mr: 1 }} />
               <Typography variant="h4">
-                Knowledge Base
+                Knowledge
               </Typography>
             </Box>
             <Typography variant="subtitle1" color="text.secondary">
@@ -666,7 +666,7 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseSaveModal}>Cancel</Button>
+          <Button onClick={handleCloseSaveModal} variant="outlined">Cancel</Button>
           <Button onClick={handleSaveConfiguration} variant="contained" color="primary" autoFocus>
             Save
           </Button>
@@ -690,9 +690,9 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelModal}>Cancel</Button>
+          <Button onClick={handleCloseCancelModal} variant="outlined">No</Button>
           <Button onClick={handleCancelChanges} variant="contained" color="primary" autoFocus>
-            Confirm
+            Yes
           </Button>
         </DialogActions>
       </Dialog>
@@ -716,7 +716,7 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteModalOpen(false)}>Cancel</Button>
+          <Button onClick={() => setDeleteModalOpen(false)} variant="outlined">Cancel</Button>
           <Button onClick={handleDeleteSelected} variant="contained" autoFocus>
             Delete
           </Button>
@@ -745,8 +745,8 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setFormatErrorModalOpen(false)} variant="contained" autoFocus>
-            Okay
+          <Button onClick={() => setFormatErrorModalOpen(false)} variant="outlined" autoFocus>
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
