@@ -329,7 +329,10 @@ const ManageAssistant = () => {
   
   // Handle opening the cancel modal
   const handleOpenCancelModal = () => {
-    setCancelModalOpen(true);
+    // Only open the modal if there are unsaved changes
+    if (hasUnsavedChanges()) {
+      setCancelModalOpen(true);
+    }
   };
 
   // Handle closing the cancel modal
@@ -469,6 +472,7 @@ const ManageAssistant = () => {
               variant="outlined" 
               onClick={handleOpenCancelModal}
               sx={{ mr: 2 }}
+              disabled={!hasUnsavedChanges()}
             >
               Discard changes
             </Button>
