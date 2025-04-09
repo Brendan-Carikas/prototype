@@ -488,7 +488,10 @@ const ManageAssistant = () => {
                   <Button 
                     variant="outlined" 
                     startIcon={<DeleteIcon />} 
-                    sx={{ mr: 1 }}
+                    sx={{ 
+                      mr: 1,
+                      transition: 'none'
+                    }}
                     disabled={selectedFiles.length === 0}
                     onClick={() => setDeleteModalOpen(true)}
                   >
