@@ -19,7 +19,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChatIcon from '@mui/icons-material/Chat';
 // Removed unused ApartmentIcon import
 import PaymentIcon from '@mui/icons-material/Payment';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
 import logo from '../../assets/images/arto-site-logo.png';
 import { useAuth } from '../../contexts/AuthContext';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -64,11 +63,6 @@ const ResponsiveDrawer = () => {
       text: 'Billing',
       icon: <PaymentIcon />,
       path: '/app/dashboards/billing'
-    },
-    {
-      text: 'Assistants',
-      icon: <SmartToyIcon />,
-      path: '/app/dashboards/assistants'
     }
   ];
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { 
   Grid, 
   Box, 
@@ -101,12 +100,6 @@ const getFileIcon = (type) => {
 };
 
 const ManageAssistant = () => {
-  // Get the assistant ID from the URL
-  const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
-  const assistantId = queryParams.get('id');
-
   // State for tab value
   const [tabValue, setTabValue] = useState(0);
   // State for selected files
@@ -137,60 +130,25 @@ const ManageAssistant = () => {
   const [systemPrompt, setSystemPrompt] = useState(
     "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
   );
-  const [assistantName, setAssistantName] = useState("");
+  const [assistantName, setAssistantName] = useState("Customer Support Assistant");
   
   // Original state for tracking changes
   const [originalSystemPrompt, setOriginalSystemPrompt] = useState(
     "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
   );
-  const [originalAssistantName, setOriginalAssistantName] = useState("");
+  const [originalAssistantName, setOriginalAssistantName] = useState("Customer Support Assistant");
 
-  // Simulate fetching data from an API based on the assistant ID
+  // Simulate fetching data from an API
   useEffect(() => {
-    // If no assistant ID is provided, redirect to the assistants list
-    if (!assistantId) {
-      navigate('/app/dashboards/assistants');
-      return;
-    }
-
-    // In a real app, you would fetch the data from your backend using the assistantId
+    // In a real app, you would fetch the data from your backend
+    // and then set both the current state and original state
     const fetchData = async () => {
       try {
-        // Simulate API call with different data based on assistantId
-        let data;
-
-        switch(assistantId) {
-          case 'new':
-            // New assistant case
-            data = {
-              assistantName: "",
-              systemPrompt: "You are an AI assistant. Help users with their questions and tasks."
-            };
-            break;
-          case 'customer-support':
-            data = {
-              assistantName: "Customer Support Assistant",
-              systemPrompt: "You are a customer support assistant. Help users with their questions about our products and services. Be friendly, helpful, and provide accurate information about our policies, troubleshooting steps, and how to contact human support if needed."
-            };
-            break;
-          case 'sales':
-            data = {
-              assistantName: "Sales Assistant",
-              systemPrompt: "You are a sales assistant. Help potential customers understand our products, pricing, and how our solutions can meet their needs. Highlight key features and benefits, answer questions about pricing plans, and guide users toward making informed purchasing decisions."
-            };
-            break;
-          case 'technical-docs':
-            data = {
-              assistantName: "Technical Documentation Assistant",
-              systemPrompt: "You are a technical documentation assistant. Help developers and technical users understand our API, code examples, and technical specifications. Provide clear explanations of technical concepts, troubleshoot code issues, and reference relevant documentation when appropriate."
-            };
-            break;
-          default:
-            // Handle unknown assistant ID
-            console.error("Unknown assistant ID:", assistantId);
-            navigate('/app/dashboards/assistants');
-            return;
-        }
+        // Simulate API call
+        const data = {
+          assistantName: "Customer Support Assistant",
+          systemPrompt: "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
+        };
         
         // Set both current and original state
         setAssistantName(data.assistantName);
@@ -203,7 +161,7 @@ const ManageAssistant = () => {
     };
     
     fetchData();
-  }, [assistantId, navigate]); // Re-run when assistantId changes
+  }, []); // Empty dependency array means this runs once on mount
 
   // Check if there are unsaved changes
   const hasUnsavedChanges = () => {
@@ -371,17 +329,9 @@ const ManageAssistant = () => {
   
   // Handle opening the cancel modal
   const handleOpenCancelModal = () => {
- feature/assistants-ui-updates
-    if (hasUnsavedChanges()) {
-      setCancelModalOpen(true);
-    } else {
-      // No changes to cancel, redirect to Assistants screen
-      navigate('/app/dashboards/assistants');
-
     // Only open the modal if there are unsaved changes
     if (hasUnsavedChanges()) {
       setCancelModalOpen(true);
- main
     }
   };
 
@@ -389,26 +339,24 @@ const ManageAssistant = () => {
   const handleCloseCancelModal = () => {
     setCancelModalOpen(false);
   };
- feature/assistants-ui-updates
-  
-  // Handle canceling changes
-  const handleCancelChanges = () => {
-    // Revert to original state
-
 
   // Handle cancel changes
   const handleDiscardChanges = () => {
     // Reset form fields to their original values
     setSystemPrompt(originalSystemPrompt);
- main
     setAssistantName(originalAssistantName);
-    setSystemPrompt(originalSystemPrompt);
+    
+    console.log("Canceling changes...");
+    console.log("Reverting to original system prompt:", originalSystemPrompt);
+    console.log("Reverting to original assistant name:", originalAssistantName);
     
     // Close the modal
     setCancelModalOpen(false);
     
-    // Redirect to Assistants screen
-    navigate('/app/dashboards/assistants');
+    // Show info message in snackbar
+    setSnackbarMessage('Changes discarded. Configuration reverted to last saved state.');
+    setSnackbarSeverity('info');
+    setSnackbarOpen(true);
   };
   
   // Handle closing the snackbar
@@ -433,67 +381,17 @@ const ManageAssistant = () => {
     // Close the modal
     setSaveModalOpen(false);
     
-    // For new assistants, create a new assistant and dispatch an event
-    if (assistantId === 'new') {
-      // Generate a unique ID for the new assistant
-      const newAssistantId = 'custom-' + Date.now();
-      
-      // Create a new assistant object
-      const newAssistant = {
-        id: newAssistantId,
-        name: assistantName || 'New Assistant',
-        model: 'GPT-3.5',
-        status: 'Active',
-        created: new Date().toLocaleDateString('en-GB', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        })
-      };
-      
-      // Save to localStorage directly
-      try {
-        // Get existing custom assistants
-        const existingCustomAssistantsStr = localStorage.getItem('customAssistants');
-        const existingCustomAssistants = existingCustomAssistantsStr ? JSON.parse(existingCustomAssistantsStr) : [];
-        
-        // Add the new assistant
-        const updatedCustomAssistants = [...existingCustomAssistants, newAssistant];
-        
-        // Save back to localStorage
-        localStorage.setItem('customAssistants', JSON.stringify(updatedCustomAssistants));
-        
-        // Dispatch a custom event with the new assistant data
-        const event = new CustomEvent('newAssistantCreated', { detail: newAssistant });
-        window.dispatchEvent(event);
-        
-        console.log('New assistant saved to localStorage:', newAssistant);
-      } catch (error) {
-        console.error('Error saving assistant to localStorage:', error);
-      }
-      
-      // Show success message
-      setSnackbarMessage('New assistant created successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      
-      // Add a small delay before redirecting to allow the user to see the success message
-      setTimeout(() => {
-        navigate('/app/dashboards/assistants');
-      }, 1500);
-    } else {
-      // Show success message in snackbar for existing assistants
-      setSnackbarMessage('Assistant configuration saved successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    }
+    // Show success message in snackbar
+    setSnackbarMessage('Assistant configuration saved successfully!');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
   };
 
   return (
-    <Box sx={{ p: 3, mt: 3 }}>
+    <Box sx={{ p: 3, mt: 3, mb: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
-        <SmartToyIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
-        <Typography variant="h2" component="h1">
+        <SmartToyIcon color="primary" sx={{ width: 40, height: 40, mr: 2, mb: 2 }} />
+        <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
           Manage assistant
         </Typography>
       </Box>
@@ -532,7 +430,7 @@ const ManageAssistant = () => {
               fullWidth
               value={assistantName}
               onChange={(e) => setAssistantName(e.target.value)}
-              disabled={assistantId !== 'new'}
+              disabled
               variant="outlined"
               label="Assistant Name"
               size="small"
