@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChatIcon from '@mui/icons-material/Chat';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 // Removed unused ApartmentIcon import
 import PaymentIcon from '@mui/icons-material/Payment';
 import logo from '../../assets/images/arto-site-logo.png';
@@ -58,6 +59,11 @@ const ResponsiveDrawer = () => {
       text: 'Conversations',
       icon: <ChatIcon />,
       path: '/app/dashboards/dashboard2'
+    },
+    {
+      text: 'Assistants',
+      icon: <SmartToyIcon />,
+      path: '/app/dashboards/assistants'
     },
     {
       text: 'Billing',
