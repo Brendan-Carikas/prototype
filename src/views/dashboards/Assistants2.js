@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { Grid, Box, Typography, Paper, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Fab, Tooltip } from "@mui/material";
+import { Grid, Box, Typography, Paper, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Fab, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
-const Assistants = () => {
+const Assistants2 = () => {
   const navigate = useNavigate();
   
   // Define default assistants
@@ -54,6 +54,10 @@ const Assistants = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [selectedAssistant, setSelectedAssistant] = useState(null);
   
+  // State for delete confirmation dialog
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [assistantToDelete, setAssistantToDelete] = useState(null);
+  
   // Function to handle opening the menu
   const handleMenuOpen = (event, assistantId) => {
     setMenuAnchorEl(event.currentTarget);
@@ -72,14 +76,22 @@ const Assistants = () => {
     handleMenuClose();
   };
   
-  // Function to handle deleting an assistant
+  // Function to handle delete button click
   const handleDeleteClick = (assistantId) => {
+    // Set the assistant to delete and open the confirmation dialog
+    setAssistantToDelete(assistantId);
+    setDeleteDialogOpen(true);
+    handleMenuClose();
+  };
+  
+  // Function to handle actual deletion after confirmation
+  const handleConfirmDelete = () => {
     // Remove the assistant from the list
-    const updatedAssistants = assistants.filter(assistant => assistant.id !== assistantId);
+    const updatedAssistants = assistants.filter(assistant => assistant.id !== assistantToDelete);
     setAssistants(updatedAssistants);
     
     // Update localStorage if it's a custom assistant
-    if (!['customer-support', 'sales', 'technical-docs'].includes(assistantId)) {
+    if (!['customer-support', 'sales', 'technical-docs'].includes(assistantToDelete)) {
       const customAssistants = updatedAssistants.filter(
         assistant => !['customer-support', 'sales', 'technical-docs'].includes(assistant.id)
       );
@@ -87,8 +99,11 @@ const Assistants = () => {
     }
     
     // Show a snackbar or some feedback (would be implemented in a real app)
-    console.log(`Deleted assistant: ${assistantId}`);
-    handleMenuClose();
+    console.log(`Deleted assistant: ${assistantToDelete}`);
+    
+    // Close the dialog and reset the assistant to delete
+    setDeleteDialogOpen(false);
+    setAssistantToDelete(null);
   };
   
   // Function to handle creating a new assistant
@@ -145,10 +160,10 @@ const Assistants = () => {
 
   return (
     <Box sx={{ p: 3, mt: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 6.25, ml: 1.2 }}>
         <SmartToyIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
         <Typography variant="h2" component="h1">
-          Assistants
+          Assistants 2
         </Typography>
       </Box>
       
@@ -170,12 +185,6 @@ const Assistants = () => {
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                       {assistant.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {assistant.model || 'GPT-3.5'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {assistant.status || 'Active'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
                       Created: {assistant.created}
@@ -240,8 +249,33 @@ const Assistants = () => {
           <AddIcon />
         </Fab>
       </Tooltip>
+      
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">
+          {"Delete Assistant"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete this assistant? This action cannot be undone, and any customizations will be permanently lost.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)} variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} variant="contained" color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
 
-export default Assistants;
+export default Assistants2;
