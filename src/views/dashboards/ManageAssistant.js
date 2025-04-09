@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Grid, 
   Box, 
@@ -19,14 +19,21 @@ import {
   // IconButton,
   // Tooltip,
   TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Slider,
-  Switch,
-  FormControlLabel,
-  Divider
+  // MenuItem,
+  // Select,
+  // FormControl,
+  // InputLabel,
+  // Slider,
+  // Switch,
+  // FormControlLabel,
+  // Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+  Alert
 } from "@mui/material";
 
 // Icons
@@ -99,17 +106,59 @@ const ManageAssistant = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   // State to toggle between empty state and files view (for demo purposes)
   const [hasFiles, setHasFiles] = useState(true);
+  // State for save confirmation modal
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
+  // State for cancel confirmation modal
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  // State for snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  
+  // Ref for file input
+  const fileInputRef = useRef(null);
   
   // Instructions tab states
   const [systemPrompt, setSystemPrompt] = useState(
     "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
   );
-  const [model, setModel] = useState("gpt-4o");
-  const [temperature, setTemperature] = useState(0.7);
-  const [topP, setTopP] = useState(0.9);
-  const [maxTokens, setMaxTokens] = useState(2048);
-  const [enableStreaming, setEnableStreaming] = useState(true);
-  const [showSystemMessages, setShowSystemMessages] = useState(false);
+  const [assistantName, setAssistantName] = useState("Customer Support Assistant");
+  
+  // Original state for tracking changes
+  const [originalSystemPrompt, setOriginalSystemPrompt] = useState(
+    "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
+  );
+  const [originalAssistantName, setOriginalAssistantName] = useState("Customer Support Assistant");
+
+  // Simulate fetching data from an API
+  useEffect(() => {
+    // In a real app, you would fetch the data from your backend
+    // and then set both the current state and original state
+    const fetchData = async () => {
+      try {
+        // Simulate API call
+        const data = {
+          assistantName: "Customer Support Assistant",
+          systemPrompt: "You are an AI assistant that helps users with their questions and tasks. Be helpful, concise, and accurate in your responses. When you don't know something, admit it rather than making up information."
+        };
+        
+        // Set both current and original state
+        setAssistantName(data.assistantName);
+        setSystemPrompt(data.systemPrompt);
+        setOriginalAssistantName(data.assistantName);
+        setOriginalSystemPrompt(data.systemPrompt);
+      } catch (error) {
+        console.error("Error fetching assistant data:", error);
+      }
+    };
+    
+    fetchData();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Check if there are unsaved changes
+  const hasUnsavedChanges = () => {
+    return systemPrompt !== originalSystemPrompt || assistantName !== originalAssistantName;
+  };
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -136,7 +185,30 @@ const ManageAssistant = () => {
 
   // Handle upload files (toggle between empty and files view for demo)
   const handleUploadFiles = () => {
-    setHasFiles(true);
+    // Trigger file input click
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // Handle file selection
+  const handleFileSelection = (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // In a real app, you would upload the files to your backend
+      console.log("Files selected:", files);
+      
+      // For demo purposes, just show that files were added
+      setHasFiles(true);
+      
+      // Show success message
+      setSnackbarMessage(`${files.length} file(s) uploaded successfully`);
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+      
+      // Reset the file input so the same file can be selected again if needed
+      event.target.value = '';
+    }
   };
 
   // Handle delete selected files
@@ -148,9 +220,84 @@ const ManageAssistant = () => {
       setHasFiles(false);
     }
   };
+  
+  // Handle opening the save confirmation modal
+  const handleOpenSaveModal = () => {
+    setSaveModalOpen(true);
+  };
+  
+  // Handle closing the save confirmation modal
+  const handleCloseSaveModal = () => {
+    setSaveModalOpen(false);
+  };
+  
+  // Handle opening the cancel confirmation modal
+  const handleOpenCancelModal = () => {
+    // Only show the confirmation dialog if there are unsaved changes
+    if (hasUnsavedChanges()) {
+      setCancelModalOpen(true);
+    } else {
+      // If no changes, just show a message
+      setSnackbarMessage('No unsaved changes found.');
+      setSnackbarSeverity('info');
+      setSnackbarOpen(true);
+    }
+  };
+  
+  // Handle closing the cancel confirmation modal
+  const handleCloseCancelModal = () => {
+    setCancelModalOpen(false);
+  };
+  
+  // Handle canceling changes
+  const handleCancelChanges = () => {
+    // Reset form fields to their original values
+    setSystemPrompt(originalSystemPrompt);
+    setAssistantName(originalAssistantName);
+    
+    console.log("Canceling changes...");
+    console.log("Reverting to original system prompt:", originalSystemPrompt);
+    console.log("Reverting to original assistant name:", originalAssistantName);
+    
+    // Close the modal
+    setCancelModalOpen(false);
+    
+    // Show info message in snackbar
+    setSnackbarMessage('Changes discarded. Configuration reverted to last saved state.');
+    setSnackbarSeverity('info');
+    setSnackbarOpen(true);
+  };
+  
+  // Handle closing the snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  
+  // Handle saving the configuration
+  const handleSaveConfiguration = () => {
+    // Save the current state as the original state
+    setOriginalSystemPrompt(systemPrompt);
+    setOriginalAssistantName(assistantName);
+    
+    // In a real app, you would save the configuration to your backend
+    console.log("Saving configuration...");
+    console.log("Assistant Name:", assistantName);
+    console.log("System Prompt:", systemPrompt);
+    
+    // Close the modal
+    setSaveModalOpen(false);
+    
+    // Show success message in snackbar
+    setSnackbarMessage('Assistant configuration saved successfully!');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+  };
 
   return (
-    <Box sx={{ p: 3, mt: 3 }}>
+    <Box sx={{ p: 3, mt: 3, mb: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
         <SmartToyIcon color="primary" sx={{ width: 40, height: 40, mr: 2, mb: 2 }} />
         <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
@@ -159,7 +306,7 @@ const ManageAssistant = () => {
       </Box>
       
       {/* Tabs */}
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', mb: 4 }}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
@@ -171,173 +318,78 @@ const ManageAssistant = () => {
           <Tab label="Knowledge" id="assistant-tab-1" aria-controls="assistant-tabpanel-1" />
         </Tabs>
         
-        {/* Instructions Tab - AI Assistant Configuration Studio */}
+        {/* Instructions Tab - General */}
         <TabPanel value={tabValue} index={0}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <TuneIcon color="primary" sx={{ mr: 1 }} />
               <Typography variant="h4">
-                AI Assistant Configuration Studio
+                General
               </Typography>
             </Box>
             <Typography variant="subtitle1" color="text.secondary">
-              Set up and test your AI assistant's behavior, personality, and capabilities
+              Set up your AI assistant's behavior, personality, and capabilities
             </Typography>
           </Box>
           
+          {/* Assistant Name Field */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>Assistant Name</Typography>
+            <TextField
+              fullWidth
+              value={assistantName}
+              onChange={(e) => setAssistantName(e.target.value)}
+              disabled
+              variant="outlined"
+              label="Assistant Name"
+              size="small"
+              margin="dense"
+              sx={{ maxWidth: '400px' }}
+            />
+          </Box>
+          
           <Grid container spacing={3}>
-            {/* Left Column - System Prompt (75% width) */}
-            <Grid item xs={12} md={9}>
-              <Paper variant="outlined" sx={{ p: 3, height: '100%' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="h6">System Prompt</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {systemPrompt.length} characters
-                  </Typography>
-                </Box>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={12}
-                  variant="outlined"
-                  value={systemPrompt}
-                  onChange={(e) => setSystemPrompt(e.target.value)}
-                  placeholder="Enter instructions for your AI assistant..."
-                  InputProps={{
-                    style: { fontFamily: '"Roboto Mono", monospace' }
-                  }}
-                  helperText="Define your assistant's personality, knowledge, and behavior guidelines"
-                />
-              </Paper>
-            </Grid>
-            
-            {/* Right Column - Configuration Options (25% width) */}
-            <Grid item xs={12} md={3}>
-              <Paper variant="outlined" sx={{ p: 3, height: '100%' }}>
-                {/* Model Selection */}
-                <Box sx={{ mb: 4 }}>
-                  <Typography variant="h6" gutterBottom>Model</Typography>
-                  <FormControl fullWidth>
-                    <InputLabel id="model-select-label">AI Model</InputLabel>
-                    <Select
-                      labelId="model-select-label"
-                      value={model}
-                      label="AI Model"
-                      onChange={(e) => setModel(e.target.value)}
-                    >
-                      <MenuItem value="gpt-4o">GPT-4o</MenuItem>
-                      <MenuItem value="gpt-4o-mini">GPT-4o Mini</MenuItem>
-                      <MenuItem value="gpt-4.5-preview">GPT-4.5 Preview</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-                
-                <Divider sx={{ my: 3 }} />
-                
-                {/* Generation Parameters */}
-                <Box sx={{ mb: 4 }}>
-                  <Typography variant="h6" gutterBottom>Generation Parameters</Typography>
-                  
-                  {/* Temperature */}
-                  <Box sx={{ mb: 3 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="body2">Temperature</Typography>
-                      <Typography variant="body2" color="primary">{temperature.toFixed(1)}</Typography>
-                    </Box>
-                    <Slider
-                      value={temperature}
-                      min={0}
-                      max={1}
-                      step={0.1}
-                      onChange={(e, newValue) => setTemperature(newValue)}
-                      valueLabelDisplay="auto"
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                      Controls randomness (lower = more deterministic)
-                    </Typography>
+            {/* System Prompt */}
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6">System Instructions</Typography>
+              </Box>
+              <TextField
+                fullWidth
+                multiline
+                rows={12}
+                variant="outlined"
+                value={systemPrompt}
+                onChange={(e) => setSystemPrompt(e.target.value)}
+                placeholder="Enter instructions for your AI assistant..."
+                InputProps={{
+                  style: { fontFamily: '"Roboto Mono", monospace' }
+                }}
+                helperText={
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                    <span>Define your assistant's personality, knowledge, and behavior guidelines</span>
+                    <span>{systemPrompt.length} characters</span>
                   </Box>
-                  
-                  {/* Top P */}
-                  <Box sx={{ mb: 3 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="body2">Top P</Typography>
-                      <Typography variant="body2" color="primary">{topP.toFixed(1)}</Typography>
-                    </Box>
-                    <Slider
-                      value={topP}
-                      min={0}
-                      max={1}
-                      step={0.1}
-                      onChange={(e, newValue) => setTopP(newValue)}
-                      valueLabelDisplay="auto"
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                      Controls diversity via nucleus sampling
-                    </Typography>
-                  </Box>
-                  
-                  {/* Max Tokens */}
-                  <Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="body2">Maximum Tokens</Typography>
-                      <Typography variant="body2" color="primary">{maxTokens}</Typography>
-                    </Box>
-                    <Slider
-                      value={maxTokens}
-                      min={1}
-                      max={4096}
-                      step={1}
-                      onChange={(e, newValue) => setMaxTokens(newValue)}
-                      valueLabelDisplay="auto"
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                      Limits response length
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Divider sx={{ my: 3 }} />
-                
-                {/* Additional Options */}
-                <Box sx={{ mb: 4 }}>
-                  <Typography variant="h6" gutterBottom>Additional Options</Typography>
-                  
-                  <FormControlLabel
-                    control={
-                      <Switch 
-                        checked={enableStreaming} 
-                        onChange={(e) => setEnableStreaming(e.target.checked)} 
-                      />
-                    }
-                    label="Enable Streaming"
-                  />
-                  <Typography variant="caption" display="block" color="text.secondary" sx={{ ml: 4, mt: -1, mb: 2 }}>
-                    See responses word by word as they're generated
-                  </Typography>
-                  
-                  <FormControlLabel
-                    control={
-                      <Switch 
-                        checked={showSystemMessages} 
-                        onChange={(e) => setShowSystemMessages(e.target.checked)} 
-                      />
-                    }
-                    label="Show System Messages"
-                  />
-                  <Typography variant="caption" display="block" color="text.secondary" sx={{ ml: 4, mt: -1 }}>
-                    Display system instructions in the chat interface
-                  </Typography>
-                </Box>
-              </Paper>
+                }
+              />
             </Grid>
           </Grid>
           
           {/* Save Button */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
             <Button 
+              variant="outlined" 
+              size="large"
+              sx={{ mr: 2 }}
+              onClick={handleOpenCancelModal}
+            >
+              Cancel
+            </Button>
+            <Button 
               variant="contained" 
               startIcon={<SaveIcon />}
               size="large"
+              onClick={handleOpenSaveModal}
             >
               Save Configuration
             </Button>
@@ -363,7 +415,7 @@ const ManageAssistant = () => {
             <>
               {/* Controls */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="body1">
+                <Typography variant="h6">
                   Your Files ({sampleFiles.length})
                 </Typography>
                 <Box>
@@ -384,6 +436,13 @@ const ManageAssistant = () => {
                   >
                     Upload Files
                   </Button>
+                  <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
+                    onChange={handleFileSelection}
+                    multiple
+                  />
                 </Box>
               </Box>
               
@@ -401,7 +460,7 @@ const ManageAssistant = () => {
                       </TableCell>
                       <TableCell>File</TableCell>
                       <TableCell>Size</TableCell>
-                      <TableCell>Date Added</TableCell>
+                      <TableCell>Uploaded Date</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -458,6 +517,13 @@ const ManageAssistant = () => {
               >
                 Upload Your First File
               </Button>
+              <input
+                type="file"
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={handleFileSelection}
+                multiple
+              />
             </Box>
           )}
           
@@ -484,6 +550,75 @@ const ManageAssistant = () => {
           </Paper>
         </TabPanel>
       </Paper>
+      
+      {/* Save Confirmation Modal */}
+      <Dialog
+        open={saveModalOpen}
+        onClose={handleCloseSaveModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Save changes"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you ready to save? This will immediately apply these changes to your assistant, and will affect how it responds to user queries.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSaveModal}>Cancel</Button>
+          <Button onClick={handleSaveConfiguration} variant="contained" color="primary" autoFocus>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* Cancel Confirmation Modal */}
+      <Dialog
+        open={cancelModalOpen}
+        onClose={handleCloseCancelModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Cancel changes"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This will result in the loss of any changes you have made.
+            Your configuration will revert to the last saved state.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseCancelModal}>Cancel</Button>
+          <Button onClick={handleCancelChanges} variant="contained" color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        sx={{ '& .MuiPaper-root': { borderRadius: '8px' } }}
+      >
+        <Alert 
+          severity={snackbarSeverity} 
+          variant="standard" 
+          sx={{ 
+            width: '100%', 
+            bgcolor: 'white', 
+            boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.2)',
+            borderRadius: '8px'
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
