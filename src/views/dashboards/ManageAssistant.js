@@ -487,7 +487,6 @@ const ManageAssistant = () => {
                 <Box>
                   <Button 
                     variant="outlined" 
-                    color="error" 
                     startIcon={<DeleteIcon />} 
                     sx={{ mr: 1 }}
                     disabled={selectedFiles.length === 0}
@@ -684,7 +683,7 @@ const ManageAssistant = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteModalOpen(false)}>Cancel</Button>
-          <Button onClick={handleDeleteSelected} variant="contained" color="error" autoFocus>
+          <Button onClick={handleDeleteSelected} variant="contained" autoFocus>
             Delete
           </Button>
         </DialogActions>
