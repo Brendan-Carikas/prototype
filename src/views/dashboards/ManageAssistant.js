@@ -114,6 +114,10 @@ const ManageAssistant = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   // State for delete confirmation modal
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  // State for file format error modal
+  const [formatErrorModalOpen, setFormatErrorModalOpen] = useState(false);
+  // State for unsupported file names
+  const [unsupportedFiles, setUnsupportedFiles] = useState([]);
   // State for snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -202,8 +206,34 @@ const ManageAssistant = () => {
       // In a real app, you would upload the files to your backend
       console.log("Files selected:", files);
       
-      // Create new file entries for the selected files
-      const newFiles = Array.from(files).map((file, index) => {
+      // Define supported file extensions
+      const supportedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md', 'csv', 'xlsx', 'xls', 'js', 'py', 'java', 'html', 'css', 'php'];
+      
+      // Filter out unsupported files
+      const unsupportedFilesList = [];
+      const supportedFiles = Array.from(files).filter(file => {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const isSupported = supportedExtensions.includes(fileExtension);
+        if (!isSupported) {
+          unsupportedFilesList.push(file.name);
+        }
+        return isSupported;
+      });
+      
+      // If there are unsupported files, show error modal
+      if (unsupportedFilesList.length > 0) {
+        setUnsupportedFiles(unsupportedFilesList);
+        setFormatErrorModalOpen(true);
+        
+        // If there are no supported files, exit early
+        if (supportedFiles.length === 0) {
+          event.target.value = '';
+          return;
+        }
+      }
+      
+      // Create new file entries for the supported files
+      const newFiles = supportedFiles.map((file, index) => {
         // Get file extension
         const fileExtension = file.name.split('.').pop().toLowerCase();
         
@@ -235,16 +265,18 @@ const ManageAssistant = () => {
         };
       });
       
-      // Add new files to the list
-      setFilesList(prevFiles => [...prevFiles, ...newFiles]);
-      
-      // Ensure files view is shown
-      setHasFiles(true);
-      
-      // Show success message
-      setSnackbarMessage(`${files.length} file(s) uploaded successfully`);
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+      // Add new files to the list if there are any supported files
+      if (newFiles.length > 0) {
+        setFilesList(prevFiles => [...prevFiles, ...newFiles]);
+        
+        // Ensure files view is shown
+        setHasFiles(true);
+        
+        // Show success message
+        setSnackbarMessage(`${newFiles.length} file(s) uploaded successfully`);
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      }
       
       // Reset the file input so the same file can be selected again if needed
       event.target.value = '';
@@ -679,8 +711,8 @@ const ManageAssistant = () => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {selectedFiles.length === 1 
-              ? "Are you sure you want to delete the selected file? This action is irreversible."
-              : `Are you sure you want to delete ${selectedFiles.length} selected files? This action is irreversible.`
+              ? "Are you sure you want to delete the selected file? This action cannot be undone."
+              : `Are you sure you want to delete ${selectedFiles.length} selected files? This action cannot be undone.`
             }
           </DialogContentText>
         </DialogContent>
@@ -688,6 +720,39 @@ const ManageAssistant = () => {
           <Button onClick={() => setDeleteModalOpen(false)}>Cancel</Button>
           <Button onClick={handleDeleteSelected} variant="contained" autoFocus>
             Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* File Format Error Modal */}
+      <Dialog
+        open={formatErrorModalOpen}
+        onClose={() => setFormatErrorModalOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Unsupported File Format"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {unsupportedFiles.length === 1 
+              ? `The file "${unsupportedFiles[0]}" is in an unsupported format.` 
+              : `The following files are in unsupported formats: ${unsupportedFiles.join(', ')}`
+            }
+          </DialogContentText>
+          <DialogContentText sx={{ mt: 2 }}>
+            Supported formats include:
+          </DialogContentText>
+          <ul style={{ marginTop: '8px' }}>
+            <li>Documents: PDF, DOC, DOCX, TXT, MD</li>
+            <li>Data: CSV, XLS, XLSX</li>
+            <li>Code: JS, PY, JAVA, HTML, CSS, PHP</li>
+          </ul>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setFormatErrorModalOpen(false)} variant="contained" autoFocus>
+            Okay
           </Button>
         </DialogActions>
       </Dialog>
