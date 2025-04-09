@@ -60,6 +60,7 @@ const ThemeRoutes = [
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
       { path: "dashboards/tenants", element: <Tenants /> },
       { path: "dashboards/assistant", element: <Assistant /> },
+      { path: "dashboards/assistants", element: <Assistants /> },
       { path: "dashboards/manage-assistant", element: <ManageAssistant /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
@@ -71,7 +72,6 @@ const ThemeRoutes = [
     children: [
       { path: "dashboard2", element: <Dashboard2 /> },
       { path: "billing", element: <Billing /> },
-      { path: "assistants", element: <Assistants /> },
     ],
   },
   {
