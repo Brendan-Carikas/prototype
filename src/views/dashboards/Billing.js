@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Box, Typography, Card, Button, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useMediaQuery, useTheme } from "@mui/material";
+import { Grid, Box, Typography, Card, Button, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useMediaQuery, useTheme, AppBar, Toolbar, Stack } from "@mui/material";
 import PaymentIcon from '@mui/icons-material/Payment';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,8 +9,12 @@ import SupportOutlinedIcon from '@mui/icons-material/SupportOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Link } from "react-router-dom";
 // Import pricing table theme
 import pricingTableTheme from '../../assets/global/PricingTableTheme';
+import logo from "../../assets/images/arto-site-logo.png";
+import InvotraLogo from '../../assets/images/InvotraLogo.png';
 
 const Billing = () => {
   // Card style for future use
@@ -24,29 +28,117 @@ const Billing = () => {
   //   },
   // };
 
+  const handleLogout = () => {
+    console.log('Logout clicked');
+    // Actual logout functionality would be implemented here
+  };
+
   return (
-    <Box sx={{ p: 3, mt: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
-        <PaymentIcon color="primary" sx={{ width: 40, height: 40, mr: 2, mb: 2 }} />
-        <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
-          Billing
-        </Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', padding: '24px', marginTop: '24px' }}>
+      {/* App Bar */}
+      <AppBar
+        sx={{
+          background: "#fff",
+          color: "#000",
+          boxShadow: "0px 7px 30px 0px rgb(90 114 123 / 11%)",
+        }}
+        position="fixed"
+      >
+        <Toolbar>
+          <Link to="/">
+            <img src={logo} alt="Arto" height="36px" />
+          </Link>
+          <Box flexGrow={1} />
+          <Stack spacing={1} direction="row" alignItems="center">
+            <Button
+              onClick={handleLogout}
+              color="primary"
+              variant="text"
+              startIcon={<LogoutIcon />}
+              sx={{ 
+                textTransform: 'none',
+                fontSize: '0.9rem',
+                fontWeight: 500,
+                px: 2,
+                py: 0.75,
+                borderRadius: 2
+              }}
+            >
+              Logout
+            </Button>
+          </Stack>
+        </Toolbar>
+      </AppBar>
+      
+      {/* Main Content */}
+      <Box sx={{ p: 3, mt: 9, mb: 8 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
+          <PaymentIcon color="primary" sx={{ width: 40, height: 40, mr: 2, mb: 2 }} />
+          <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
+            Billing
+          </Typography>
+        </Box>
+        
+        <Grid container spacing={2}>
+          {/* Billing Content */}
+          <Grid item xs={12}>
+
+            {/* Pricing Table */}
+            <Paper elevation={0} sx={pricingTableTheme.components.paper}>
+              <PricingTable />
+            </Paper>
+          </Grid>
+        </Grid>
       </Box>
       
-      <Grid container spacing={2}>
-        {/* Billing Content */}
-        <Grid item xs={12}>
-
-          {/* Pricing Table */}
-          <Paper elevation={0} sx={pricingTableTheme.components.paper}>
-            <PricingTable />
-          </Paper>
-
-          
-
-
-        </Grid>
-      </Grid>
+      {/* Footer */}
+      <Box
+        component="footer"
+        sx={{
+          height: '56px',
+          bgcolor: 'white',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          boxShadow: '0px -1px 3px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
+          <Typography 
+            variant="body1" 
+            color="text.secondary" 
+            paddingTop={0.75} 
+            sx={{ letterSpacing: '-0.5px' }}
+          >
+            An
+          </Typography>
+          <a 
+            href="https://invotra.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <img 
+              src={InvotraLogo} 
+              alt="Invotra"
+              style={{ height: '16px' }}
+            />
+          </a>
+          <Typography 
+            variant="body1" 
+            color="text.secondary" 
+            paddingTop={0.75} 
+            sx={{ letterSpacing: '-0.5px' }}
+          >
+            product
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -150,29 +242,59 @@ const PricingTable = () => {
               >
                 {plan.name}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                {plan.price.startsWith('From') && (
+              <Box sx={{ display: 'flex', alignItems: 'baseline', mb: 2, flexWrap: 'wrap' }}>
+                {plan.price === 'Bespoke pricing' ? (
                   <Typography 
-                    variant={pricingTableTheme.typography.pricePrefix.mobile.variant} 
+                    variant={pricingTableTheme.typography.priceAmount.mobile.variant} 
                     sx={{ 
-                      color: pricingTableTheme.typography.pricePrefix.mobile.color,
-                      mr: pricingTableTheme.typography.pricePrefix.mobile.marginRight,
-                      fontWeight: pricingTableTheme.typography.pricePrefix.mobile.fontWeight
+                      color: pricingTableTheme.typography.priceAmount.mobile.color,
+                      fontWeight: 700,
+                      fontSize: '1rem'
                     }}
                   >
-                    From
+                    {plan.price}
                   </Typography>
+                ) : (
+                  <>
+                    {plan.price.startsWith('From') && (
+                      <Typography 
+                        variant={pricingTableTheme.typography.pricePrefix.mobile.variant} 
+                        sx={{ 
+                          color: pricingTableTheme.typography.pricePrefix.mobile.color,
+                          mr: pricingTableTheme.typography.pricePrefix.mobile.marginRight,
+                          fontWeight: pricingTableTheme.typography.pricePrefix.mobile.fontWeight
+                        }}
+                      >
+                        From
+                      </Typography>
+                    )}
+                    <Typography 
+                      variant={pricingTableTheme.typography.priceAmount.mobile.variant} 
+                      sx={{ 
+                        color: pricingTableTheme.typography.priceAmount.mobile.color,
+                        fontWeight: pricingTableTheme.typography.priceAmount.mobile.fontWeight,
+                      }}
+                    >
+                      {plan.price.startsWith('From') 
+                        ? plan.price.replace('From ', '') 
+                        : plan.price}
+                    </Typography>
+                    {plan.price !== 'Bespoke pricing' && (
+                      <Typography 
+                        variant={pricingTableTheme.typography.pricePrefix.desktop.variant} 
+                        sx={{ 
+                          color: pricingTableTheme.typography.pricePrefix.desktop.color,
+                          ml: 1,
+                          fontWeight: pricingTableTheme.typography.pricePrefix.desktop.fontWeight,
+                          display: 'inline !important',
+                          visibility: 'visible !important'
+                        }}
+                      >
+                        pm
+                      </Typography>
+                    )}
+                  </>
                 )}
-                <Typography 
-                  variant={pricingTableTheme.typography.priceAmount.mobile.variant} 
-                  sx={{ 
-                    color: pricingTableTheme.typography.priceAmount.mobile.color,
-                    fontWeight: pricingTableTheme.typography.priceAmount.mobile.fontWeight,
-                    ...(plan.price === 'Bespoke pricing' && { fontSize: '1rem', fontWeight: 700 })
-                  }}
-                >
-                  {plan.price.startsWith('From') ? plan.price.replace('From ', '') : plan.price}
-                </Typography>
               </Box>
               
               <Divider sx={{ my: 2 }} />

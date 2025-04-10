@@ -229,54 +229,56 @@ export const SignupForm = ({ onSubmit, formData, handleChange, showPassword, set
 
 
 
-          <Box sx={{ width: '100%', mt: 2 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  name="terms"
-                  color="primary"
-                  size="small"
-                />
-              }
-              label={
-                <Typography variant="body2" sx={{ fontSize: '14px' }}>
-                  I agree to the{' '}
-                  <Link 
-                    href="https://invotra.com/invotra-arto-application-terms-conditions/" 
-                    target="_blank"
-                    sx={{ 
-                      color: 'primary.main',
-                      textDecoration: 'none',
-                      '&:hover': {
-                        textDecoration: 'underline'
-                      }
-                    }}
-                  >
-                    terms & conditions
-                  </Link>
-                  *
-                </Typography>
-              }
-            />
-          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', mt: 2 }}>
+            <Box sx={{ width: '100%' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                    name="terms"
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                    I agree to the{' '}
+                    <Link 
+                      href="https://invotra.com/invotra-arto-application-terms-conditions/" 
+                      target="_blank"
+                      sx={{ 
+                        color: 'primary.main',
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline'
+                        }
+                      }}
+                    >
+                      terms & conditions
+                    </Link>
+                    *
+                  </Typography>
+                }
+              />
+            </Box>
 
-          <Box sx={{ width: '100%', mt: 1 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="marketing"
-                  color="primary"
-                  size="small"
-                />
-              }
-              label={
-                <Typography variant="body2" sx={{ fontSize: '14px' }}>
-                  I agree to receive occasional marketing communications.
-                </Typography>
-              }
-            />
+            <Box sx={{ width: '100%', mt: 0 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="marketing"
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                    I agree to receive marketing communications.
+                  </Typography>
+                }
+              />
+            </Box>
           </Box>
 
 
