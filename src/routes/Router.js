@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 // Layouts
 import FullLayout from "../layouts/FullLayout/FullLayout.js";
 import DrawerLayout from "../layouts/DrawerLayout/DrawerLayout.js";
+import DrawerLayoutNoAppBar from "../layouts/DrawerLayoutNoAppBar/DrawerLayoutNoAppBar.js";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout.js";
 import ConversationLayout from "../layouts/ConversationLayout/ConversationLayout.js";
 
@@ -60,7 +61,6 @@ const ThemeRoutes = [
       { path: "dashboards/convo-dashboard", element: <ConvoDashboard /> },
       { path: "dashboards/tenants", element: <Tenants /> },
       { path: "dashboards/assistant", element: <Assistant /> },
-      { path: "dashboards/assistants", element: <Assistants /> },
       { path: "dashboards/manage-assistant", element: <ManageAssistant /> },
       { path: "admin", element: <InvotraAdmin /> },
       { path: "admin/dashboard", element: <AdminDashboard /> },
@@ -68,11 +68,15 @@ const ThemeRoutes = [
   },
   {
     path: "/app/dashboards",
-    element: <ProtectedRoute><DrawerLayout /></ProtectedRoute>,
+    element: <ProtectedRoute><DrawerLayoutNoAppBar /></ProtectedRoute>,
     children: [
       { path: "dashboard2", element: <Dashboard2 /> },
-      { path: "billing", element: <Billing /> },
+      { path: "assistants", element: <Assistants /> },
     ],
+  },
+  {
+    path: "/app/dashboards/billing",
+    element: <ProtectedRoute><Billing /></ProtectedRoute>,
   },
   {
     path: "/app/settings/conversations",

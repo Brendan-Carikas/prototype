@@ -20,7 +20,7 @@ const Tenants = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, ml: 1.2 }}>
         <ApartmentIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
         <Typography variant="h2" component="h1">
-          Tenants
+          Spaces
         </Typography>
       </Box>
       
@@ -38,9 +38,7 @@ const Tenants = () => {
                 <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                   Invotra Ltd
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  invotra.chargebee.com
-                </Typography>
+                {/* URL field hidden */}
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
                   Created: 12 Jan 2024
                 </Typography>
@@ -55,7 +53,7 @@ const Tenants = () => {
                   textTransform: 'none',
                 }}
               >
-                LIVE Site
+                Select
               </Button>
             </Box>
           </Paper>
@@ -71,9 +69,7 @@ const Tenants = () => {
                 <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                   Acme Corporation
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  acme.chargebee.com
-                </Typography>
+                {/* URL field hidden */}
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
                   Created: 03 Mar 2024
                 </Typography>
@@ -88,7 +84,7 @@ const Tenants = () => {
                   textTransform: 'none',
                 }}
               >
-                LIVE Site
+                Select
               </Button>
             </Box>
           </Paper>
@@ -104,9 +100,7 @@ const Tenants = () => {
                 <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
                   TechStart Inc
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  techstart.chargebee.com
-                </Typography>
+                {/* URL field hidden */}
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
                   Created: 18 Feb 2024
                 </Typography>
@@ -121,7 +115,7 @@ const Tenants = () => {
                   textTransform: 'none',
                 }}
               >
-                LIVE Site
+                Select
               </Button>
             </Box>
           </Paper>

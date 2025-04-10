@@ -64,11 +64,6 @@ const ResponsiveDrawer = () => {
       text: 'Assistants',
       icon: <SmartToyIcon />,
       path: '/app/dashboards/assistants'
-    },
-    {
-      text: 'Billing',
-      icon: <PaymentIcon />,
-      path: '/app/dashboards/billing'
     }
   ];
 

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Grid, Box, Typography, Paper, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ResponsiveDrawer from "../../components/Sidebar/ResponsiveDrawer";
+// ResponsiveDrawerNoAppBar is now provided by the layout
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -148,8 +148,7 @@ const Assistants = () => {
   }, [loadAssistantsFromStorage]);
   
   return (
-    <Box sx={{ display: 'flex' }}>
-      <ResponsiveDrawer />
+    <Box>
       <Box sx={{ flexGrow: 1, p: 3, mt: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 6.25, ml: 1.2 }}>
           <SmartToyIcon color="primary" sx={{ width: 40, height: 40, mr: 2 }} />
@@ -224,12 +223,7 @@ const Assistants = () => {
           </ListItemIcon>
           <ListItemText>Edit</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleDeleteClick(selectedAssistant)}>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small" color="error" />
-          </ListItemIcon>
-          <ListItemText primary="Delete" primaryTypographyProps={{ color: 'error' }} />
-        </MenuItem>
+        {/* Delete option removed */}
       </Menu>
       
       {/* Floating Action Button to create a new assistant - temporarily hidden

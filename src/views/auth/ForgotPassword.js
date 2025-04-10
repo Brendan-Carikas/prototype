@@ -90,11 +90,11 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
           </Box>
 
           <Typography variant="h3" textAlign="center" sx={{ mb: 1, fontWeight: 500 }}>
-            Forgot Password
+            Forgot password
           </Typography>
 
           <Typography variant="body2" textAlign="center" color="text.secondary" sx={{ mb: 2 }}>
-            Enter username and we will send you a code.
+            Enter your email and we will send you a code.
           </Typography>
 
           {error && (
@@ -130,7 +130,7 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
                 size="large"
                 fullWidth
               >
-                Send Reset Instructions
+                Send reset instructions
               </Button>
 
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
@@ -147,7 +147,7 @@ export const ForgotPasswordForm = ({ onSubmit, formData, handleChange, error }) 
                       },
                     }}
                   >
-                    Back to Sign in
+                    Back to sign in
                   </Link>
                 </RouterLink>
               </Box>

@@ -323,7 +323,7 @@ const ManageAssistant = () => {
     
     // In a real app, you would save the configuration to your backend
     console.log("Saving configuration...");
-    console.log("Assistant Name:", assistantName);
+    console.log("Assistant name:", assistantName);
     console.log("System Prompt:", systemPrompt);
     
     // Close the modal
@@ -420,8 +420,8 @@ const ManageAssistant = () => {
           textColor="primary"
           sx={{ borderBottom: 1, borderColor: 'divider' }}
         >
-          <Tab label="General" id="assistant-tab-0" aria-controls="assistant-tabpanel-0" />
-          <Tab label="Knowledge" id="assistant-tab-1" aria-controls="assistant-tabpanel-1" />
+          {/* General tab button hidden */}
+          {/* <Tab label="Knowledge" id="assistant-tab-1" aria-controls="assistant-tabpanel-1" /> */}
         </Tabs>
         
         {/* Instructions Tab - General */}
@@ -434,20 +434,20 @@ const ManageAssistant = () => {
               </Typography>
             </Box>
             <Typography variant="subtitle1" color="text.secondary">
-              Set up your AI assistant's behavior, personality, and capabilities
+              Define your AI assistant's behaviour, personality, and capabilities
             </Typography>
           </Box>
           
-          {/* Assistant Name Field */}
+          {/* Assistant name Field */}
           <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>Assistant Name</Typography>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>Assistant name</Typography>
             <TextField
               fullWidth
               value={assistantName}
               onChange={(e) => setAssistantName(e.target.value)}
               disabled={assistantId !== 'new'}
               variant="outlined"
-              label="Assistant Name"
+              label="Assistant name"
               size="small"
               margin="dense"
               sx={{ maxWidth: '400px' }}
@@ -458,7 +458,7 @@ const ManageAssistant = () => {
             {/* System Prompt */}
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="h6">System Instructions</Typography>
+                <Typography variant="h6">System instructions</Typography>
               </Box>
               <TextField
                 fullWidth
@@ -473,8 +473,7 @@ const ManageAssistant = () => {
                 }}
                 helperText={
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                    <span>Define your assistant's personality, knowledge, and behavior guidelines</span>
-                    <span>{systemPrompt.length} characters</span>
+                    {/* <span>{systemPrompt.length} characters</span> */}
                   </Box>
                 }
               />
@@ -498,7 +497,7 @@ const ManageAssistant = () => {
               size="large"
               onClick={handleOpenSaveModal}
             >
-              Save Configuration
+              Save configuration
             </Button>
           </Box>
         </TabPanel>
@@ -697,9 +696,9 @@ const ManageAssistant = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseCancelModal} variant="contained">Keep Editing</Button>
+          <Button onClick={handleCloseCancelModal} variant="contained">Keep editing</Button>
           <Button onClick={handleDiscardChanges} variant="outlined" color="primary" autoFocus>
-          Discard Changes
+          Discard changes
           </Button>
         </DialogActions>
       </Dialog>
