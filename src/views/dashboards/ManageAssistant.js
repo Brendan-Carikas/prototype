@@ -667,12 +667,12 @@ const ManageAssistant = () => {
         <DialogTitle id="alert-dialog-title">
           {"Save changes"}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ padding: '20px 24px' }}>
           <DialogContentText id="alert-dialog-description">
             Are you ready to save? This will immediately apply these changes to your assistant, and will affect how it responds to user queries.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingRight: '24px', paddingBottom: '16px' }}>
           <Button onClick={handleCloseSaveModal} variant="outlined">Cancel</Button>
           <Button onClick={handleSaveConfiguration} variant="contained" color="primary" autoFocus>
             Save
@@ -690,12 +690,12 @@ const ManageAssistant = () => {
         <DialogTitle id="alert-dialog-title">
           {"Discard changes?"}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ padding: '20px 24px' }}>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to discard your changes? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingRight: '24px', paddingBottom: '16px' }}>
           <Button onClick={handleCloseCancelModal} variant="contained">Keep editing</Button>
           <Button onClick={handleDiscardChanges} variant="outlined" color="primary" autoFocus>
           Discard changes
@@ -713,7 +713,7 @@ const ManageAssistant = () => {
         <DialogTitle id="alert-dialog-title">
           {`Delete ${selectedFiles.length} file${selectedFiles.length === 1 ? '' : 's'}`}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ padding: '20px 24px' }}>
           <DialogContentText id="alert-dialog-description">
             {selectedFiles.length === 1 
               ? "Are you sure you want to delete the selected file? This action cannot be undone."
@@ -721,7 +721,7 @@ const ManageAssistant = () => {
             }
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingRight: '24px', paddingBottom: '16px' }}>
           <Button onClick={() => setDeleteModalOpen(false)} variant="outlined">Cancel</Button>
           <Button onClick={handleDeleteSelected} variant="contained" color="error" autoFocus>
             Delete
