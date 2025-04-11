@@ -254,12 +254,12 @@ const Assistants = () => {
         <DialogTitle id="delete-dialog-title">
           {"Delete Assistant"}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ padding: '20px 24px' }}>
           <DialogContentText id="delete-dialog-description">
             Are you sure you want to delete this assistant? This action cannot be undone, and any customizations will be permanently lost.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingRight: '24px', paddingBottom: '16px' }}>
           <Button onClick={() => setDeleteDialogOpen(false)} variant="outlined">
             Cancel
           </Button>
