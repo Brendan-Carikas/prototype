@@ -284,7 +284,7 @@ const PricingTable = () => {
                         variant={pricingTableTheme.typography.pricePrefix.desktop.variant} 
                         sx={{ 
                           color: pricingTableTheme.typography.pricePrefix.desktop.color,
-                          ml: 1,
+                          ml: 0.5,
                           fontWeight: pricingTableTheme.typography.pricePrefix.desktop.fontWeight,
                           display: 'inline !important',
                           visibility: 'visible !important'
@@ -472,6 +472,18 @@ const PricingTable = () => {
                     >
                       {plan.price.startsWith('From') ? plan.price.replace('From ', '') : plan.price}
                     </Typography>
+                    {plan.price !== 'Bespoke pricing' && (
+                      <Typography 
+                        variant={pricingTableTheme.typography.pricePrefix.desktop.variant} 
+                        sx={{ 
+                          color: pricingTableTheme.typography.pricePrefix.desktop.color,
+                          ml: 0.5,
+                          fontWeight: pricingTableTheme.typography.pricePrefix.desktop.fontWeight
+                        }}
+                      >
+                        pm
+                      </Typography>
+                    )}
                   </Box>
                 </TableCell>
               ))}
