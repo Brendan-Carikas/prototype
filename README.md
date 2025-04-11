@@ -16,11 +16,8 @@ A modern React-based dashboard application built with Material-UI. Arto App prov
 
 Check out the live demos:
 - GitHub Pages: [Arto App on GitHub Pages](https://brendan-carikas.github.io/prototype/#/login)
-- Firebase Hosting: [Arto App on Firebase](https://ids-project-597cc.web.app/#/login)
+- Firebase Hosting: [Arto App on Firebase](https://artoadmin.web.app/)
 
-### Demo Credentials
-- Username: `Demo`
-- Password: `Demo`
 
 ## 🛠️ Development
 
