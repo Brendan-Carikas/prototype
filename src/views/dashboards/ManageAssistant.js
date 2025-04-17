@@ -61,8 +61,8 @@ function TabPanel(props) {
   );
 }
 
-// Sample file data
-const sampleFiles = [
+// Sample file data - initial data
+const initialSampleFiles = [
   { id: 1, name: 'company_handbook.pdf', type: 'pdf', size: '2.4 MB', dateAdded: '2025-03-15' },
   { id: 2, name: 'product_specifications.docx', type: 'doc', size: '1.8 MB', dateAdded: '2025-03-20' },
   { id: 3, name: 'quarterly_report.csv', type: 'csv', size: '3.2 MB', dateAdded: '2025-04-01' },
@@ -99,7 +99,8 @@ const ManageAssistant = () => {
   const [tabValue, setTabValue] = useState(0);
   // State for selected files
   const [selectedFiles, setSelectedFiles] = useState([]);
-  // State for files list is not needed as we're using sampleFiles directly
+  // State for files list
+  const [sampleFiles, setSampleFiles] = useState(initialSampleFiles);
   // State to toggle between empty state and files view (for demo purposes)
   const [hasFiles, setHasFiles] = useState(true);
   // State for save confirmation modal
@@ -235,7 +236,46 @@ const ManageAssistant = () => {
       // In a real app, you would upload the files to your backend
       console.log("Files selected:", files);
       
-      // For demo purposes, just show that files were added
+      // Convert FileList to array and create file objects to add to the table
+      const newFiles = Array.from(files).map((file, index) => {
+        // Determine file type based on extension
+        const extension = file.name.split('.').pop().toLowerCase();
+        let type = 'doc';
+        
+        if (['pdf'].includes(extension)) type = 'pdf';
+        else if (['doc', 'docx'].includes(extension)) type = 'doc';
+        else if (['csv', 'xls', 'xlsx'].includes(extension)) type = 'csv';
+        else if (['md', 'txt'].includes(extension)) type = 'md';
+        else if (['js', 'py', 'java', 'html', 'css', 'php'].includes(extension)) type = 'code';
+        
+        // Format file size
+        const sizeInKB = file.size / 1024;
+        let formattedSize;
+        if (sizeInKB < 1024) {
+          formattedSize = `${sizeInKB.toFixed(1)} KB`;
+        } else {
+          formattedSize = `${(sizeInKB / 1024).toFixed(1)} MB`;
+        }
+        
+        // Generate a unique ID for the new file
+        const newId = sampleFiles.length > 0 ? Math.max(...sampleFiles.map(f => f.id)) + 1 + index : 1 + index;
+        
+        // Create today's date in the format used in the table
+        const today = new Date().toISOString().split('T')[0];
+        
+        return {
+          id: newId,
+          name: file.name,
+          type: type,
+          size: formattedSize,
+          dateAdded: today
+        };
+      });
+      
+      // Add new files to the existing files array
+      setSampleFiles(prevFiles => [...prevFiles, ...newFiles]);
+      
+      // For demo purposes, ensure files view is shown
       setHasFiles(true);
       
       // Show success message
@@ -254,16 +294,21 @@ const ManageAssistant = () => {
     setDeleteModalOpen(false);
     
     // In a real app, you would delete the files from your backend
-    // For this demo, we'll just clear the selection
-    setSelectedFiles([]);
-    if (selectedFiles.length === sampleFiles.length) {
-      setHasFiles(false);
-    }
+    // For this demo, we'll remove the selected files from the array
+    setSampleFiles(prevFiles => prevFiles.filter(file => !selectedFiles.includes(file.id)));
     
     // Show success message
     setSnackbarMessage(`${selectedFiles.length} file(s) deleted successfully`);
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
+    
+    // Clear selection
+    setSelectedFiles([]);
+    
+    // If no files left, show empty state
+    if (selectedFiles.length === sampleFiles.length) {
+      setHasFiles(false);
+    }
   };
   
   // Handle opening the save confirmation modal
@@ -420,8 +465,8 @@ const ManageAssistant = () => {
           textColor="primary"
           sx={{ borderBottom: 1, borderColor: 'divider' }}
         >
-          {/* General tab button hidden */}
-          {/* <Tab label="Knowledge" id="assistant-tab-1" aria-controls="assistant-tabpanel-1" /> */}
+          <Tab label="General" id="assistant-tab-0" aria-controls="assistant-tabpanel-0" />
+          <Tab label="Knowledge" id="assistant-tab-1" aria-controls="assistant-tabpanel-1" />
         </Tabs>
         
         {/* Instructions Tab - General */}
